@@ -63,7 +63,21 @@ textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px 12px
 .star{font-size:26px;cursor:pointer;color:#e0e3e8}
 .star.lit{color:#f59e0b}
 .ok{text-align:center;padding:2rem;color:#16a34a;font-size:14px}
-@media(max-width:520px){.pg{grid-template-columns:1fr}}
+.assess-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.assess-item{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border:1px solid #e0e3e8;border-radius:8px;background:#fff;cursor:pointer}
+.assess-item.s{border-color:#f97316;background:#fff7ed}
+.assess-item.s .ai-icon{color:#f97316}
+.ai-icon{font-size:14px;color:#9ca3af;flex-shrink:0;margin-top:1px}
+.ai-label{font-size:12px;font-weight:500;color:#374151}
+.ai-sub{font-size:11px;color:#9ca3af;margin-top:1px}
+.assess-item.s .ai-label{color:#c2410c}
+.assess-item.s .ai-sub{color:#f97316}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.slider-row label{font-size:12px;color:#374151;min-width:120px}
+.slider-row input[type=range]{flex:1}
+.slider-val{font-size:12px;font-weight:600;color:#2563eb;min-width:30px;text-align:right}
+.data-banner{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#92400e;display:flex;align-items:flex-start;gap:8px}
+@media(max-width:520px){.pg{grid-template-columns:1fr}.assess-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -95,13 +109,16 @@ textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px 12px
   <i class="ti ti-chevron-right" style="color:#d1d5db;font-size:12px"></i>
   <div class="stp" id="s2"><div class="dot">2</div>Learner needs</div>
   <i class="ti ti-chevron-right" style="color:#d1d5db;font-size:12px"></i>
-  <div class="stp" id="s3"><div class="dot">3</div>Your plan</div>
+  <div class="stp" id="s3"><div class="dot">3</div>Assessment data</div>
   <i class="ti ti-chevron-right" style="color:#d1d5db;font-size:12px"></i>
-  <div class="stp" id="s4"><div class="dot">4</div>Checklist</div>
+  <div class="stp" id="s4"><div class="dot">4</div>Your plan</div>
   <i class="ti ti-chevron-right" style="color:#d1d5db;font-size:12px"></i>
-  <div class="stp" id="s5"><div class="dot">5</div>Feedback</div>
+  <div class="stp" id="s5"><div class="dot">5</div>Checklist</div>
+  <i class="ti ti-chevron-right" style="color:#d1d5db;font-size:12px"></i>
+  <div class="stp" id="s6"><div class="dot">6</div>Feedback</div>
 </div>
 
+<!-- SCREEN 1: OUTCOME -->
 <div id="sc1">
   <div class="card">
     <span class="lbl">Grade</span>
@@ -127,17 +144,18 @@ textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px 12px
   <button class="btn" id="b1" onclick="go2()" disabled>Next: learner needs →</button>
 </div>
 
+<!-- SCREEN 2: LEARNER NEEDS -->
 <div id="sc2" style="display:none">
   <div class="card">
     <span class="sublbl" style="font-size:14px;font-weight:600;margin-bottom:10px">Tell me about your learners</span>
-    <p style="font-size:13px;color:#6b7280;margin-bottom:14px">Select all that apply. Your plan will be tailored to each need.</p>
+    <p style="font-size:13px;color:#6b7280;margin-bottom:14px">Select all that apply.</p>
     <div class="pg">
       <div class="pc" onclick="tp(this,'attention regulation difficulties — use short 3-5 minute instruction bursts with movement breaks')"><i class="ti ti-brain"></i><div><div class="t">Attention regulation</div><div class="u">Short bursts + movement breaks</div></div></div>
       <div class="pc" onclick="tp(this,'movement-based and kinaesthetic learners who need physical engagement and rhythm-based learning')"><i class="ti ti-run"></i><div><div class="t">Movement-based</div><div class="u">Flexible positioning, rhythm</div></div></div>
       <div class="pc" onclick="tp(this,'multi-sensory learners requiring touch, sound, and visual input — use sand trays, magnetic letters, tactile materials')"><i class="ti ti-hand-finger"></i><div><div class="t">Multi-sensory</div><div class="u">Touch, sound, visual input</div></div></div>
       <div class="pc" onclick="tp(this,'phonics and decoding difficulties — use echo reading, choral reading, letter tiles')"><i class="ti ti-letter-case"></i><div><div class="t">Phonics struggles</div><div class="u">Decoding and letter-sound gaps</div></div></div>
       <div class="pc" onclick="tp(this,'English as an Additional Language (EAL) learners — bridge to home language, use visual word cards and repetition')"><i class="ti ti-world"></i><div><div class="t">EAL learners</div><div class="u">English not home language</div></div></div>
-      <div class="pc" onclick="tp(this,'prompt fading needed — begin with full modelling then reduce adult prompts step by step to build independence')"><i class="ti ti-arrows-minimize"></i><div><div class="t">Prompt fading</div><div class="u">Building towards independence</div></div></div>
+      <div class="pc" onclick="tp(this,'prompt fading needed — begin with full modelling then reduce adult prompts step by step')"><i class="ti ti-arrows-minimize"></i><div><div class="t">Prompt fading</div><div class="u">Building towards independence</div></div></div>
       <div class="pc" onclick="tp(this,'sensory and fidget regulation needs — provide fidget tools and allow subtle movement')"><i class="ti ti-ripple"></i><div><div class="t">Sensory regulation</div><div class="u">Fidget tools, tactile support</div></div></div>
       <div class="pc" onclick="tp(this,'mixed-ability class with wide learning gaps requiring tiered tasks at foundational, intermediate, and advanced levels')"><i class="ti ti-users"></i><div><div class="t">Mixed ability</div><div class="u">Wide learning gaps</div></div></div>
       <div class="pc" onclick="tp(this,'advanced learners who need extension beyond grade level — include higher-order thinking and peer teaching')"><i class="ti ti-star"></i><div><div class="t">Advanced learners</div><div class="u">Extension and higher-order tasks</div></div></div>
@@ -149,23 +167,71 @@ textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px 12px
   </div>
   <div style="display:flex;gap:8px">
     <button class="btn2" onclick="go1()">← Back</button>
-    <button class="btn" style="flex:1;margin-top:0" onclick="go3()">Generate my plan →</button>
+    <button class="btn" style="flex:1;margin-top:0" onclick="go3()">Next: assessment data →</button>
   </div>
 </div>
 
+<!-- SCREEN 3: ASSESSMENT DATA -->
 <div id="sc3" style="display:none">
-  <div id="ld" class="load"><span class="spin"></span>Generating your inclusive differentiated plan…</div>
+  <div class="card">
+    <div class="data-banner">
+      <i class="ti ti-chart-bar" style="font-size:16px;flex-shrink:0;margin-top:1px"></i>
+      <span>This is where your learner data shapes the plan. The more you share, the more targeted the differentiation will be.</span>
+    </div>
+
+    <span class="sublbl" style="font-size:14px;font-weight:600;margin-bottom:4px">Class performance snapshot</span>
+    <p style="font-size:12px;color:#6b7280;margin-bottom:14px">Drag each slider to reflect your class's current performance on this outcome.</p>
+
+    <div class="slider-row">
+      <label>At or above level</label>
+      <input type="range" min="0" max="100" value="30" step="5" id="sl_above" oninput="updateSlider('above',this.value)">
+      <span class="slider-val" id="sv_above">30%</span>
+    </div>
+    <div class="slider-row">
+      <label>Approaching level</label>
+      <input type="range" min="0" max="100" value="40" step="5" id="sl_approach" oninput="updateSlider('approach',this.value)">
+      <span class="slider-val" id="sv_approach">40%</span>
+    </div>
+    <div class="slider-row">
+      <label>Below level</label>
+      <input type="range" min="0" max="100" value="30" step="5" id="sl_below" oninput="updateSlider('below',this.value)">
+      <span class="slider-val" id="sv_below">30%</span>
+    </div>
+
+    <div class="div"></div>
+    <span class="sublbl" style="font-size:13px;font-weight:600;margin-bottom:8px">What can most learners already do?</span>
+    <p style="font-size:12px;color:#6b7280;margin-bottom:10px">Select all that apply — this tells the AI what baseline to build from.</p>
+    <div class="assess-grid" id="canDoGrid"></div>
+
+    <div class="div"></div>
+    <span class="sublbl" style="font-size:13px;font-weight:600;margin-bottom:8px">What are most learners still struggling with?</span>
+    <div class="assess-grid" id="struggleGrid"></div>
+
+    <div class="div"></div>
+    <span class="sublbl">Any specific learner data to add? (optional)</span>
+    <textarea id="assessNote" placeholder="e.g. 5 learners scored below 40% on last week's phonics check. 3 learners are reading at Grade R level. 8 learners are ready for extension work..."></textarea>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button class="btn2" onclick="go2()">← Back</button>
+    <button class="btn" style="flex:1;margin-top:0" onclick="go4()">Generate my plan →</button>
+  </div>
+</div>
+
+<!-- SCREEN 4: PLAN -->
+<div id="sc4" style="display:none">
+  <div id="ld" class="load"><span class="spin"></span>Generating your data-informed differentiated plan…</div>
   <div id="pc" style="display:none">
     <div class="meta" id="mt"></div>
     <div class="card" id="pl"></div>
     <div style="display:flex;gap:8px">
-      <button class="btn2" onclick="go2()">← Back</button>
-      <button class="btn" style="flex:1;margin-top:0" onclick="go4()">Open implementation checklist →</button>
+      <button class="btn2" onclick="go3()">← Back</button>
+      <button class="btn" style="flex:1;margin-top:0" onclick="go5()">Open implementation checklist →</button>
     </div>
   </div>
 </div>
 
-<div id="sc4" style="display:none">
+<!-- SCREEN 5: CHECKLIST -->
+<div id="sc5" style="display:none">
   <div class="card">
     <span class="sublbl" style="font-size:14px;font-weight:600">Implementation checklist</span>
     <p style="font-size:13px;color:#6b7280;margin-bottom:14px">Tick each item as you implement it.</p>
@@ -184,12 +250,13 @@ textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px 12px
     <textarea id="tdate" style="min-height:38px" placeholder="e.g. 4 June 2026"></textarea>
   </div>
   <div style="display:flex;gap:8px">
-    <button class="btn2" onclick="go3()">← Back</button>
-    <button class="btn" style="flex:1;margin-top:0" onclick="go5()">Rate this plan →</button>
+    <button class="btn2" onclick="go4()">← Back</button>
+    <button class="btn" style="flex:1;margin-top:0" onclick="go6()">Rate this plan →</button>
   </div>
 </div>
 
-<div id="sc5" style="display:none">
+<!-- SCREEN 6: FEEDBACK -->
+<div id="sc6" style="display:none">
   <div class="card" id="fc">
     <span class="sublbl" style="font-size:14px;font-weight:600">How useful was this plan?</span>
     <div style="display:flex;gap:5px;margin:8px 0 4px" id="stars">
@@ -197,23 +264,30 @@ textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px 12px
     </div>
     <p id="rl" style="font-size:11px;color:#9ca3af;margin-bottom:12px">Tap a star to rate</p>
     <div class="div"></div>
+    <span class="sublbl">Did the learner assessment data improve the plan?</span>
+    <div class="pr" style="margin-bottom:12px">
+      <button class="p" onclick="syn(this,'Yes, much more targeted')">Yes, much more targeted</button>
+      <button class="p" onclick="syn(this,'Somewhat')">Somewhat</button>
+      <button class="p" onclick="syn(this,'Not sure')">Not sure</button>
+    </div>
     <span class="sublbl">Would you use CAPS DI Support again?</span>
     <div class="pr" style="margin-bottom:14px">
-      <button class="p" onclick="syn(this,'Yes')">Yes, definitely</button>
-      <button class="p" onclick="syn(this,'Maybe')">Maybe with improvements</button>
-      <button class="p" onclick="syn(this,'Not sure')">Not sure yet</button>
+      <button class="p" onclick="syn2(this,'Yes')">Yes, definitely</button>
+      <button class="p" onclick="syn2(this,'Maybe')">Maybe with improvements</button>
+      <button class="p" onclick="syn2(this,'Not sure')">Not sure yet</button>
     </div>
     <span class="sublbl">Comments for the research team</span>
     <textarea id="tc" placeholder="What would make this more useful in your classroom?"></textarea>
   </div>
-  <button class="btn" id="sb5" onclick="sub()">Submit feedback</button>
+  <button class="btn" id="sb6" onclick="sub()">Submit feedback</button>
   <div id="ty" style="display:none" class="ok">
     <i class="ti ti-circle-check" style="font-size:32px;display:block;margin-bottom:10px;color:#16a34a"></i>
     <strong>Thank you!</strong><br>
-    <span style="font-size:13px;color:#6b7280;display:block;margin-top:6px">Your feedback helps improve CAPS DI Support for teachers across South Africa.</span>
+    <span style="font-size:13px;color:#6b7280;display:block;margin-top:6px">Your feedback helps improve CAPS DI Support for Foundation Phase teachers across South Africa.</span>
     <button class="btn2" style="margin-top:14px" onclick="rst()">Generate another plan</button>
   </div>
 </div>
+
 </div>
 </div>
 
@@ -223,6 +297,7 @@ function checkPw(){
   if(val==='teachersupport2026!'){
     document.getElementById('gate').style.display='none';
     document.getElementById('appWrap').style.display='block';
+    initAssessGrids();
   } else {
     document.getElementById('pwErr').style.display='block';
     document.getElementById('pwInput').value='';
@@ -237,31 +312,91 @@ const OC={
   'Grade 2':{'Term 1':[{l:'Reading for meaning',s:'Answer literal and inferential questions'},{l:'Spelling patterns',s:'Apply magic-e and vowel team rules'},{l:'Paragraph writing',s:'Write a paragraph with a topic sentence'}],'Term 2':[{l:'Main idea',s:'Identify main idea and 2 supporting details'},{l:'Compound words',s:'Read and use compound words in sentences'},{l:'Narrative writing',s:'Write a story with problem and solution'}],'Term 3':[{l:'Non-fiction reading',s:'Extract key facts from an information text'},{l:'Synonyms and antonyms',s:'Match words with similar/opposite meanings'},{l:'Functional writing',s:'Write a simple invitation or message'}],'Term 4':[{l:'Text types',s:'Distinguish narrative from informational texts'},{l:'Adjectives and adverbs',s:'Use describing words accurately'},{l:'Editing and proofreading',s:'Check writing for spelling and punctuation'}]},
   'Grade 3':{'Term 1':[{l:'Extended reading',s:'Read an extract and discuss characters'},{l:'Figurative language',s:'Identify similes and explain meaning'},{l:'Report writing',s:'Write a factual report with intro and body'}],'Term 2':[{l:'Inference and prediction',s:'Make inferences using textual evidence'},{l:'Prefixes and suffixes',s:'Use un-, re-, -ful, -less to build new words'},{l:'Persuasive writing',s:'Write a letter arguing a point of view'}],'Term 3':[{l:"Author's purpose",s:'Decide if text informs, entertains, or persuades'},{l:'Direct speech',s:'Write dialogue using speech marks correctly'},{l:'Research skills',s:'Use a simple source to answer questions'}],'Term 4':[{l:'Compare and contrast',s:'Compare two characters or texts'},{l:'Tense consistency',s:'Write a full piece in one tense'},{l:'Creative writing',s:'Write a complete story with developed characters'}]}
 };
-let V={grade:null,term:null,outcome:null,profiles:[],note:'',rating:0,ftags:[],yn:null,impl:null,planData:null};
-function sg(el,v){V.grade=v;V.outcome=null;V.term=null;document.querySelectorAll('#gr .p').forEach(p=>p.classList.remove('s'));el.classList.add('s');ro();cb();}
+
+const CAN_DO_ITEMS=[
+  {label:'Recognise all letters',sub:'Upper and lower case',icon:'ti-abc'},
+  {label:'Read simple words',sub:'CVC and sight words',icon:'ti-book'},
+  {label:'Write sentences',sub:'With punctuation',icon:'ti-pencil'},
+  {label:'Answer literal questions',sub:'Who, what, where',icon:'ti-question-mark'},
+  {label:'Retell a story',sub:'Beginning, middle, end',icon:'ti-message'},
+  {label:'Work independently',sub:'Without teacher support',icon:'ti-user'},
+];
+
+const STRUGGLE_ITEMS=[
+  {label:'Letter-sound links',sub:'Phonics and decoding',icon:'ti-letter-case'},
+  {label:'Reading fluency',sub:'Slow or hesitant reading',icon:'ti-eye'},
+  {label:'Writing independently',sub:'Needs scaffolding',icon:'ti-edit'},
+  {label:'Comprehension',sub:'Inference and meaning',icon:'ti-brain'},
+  {label:'Concentration',sub:'Focus and attention',icon:'ti-clock'},
+  {label:'Language barrier',sub:'EAL or vocabulary gaps',icon:'ti-world'},
+];
+
+let V={grade:null,term:null,outcome:null,profiles:[],note:'',canDo:[],struggles:[],slAbove:30,slApproach:40,slBelow:30,assessNote:'',rating:0,yn:null,yn2:null,impl:null,planData:null};
+
+function initAssessGrids(){
+  const cg=document.getElementById('canDoGrid');
+  const sg=document.getElementById('struggleGrid');
+  if(!cg||cg.children.length>0) return;
+  CAN_DO_ITEMS.forEach(item=>{
+    const d=document.createElement('div');
+    d.className='assess-item';
+    d.innerHTML='<i class="ti '+item.icon+' ai-icon"></i><div><div class="ai-label">'+item.label+'</div><div class="ai-sub">'+item.sub+'</div></div>';
+    d.onclick=()=>{d.classList.toggle('s');const v=item.label;V.canDo=V.canDo.includes(v)?V.canDo.filter(x=>x!==v):[...V.canDo,v];};
+    cg.appendChild(d);
+  });
+  STRUGGLE_ITEMS.forEach(item=>{
+    const d=document.createElement('div');
+    d.className='assess-item';
+    d.innerHTML='<i class="ti '+item.icon+' ai-icon"></i><div><div class="ai-label">'+item.label+'</div><div class="ai-sub">'+item.sub+'</div></div>';
+    d.onclick=()=>{d.classList.toggle('s');const v=item.label;V.struggles=V.struggles.includes(v)?V.struggles.filter(x=>x!==v):[...V.struggles,v];};
+    sg.appendChild(d);
+  });
+}
+
+function updateSlider(type,val){
+  V['sl'+type.charAt(0).toUpperCase()+type.slice(1)]=parseInt(val);
+  document.getElementById('sv_'+type).textContent=val+'%';
+}
+
+function sg2(el,v){V.grade=v;V.outcome=null;V.term=null;document.querySelectorAll('#gr .p').forEach(p=>p.classList.remove('s'));el.classList.add('s');ro();cb();}
 function st(el,v){V.term=v;V.outcome=null;document.querySelectorAll('#tr .p').forEach(p=>p.classList.remove('s'));el.classList.add('s');ro();cb();}
+function sg(el,v){sg2(el,v);}
 function ro(){const g=document.getElementById('og');g.innerHTML='';if(!V.grade||!V.term){g.innerHTML='<p style="font-size:13px;color:#9ca3af">Select grade and term above</p>';return;}const oc=((OC[V.grade]||{})[V.term])||[];oc.forEach(o=>{const d=document.createElement('div');d.className='ch';d.innerHTML='<span style="font-size:13px;font-weight:500">'+o.l+'</span><small>'+o.s+'</small>';d.onclick=()=>{V.outcome=o.l;document.querySelectorAll('#og .ch').forEach(c=>c.classList.remove('s'));d.classList.add('s');document.getElementById('co').value='';cb();};g.appendChild(d);});}
 document.getElementById('co').addEventListener('input',function(){if(this.value.trim()){V.outcome=null;document.querySelectorAll('#og .ch').forEach(c=>c.classList.remove('s'));}cb();});
 function cb(){document.getElementById('b1').disabled=!(V.grade&&V.term&&(V.outcome||document.getElementById('co').value.trim().length>5));}
 function tp(el,v){el.classList.toggle('s');V.profiles=V.profiles.includes(v)?V.profiles.filter(p=>p!==v):[...V.profiles,v];}
-function tf(el,v){el.classList.toggle('s');V.ftags=V.ftags.includes(v)?V.ftags.filter(p=>p!==v):[...V.ftags,v];}
 function sr(n){V.rating=n;document.querySelectorAll('#stars .star').forEach((s,i)=>s.classList.toggle('lit',i<n));const lb=['','Not useful','Slightly useful','Moderately useful','Very useful','Extremely useful'];document.getElementById('rl').textContent=lb[n];}
-function syn(el,v){V.yn=v;document.querySelectorAll('#sc5 .p').forEach(p=>p.classList.remove('s'));el.classList.add('s');}
+function syn(el,v){V.yn=v;document.querySelectorAll('#sc6 .pr').forEach((pr,i)=>{if(i===0)pr.querySelectorAll('.p').forEach(p=>p.classList.remove('s'));});el.classList.add('s');}
+function syn2(el,v){V.yn2=v;el.closest('.pr').querySelectorAll('.p').forEach(p=>p.classList.remove('s'));el.classList.add('s');}
 function sImpl(el,v){V.impl=v;document.querySelectorAll('#impl .p').forEach(p=>p.classList.remove('s'));el.classList.add('s');}
-function setStep(n){[1,2,3,4,5].forEach(i=>{const e=document.getElementById('s'+i);e.className='stp'+(i===n?' on':i<n?' dn':'');e.querySelector('.dot').textContent=i<n?'✓':i;});['sc1','sc2','sc3','sc4','sc5'].forEach((id,i)=>{document.getElementById(id).style.display=i+1===n?'block':'none';});window.scrollTo({top:0,behavior:'smooth'});}
+
+function setStep(n){
+  [1,2,3,4,5,6].forEach(i=>{const e=document.getElementById('s'+i);e.className='stp'+(i===n?' on':i<n?' dn':'');e.querySelector('.dot').textContent=i<n?'✓':i;});
+  ['sc1','sc2','sc3','sc4','sc5','sc6'].forEach((id,i)=>{document.getElementById(id).style.display=i+1===n?'block':'none';});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 function go1(){setStep(1);}
 function go2(){setStep(2);}
-function go4(){buildChecklist();setStep(4);}
-function go5(){setStep(5);}
-async function go3(){
-  setStep(3);
+function go3(){initAssessGrids();setStep(3);}
+function go5(){buildChecklist();setStep(5);}
+function go6(){setStep(6);}
+
+async function go4(){
+  setStep(4);
   document.getElementById('ld').style.display='block';
   document.getElementById('pc').style.display='none';
   const ot=V.outcome||document.getElementById('co').value.trim();
   const pt=V.profiles.length?V.profiles.join('; '):'General mixed-ability Foundation Phase class';
   const tn=document.getElementById('tn').value.trim();
-  document.getElementById('mt').innerHTML='<strong>'+V.grade+' · '+V.term+' · English Home Language</strong><br><span>Outcome: '+ot+'</span><br><span style="color:#6b7280">Learner needs: '+( V.profiles.map(p=>p.split('—')[0].trim()).join(' · ')||'General class')+(tn?' | '+tn:'')+'</span>';
-  const prompt='You are CAPS DI Support, an AI instructional planning assistant for South African Foundation Phase English Home Language teachers. Your scaffolding framework is grounded in inclusive education principles: short instruction segments (3-5 minutes max), prompt fading (full model to guided to independent), multi-sensory learning (touch, sound, movement, visual), flexible positioning, and gradual release of responsibility.\n\nGenerate a differentiated instruction plan for:\n- Grade: '+V.grade+'\n- Term: '+V.term+'\n- Subject: English Home Language (CAPS)\n- CAPS Outcome: '+ot+'\n- Learner needs: '+pt+'\n'+(tn?'- Teacher notes: '+tn+'\n':'')+'\nReturn ONLY valid JSON, no markdown, no explanation:\n{"tier1":{"title":"Tier 1 - Whole class instruction","duration":"15 min","activities":["activity","activity","activity"],"teacherMove":"specific teacher prompt or action","sensoryBreak":"brief movement or regulation moment"},"tier2":{"title":"Tier 2 - Small group support","duration":"10 min","activities":["activity","activity","activity"],"teacherMove":"specific teacher prompt","promptLevel":"Guided - teacher models then supports"},"tier3":{"title":"Tier 3 - Intensive individual support","duration":"5-10 min","activities":["activity","activity","activity"],"teacherMove":"specific teacher prompt","promptLevel":"Full model - hand-over-hand or echo support; fade prompts step by step"},"extension":{"title":"Extension - Advanced learners","duration":"10-15 min","activities":["activity","activity"],"teacherMove":"extension challenge or peer teaching prompt"},"resources":["resource","resource","resource","resource"],"assessment":"One sentence: what the teacher observes to confirm the learner has met the outcome","checklistItems":["checklist item 1","checklist item 2","checklist item 3"]}\n\nRules: activities must be practical and specific for a SA classroom; resources zero-cost or locally available (bottle tops, sand trays, magnetic letters, flashcards, newspaper); teacher moves are concrete questions or actions not vague advice; if EAL include L1 bridging strategy; if low-resource no purchased materials.';
+  const assessNote=document.getElementById('assessNote').value.trim();
+  const canDoStr=V.canDo.length?'Most learners CAN already: '+V.canDo.join(', '):'';
+  const struggleStr=V.struggles.length?'Most learners STRUGGLE with: '+V.struggles.join(', '):'';
+  const perfStr='Class performance: '+V.slAbove+'% at/above level, '+V.slApproach+'% approaching level, '+V.slBelow+'% below level';
+
+  document.getElementById('mt').innerHTML='<strong>'+V.grade+' · '+V.term+' · English Home Language</strong><br><span>Outcome: '+ot+'</span><br><span style="color:#6b7280">'+perfStr+'</span>';
+
+  const prompt='You are CAPS DI Support, an AI instructional planning assistant for South African Foundation Phase English Home Language teachers. Your scaffolding framework uses prompt fading, multi-sensory learning, movement-based instruction, and gradual release of responsibility.\n\nGenerate a DATA-INFORMED differentiated instruction plan using the learner assessment data provided.\n\nGrade: '+V.grade+'\nTerm: '+V.term+'\nSubject: English Home Language (CAPS)\nCAPS Outcome: '+ot+'\nLearner needs: '+pt+'\n'+perfStr+'\n'+(canDoStr?canDoStr+'\n':'')+(struggleStr?struggleStr+'\n':'')+(tn?'Class notes: '+tn+'\n':'')+(assessNote?'Assessment data: '+assessNote+'\n':'')+'\nIMPORTANT: Use the assessment data to calibrate the difficulty level of each tier. If many learners are below level, make Tier 1 more scaffolded. If most are at level, make Tier 3 the intensive support and Tier 1 more challenging.\n\nReturn ONLY valid JSON, no markdown:\n{"tier1":{"title":"Tier 1 - Whole class instruction","duration":"15 min","activities":["activity","activity","activity"],"teacherMove":"specific teacher prompt or action","sensoryBreak":"brief movement or regulation moment"},"tier2":{"title":"Tier 2 - Small group support","duration":"10 min","activities":["activity","activity","activity"],"teacherMove":"specific teacher prompt","promptLevel":"Guided - teacher models then supports"},"tier3":{"title":"Tier 3 - Intensive individual support","duration":"5-10 min","activities":["activity","activity","activity"],"teacherMove":"specific teacher prompt","promptLevel":"Full model - hand-over-hand or echo support; fade prompts step by step"},"extension":{"title":"Extension - Advanced learners","duration":"10-15 min","activities":["activity","activity"],"teacherMove":"extension challenge or peer teaching prompt"},"resources":["resource","resource","resource","resource"],"assessment":"One sentence: what the teacher observes to confirm the learner has met the outcome","dataInsight":"One sentence explaining how the assessment data shaped this plan","checklistItems":["checklist item 1","checklist item 2","checklist item 3"]}\n\nRules: activities must be practical and specific; resources zero-cost or locally available; if EAL include L1 bridging; if low-resource no purchased materials.';
+
   try{
     const res=await fetch('https://caps-di-proxydev.sahar-mohyuddin000.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
     const data=await res.json();
@@ -275,9 +410,11 @@ async function go3(){
     document.getElementById('pc').style.display='block';
   }
 }
+
 function renderPlan(p){
   const tiers=[{k:'tier1',b:'b1'},{k:'tier2',b:'b2'},{k:'tier3',b:'b3'},{k:'extension',b:'be'}];
   let h='';
+  if(p.dataInsight){h+='<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#16a34a"><i class="ti ti-chart-bar" style="font-size:13px;margin-right:4px;vertical-align:-1px"></i><strong>Data insight:</strong> '+p.dataInsight+'</div>';}
   tiers.forEach(t=>{const d=p[t.k];if(!d)return;h+='<div style="margin-bottom:1rem"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span class="tbadge '+t.b+'">'+d.title+'</span><span style="font-size:11px;color:#9ca3af">'+(d.duration||'')+'</span></div><ul style="padding-left:18px;margin:0 0 7px">'+(d.activities||[]).map(a=>'<li style="font-size:13px;color:#1a1a1a;margin:4px 0;line-height:1.5">'+a+'</li>').join('')+'</ul><div class="tm"><strong>Teacher move:</strong> '+(d.teacherMove||'')+'</div>'+(d.sensoryBreak?'<div class="sb"><strong>Movement break:</strong> '+d.sensoryBreak+'</div>':'')+(d.promptLevel?'<div class="pl">'+d.promptLevel+'</div>':'')+'<div style="height:1px;background:#f3f4f6;margin:11px 0"></div></div>';});
   if(p.resources)h+='<div class="res"><strong>Resources:</strong> '+p.resources.join(' · ')+'</div>';
   if(p.assessment)h+='<div class="asx"><strong>Quick assessment:</strong> '+p.assessment+'</div>';
@@ -285,15 +422,32 @@ function renderPlan(p){
   document.getElementById('ld').style.display='none';
   document.getElementById('pc').style.display='block';
 }
+
 function buildChecklist(){
-  const base=['Short instruction segments (3-5 min) used before movement breaks','Teacher modelled the task fully before learner attempt','Verbal prompts were provided when needed','Prompts were gradually reduced to build learner independence','Tasks were adapted to different learner readiness levels','One concept was introduced at a time','Learners were allowed flexible positioning if needed'];
+  const base=['Short instruction segments (3-5 min) used before movement breaks','Teacher modelled the task fully before learner attempt','Prompts were gradually reduced to build learner independence','Tasks were differentiated based on learner assessment data','One concept was introduced at a time','Learners were grouped according to their current performance level'];
   const extra=V.planData&&V.planData.checklistItems?V.planData.checklistItems:[];
   const all=[...new Set([...base,...extra])];
   document.getElementById('cl').innerHTML=all.map((item,i)=>'<div class="chk-item"><div class="chk-box" id="cb'+i+'" onclick="tick('+i+')" role="checkbox" aria-checked="false"></div><span style="font-size:13px;color:#374151;line-height:1.5">'+item+'</span></div>').join('');
 }
+
 function tick(i){const b=document.getElementById('cb'+i);const on=b.classList.toggle('ticked');b.setAttribute('aria-checked',on);b.innerHTML=on?'<i class="ti ti-check" style="font-size:10px;color:#fff"></i>':'';}
-function sub(){document.getElementById('fc').style.display='none';document.getElementById('sb5').style.display='none';document.getElementById('ty').style.display='block';}
-function rst(){V={grade:null,term:null,outcome:null,profiles:[],note:'',rating:0,ftags:[],yn:null,impl:null,planData:null};document.getElementById('ty').style.display='none';document.getElementById('fc').style.display='block';document.getElementById('sb5').style.display='block';['co','tn','tc','tname','tdate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('rl').textContent='Tap a star to rate';document.querySelectorAll('.p.s,.ch.s,.pc.s').forEach(e=>e.classList.remove('s'));document.querySelectorAll('.star').forEach(s=>s.classList.remove('lit'));ro();setStep(1);}
+function sub(){document.getElementById('fc').style.display='none';document.getElementById('sb6').style.display='none';document.getElementById('ty').style.display='block';}
+function rst(){
+  V={grade:null,term:null,outcome:null,profiles:[],note:'',canDo:[],struggles:[],slAbove:30,slApproach:40,slBelow:30,assessNote:'',rating:0,yn:null,yn2:null,impl:null,planData:null};
+  document.getElementById('ty').style.display='none';
+  document.getElementById('fc').style.display='block';
+  document.getElementById('sb6').style.display='block';
+  ['co','tn','tc','tname','tdate','assessNote'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('rl').textContent='Tap a star to rate';
+  document.querySelectorAll('.p.s,.ch.s,.pc.s,.assess-item.s').forEach(e=>e.classList.remove('s'));
+  document.querySelectorAll('.star').forEach(s=>s.classList.remove('lit'));
+  document.getElementById('sl_above').value=30;document.getElementById('sv_above').textContent='30%';
+  document.getElementById('sl_approach').value=40;document.getElementById('sv_approach').textContent='40%';
+  document.getElementById('sl_below').value=30;document.getElementById('sv_below').textContent='30%';
+  document.getElementById('canDoGrid').innerHTML='';
+  document.getElementById('struggleGrid').innerHTML='';
+  ro();setStep(1);
+}
 </script>
 </body>
 </html>
