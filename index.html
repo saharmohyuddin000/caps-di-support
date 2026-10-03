@@ -381,8 +381,8 @@ function $(id){return document.getElementById(id);}
 // ---------- Password gate ----------
 function checkPw(){
   // Not case-sensitive, so phone auto-capitals don't lock teachers out.
-  // capsteach2026 = shared with DBE directors and user-testing teachers.
-  if(['teachersupport2026!','divreview2026','capsteach2026'].includes($('pwInput').value.trim().toLowerCase())){
+  // capsteach2026! = teachers and DBE. capsteach2026 kept for directors already emailed; remove later.
+  if(['teachersupport2026!','divreview2026','capsteach2026!','capsteach2026'].includes($('pwInput').value.trim().toLowerCase())){
     $('gate').style.display='none';$('appWrap').style.display='block';init();
   }else{$('pwErr').style.display='block';$('pwInput').value='';}
 }
