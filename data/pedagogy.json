@@ -1,14 +1,46 @@
 {
   "about": "CAPS-DI pedagogical knowledge base. CAPS says WHAT must be learned; these rules say HOW it is taught; learner data decides how teaching is adapted. Items marked origin=roadmap come from the CAPS-DI pedagogical roadmap; origin=added are common Foundation Phase errors added for coverage and should be reviewed.",
   "barriers": [
-    {"key": "A", "name": "Prerequisite gap", "description": "The learner does not know the skill yet."},
-    {"key": "B", "name": "Misconception", "description": "The learner has learned something incorrectly."},
-    {"key": "C", "name": "Access barrier", "description": "The learner may know the concept but cannot show it through the current mode of instruction."},
-    {"key": "D", "name": "Processing barrier", "description": "The learner needs more processing time, repetition or reduced cognitive load."},
-    {"key": "E", "name": "Language barrier", "description": "The learner understands the concept but lacks the vocabulary or English to express it."},
-    {"key": "F", "name": "Attention / regulation barrier", "description": "The learner cannot sustain engagement with the current instructional format."},
-    {"key": "G", "name": "Motor / transcription barrier", "description": "The learner knows what to write but handwriting limits output."},
-    {"key": "H", "name": "Insufficient challenge", "description": "The learner has already mastered the target and needs greater complexity."}
+    {
+      "key": "A",
+      "name": "Prerequisite gap",
+      "description": "The learner does not know the skill yet."
+    },
+    {
+      "key": "B",
+      "name": "Misconception",
+      "description": "The learner has learned something incorrectly."
+    },
+    {
+      "key": "C",
+      "name": "Access barrier",
+      "description": "The learner may know the concept but cannot show it through the current mode of instruction."
+    },
+    {
+      "key": "D",
+      "name": "Processing barrier",
+      "description": "The learner needs more processing time, repetition or reduced cognitive load."
+    },
+    {
+      "key": "E",
+      "name": "Language barrier",
+      "description": "The learner understands the concept but lacks the vocabulary or English to express it."
+    },
+    {
+      "key": "F",
+      "name": "Attention / regulation barrier",
+      "description": "The learner cannot sustain engagement with the current instructional format."
+    },
+    {
+      "key": "G",
+      "name": "Motor / transcription barrier",
+      "description": "The learner knows what to write but handwriting limits output."
+    },
+    {
+      "key": "H",
+      "name": "Insufficient challenge",
+      "description": "The learner has already mastered the target and needs greater complexity."
+    }
   ],
   "dimensions": {
     "access": "How learners take in the content: visuals, oral explanation, concrete materials, movement, audio, enlarged print, vocabulary pre-teaching.",
@@ -18,43 +50,433 @@
     "challenge": "How complexity rises for learners who have mastered the outcome: more complex text, independent application, explanation, justification, comparison, inference, creation."
   },
   "pathways": {
-    "phonics": {"name": "Systematic explicit phonics", "steps": ["Hear the sounds", "Segment", "Map sounds to letters", "Blend", "Read", "Encode (spell)", "Cumulative review", "Apply in decodable text"]},
-    "phonological": {"name": "Oral phonological awareness before print", "steps": ["Listen for rhyme and syllables", "Isolate the first sound", "Blend sounds orally", "Segment orally", "Manipulate sounds", "Link to letters"]},
-    "fluency": {"name": "Modelled and repeated reading", "steps": ["Teacher models fluent reading", "Echo reading", "Choral reading", "Repeated meaningful rereading", "Phrasing and expression practice", "Independent rereading"]},
-    "comprehension": {"name": "Explicit comprehension instruction", "steps": ["Build vocabulary and background knowledge", "Teacher think-aloud", "Guided text discussion", "Questioning from literal to inferential", "Learner explains with evidence", "Independent application"]},
-    "oral": {"name": "Oral language and vocabulary development", "steps": ["Introduce words with pictures and objects", "Model the language structure", "Oral rehearsal in pairs", "Repeated use of new words", "Questioning and discussion", "Use words in new contexts"]},
-    "writing": {"name": "Oral rehearsal to independent writing", "steps": ["Talk about the idea", "Plan (draw or list)", "Teacher models writing", "Shared and supported composition", "Independent writing", "Feedback and revision"]},
-    "handwriting": {"name": "Multisensory letter formation", "steps": ["Model formation with verbal path", "Trace in sand or air", "Trace on paper", "Copy with starting dots", "Write from memory", "Write within words and sentences"]}
+    "phonics": {
+      "name": "Systematic explicit phonics",
+      "steps": [
+        "Review letter-sound links (alphabetic principle)",
+        "Hear and segment the sounds orally",
+        "Map each sound to its letter",
+        "Blend left to right into the word",
+        "Read the word",
+        "Spell (encode) it",
+        "Apply in decodable text"
+      ]
+    },
+    "phonological": {
+      "name": "Oral phonological awareness before print",
+      "steps": [
+        "Listen for rhyme and syllables",
+        "Isolate the first sound",
+        "Blend sounds orally",
+        "Segment orally",
+        "Manipulate sounds",
+        "Link to letters"
+      ]
+    },
+    "fluency": {
+      "name": "Modelled and repeated reading",
+      "steps": [
+        "Teacher models fluent reading",
+        "Echo reading",
+        "Choral reading",
+        "Repeated meaningful rereading",
+        "Phrasing and expression practice",
+        "Independent rereading"
+      ]
+    },
+    "comprehension": {
+      "name": "Explicit comprehension instruction",
+      "steps": [
+        "Build vocabulary and background knowledge",
+        "Teacher think-aloud",
+        "Guided text discussion",
+        "Questioning from literal to inferential",
+        "Learner explains with evidence",
+        "Independent application"
+      ]
+    },
+    "oral": {
+      "name": "Oral language and vocabulary development",
+      "steps": [
+        "Introduce words with pictures and objects",
+        "Model the language structure",
+        "Oral rehearsal in pairs",
+        "Repeated use of new words",
+        "Questioning and discussion",
+        "Use words in new contexts"
+      ]
+    },
+    "writing": {
+      "name": "Oral rehearsal to independent writing",
+      "steps": [
+        "Talk about the idea",
+        "Plan (draw or list)",
+        "Teacher models writing",
+        "Shared and supported composition",
+        "Independent writing",
+        "Feedback and revision"
+      ]
+    },
+    "handwriting": {
+      "name": "Multisensory letter formation",
+      "steps": [
+        "Model formation with verbal path",
+        "Trace in sand or air",
+        "Trace on paper",
+        "Copy with starting dots",
+        "Write from memory",
+        "Write within words and sentences"
+      ]
+    },
+    "letterKnowledge": {
+      "name": "Multisensory letter introduction",
+      "steps": [
+        "Show the letter shape",
+        "Say its sound (and name)",
+        "Trace it in sand or the air",
+        "Find it in words and the environment",
+        "Daily cumulative review of all letters taught"
+      ]
+    },
+    "phonemic": {
+      "name": "Oral phonemic awareness (no print)",
+      "steps": [
+        "Listen for the first sound",
+        "Isolate sounds with counters or fingers",
+        "Blend sounds orally (/c/-/a/-/t/ → cat)",
+        "Segment spoken words into sounds",
+        "Swap a sound to make a new word",
+        "Then link the sounds to letters"
+      ]
+    }
   },
   "terms": {
-    "Term 1": {"theme": "Foundations", "question": "Does the learner have the foundational knowledge and skills for this CAPS outcome?", "sequence": "Explicit teaching, modelling, guided practice, repetition, multisensory practice, immediate feedback", "look_for": "prerequisite gaps, foundational misconceptions, language barriers, phonological difficulties, vocabulary gaps, attention or participation barriers"},
-    "Term 2": {"theme": "Building meaning and fluency", "question": "Can the learner use foundational skills to understand and communicate meaning?", "sequence": "Model, guided practice, purposeful practice, feedback, application", "look_for": "whether the difficulty is decoding or meaning (vocabulary, comprehension) — respond to the actual barrier, not with more of the same"},
-    "Term 3": {"theme": "Differentiation and responsive learning", "question": "What is preventing this learner from accessing the same CAPS outcome?", "sequence": "Diagnose the barrier from evidence, then adapt access, process, support, response or challenge", "look_for": "the specific barrier type (prerequisite, misconception, access, processing, language, attention, motor, insufficient challenge)"},
-    "Term 4": {"theme": "Independence, transfer and consolidation", "question": "Can the learner apply the skill independently in a new context?", "sequence": "Model, guide, prompt, fade, independent application, transfer", "look_for": "self-correction, strategy choice, explaining thinking, applying the skill to unfamiliar texts and tasks, readiness for the next grade"}
+    "Term 1": {
+      "theme": "Foundations",
+      "question": "Does the learner have the foundational knowledge and skills for this CAPS outcome?",
+      "sequence": "Explicit teaching, modelling, guided practice, repetition, multisensory practice, immediate feedback",
+      "look_for": "prerequisite gaps, foundational misconceptions, language barriers, phonological difficulties, vocabulary gaps, attention or participation barriers"
+    },
+    "Term 2": {
+      "theme": "Building meaning and fluency",
+      "question": "Can the learner use foundational skills to understand and communicate meaning?",
+      "sequence": "Model, guided practice, purposeful practice, feedback, application",
+      "look_for": "whether the difficulty is decoding or meaning (vocabulary, comprehension) — respond to the actual barrier, not with more of the same"
+    },
+    "Term 3": {
+      "theme": "Differentiation and responsive learning",
+      "question": "What is preventing this learner from accessing the same CAPS outcome?",
+      "sequence": "Diagnose the barrier from evidence, then adapt access, process, support, response or challenge",
+      "look_for": "the specific barrier type (prerequisite, misconception, access, processing, language, attention, motor, insufficient challenge)"
+    },
+    "Term 4": {
+      "theme": "Independence, transfer and consolidation",
+      "question": "Can the learner apply the skill independently in a new context?",
+      "sequence": "Model, guide, prompt, fade, independent application, transfer",
+      "look_for": "self-correction, strategy choice, explaining thinking, applying the skill to unfamiliar texts and tasks, readiness for the next grade"
+    }
   },
   "misconceptions": [
-    {"id": "ph-name-sound", "skill": "Reading and Phonics", "area": "Phonics", "misconception": "Thinks the letter name is the sound", "evidence": "Says the letter name (e.g. 'em') instead of the sound /m/", "barrier": "B", "response": "Explicit sound discrimination and grapheme–phoneme mapping", "origin": "roadmap"},
-    {"id": "ph-first-letter", "skill": "Reading and Phonics", "area": "Phonics", "misconception": "Reads from the first letter only", "evidence": "Guesses words that start with the same sound", "barrier": "B", "response": "Segment every phoneme, then blend all the way through the word", "origin": "roadmap"},
-    {"id": "pa-syllables", "skill": "Reading and Phonics", "area": "Phonological awareness", "misconception": "Cannot separate the sounds in a word", "evidence": "Gives syllables instead of individual sounds", "barrier": "A", "response": "Oral phoneme segmentation before print (sound boxes, counters, tapping)", "origin": "roadmap"},
-    {"id": "ph-familiar-only", "skill": "Reading and Phonics", "area": "Phonics", "misconception": "Relies on memorised words instead of decoding", "evidence": "Reads familiar words but cannot read unfamiliar CVC words", "barrier": "A", "response": "Hear, segment, map sounds to letters, blend, read, encode, apply in text", "origin": "roadmap"},
-    {"id": "rd-pictures", "skill": "Reading and Phonics", "area": "Reading", "misconception": "Guesses words from the pictures", "evidence": "Correct only when the picture supports the word", "barrier": "B", "response": "Cover picture cues; decode first, then confirm meaning with the picture", "origin": "roadmap"},
-    {"id": "fl-word-by-word", "skill": "Reading and Phonics", "area": "Fluency", "misconception": "Reads word by word", "evidence": "Accurate but slow, laboured reading without phrasing", "barrier": "D", "response": "Model phrasing; repeated, meaningful rereading; echo and choral reading", "origin": "roadmap"},
-    {"id": "cm-isolated", "skill": "Reading and Phonics", "area": "Comprehension", "misconception": "Retells isolated events", "evidence": "Cannot say what the story is mostly about", "barrier": "A", "response": "Sequencing with picture cards and modelling of the main idea", "origin": "roadmap"},
-    {"id": "cm-unsupported", "skill": "Reading and Phonics", "area": "Inference", "misconception": "Gives answers not supported by the text", "evidence": "Cannot point to what in the text or picture shows the answer", "barrier": "B", "response": "Ask 'What makes you think that?'; model finding evidence", "origin": "roadmap"},
-    {"id": "cm-literal-only", "skill": "Reading and Phonics", "area": "Comprehension", "misconception": "Answers literal but not inferential questions", "evidence": "Performance drops when the question asks why or what might happen", "barrier": "A", "response": "Explicit inference modelling and graduated questioning (literal to inferential)", "origin": "roadmap"},
-    {"id": "ph-bd", "skill": "Reading and Phonics", "area": "Phonics", "misconception": "Confuses visually similar letters", "evidence": "Reads or writes b for d, p for q", "barrier": "B", "response": "Multisensory formation with verbal path; one letter at a time; anchor picture or gesture for each", "origin": "added"},
-    {"id": "rd-word-calling", "skill": "Reading and Phonics", "area": "Comprehension", "misconception": "Decodes accurately but does not attend to meaning", "evidence": "Reads the text correctly but cannot answer simple questions about it", "barrier": "E", "response": "Pre-teach key vocabulary; stop and talk about meaning; oral retell after each page", "origin": "added"},
-    {"id": "or-general-words", "skill": "Listening and Speaking", "area": "Vocabulary", "misconception": "Uses broad, general words", "evidence": "Says 'thing', 'nice', 'big' instead of precise words", "barrier": "E", "response": "Explicit vocabulary instruction with pictures and objects; build word webs", "origin": "roadmap"},
-    {"id": "or-one-word", "skill": "Listening and Speaking", "area": "Oral language", "misconception": "Answers in single words", "evidence": "Gives one-word answers even when prompted for more", "barrier": "E", "response": "Model full-sentence answers; sentence frames; think-pair-share oral rehearsal", "origin": "added"},
-    {"id": "or-instructions", "skill": "Listening and Speaking", "area": "Listening", "misconception": "Follows only part of an instruction", "evidence": "Completes the first step of a two-step instruction only", "barrier": "D", "response": "Chunk instructions; visual cue cards; learner repeats the steps back before starting", "origin": "added"},
-    {"id": "or-sequence", "skill": "Listening and Speaking", "area": "Oral language", "misconception": "Retells events out of order", "evidence": "Mixes the beginning, middle and end when retelling", "barrier": "A", "response": "Picture sequencing cards; first, then, last frames; act out the story", "origin": "added"},
-    {"id": "wr-disconnected", "skill": "Writing", "area": "Writing", "misconception": "Writes ideas as disconnected sentences", "evidence": "Sentences do not link to one another", "barrier": "A", "response": "Oral rehearsal, sentence combining and sequencing", "origin": "roadmap"},
-    {"id": "wr-oral-grammar", "skill": "Writing", "area": "Grammar", "misconception": "Writes exactly as they speak", "evidence": "The same sentence errors recur in writing", "barrier": "E", "response": "Explicit sentence modelling and guided transformation", "origin": "roadmap"},
-    {"id": "hw-formation", "skill": "Writing", "area": "Handwriting", "misconception": "Knows the letter but forms it inconsistently", "evidence": "Letters start in the wrong place or vary in size", "barrier": "G", "response": "Multisensory formation practice and reduced copying load", "origin": "roadmap"},
-    {"id": "wr-no-punctuation", "skill": "Writing", "area": "Writing", "misconception": "Does not mark sentence boundaries", "evidence": "Writing has no capital letters or full stops", "barrier": "A", "response": "Model and orally 'say the sentence'; capital-and-full-stop checklist; shared editing", "origin": "added"},
-    {"id": "wr-spelling-vowels", "skill": "Writing", "area": "Spelling", "misconception": "Leaves out vowels when spelling", "evidence": "Writes 'ct' for cat, 'dg' for dog", "barrier": "A", "response": "Oral segmenting with sound boxes before writing; vowel focus with anchor pictures", "origin": "added"},
-    {"id": "wr-copy-slow", "skill": "Writing", "area": "Handwriting", "misconception": "Copies letter by letter from the board", "evidence": "Very slow copying, loses place, incomplete work", "barrier": "G", "response": "Copy from a card on the desk; copy whole words; reduce copying length", "origin": "added"},
-    {"id": "gen-challenge", "skill": "*", "area": "Challenge", "misconception": "Has already mastered the outcome", "evidence": "Completes tasks quickly and accurately; disengages", "barrier": "H", "response": "Increase complexity: explain, justify, apply to a new text, create", "origin": "roadmap"},
-    {"id": "gen-attention", "skill": "*", "area": "Participation", "misconception": "Cannot sustain attention in long whole-class input", "evidence": "Off task after a few minutes; better in short, active tasks", "barrier": "F", "response": "3–5 minute segments, movement breaks, active response (cards, gestures)", "origin": "added"}
-  ]
+    {
+      "id": "ph-bd",
+      "skill": "Reading and Phonics",
+      "area": "Letter knowledge",
+      "misconception": "Confuses visually similar letters",
+      "evidence": "Reads or writes b for d, p for q",
+      "barrier": "B",
+      "response": "Multisensory formation with verbal path; one letter at a time; anchor picture or gesture for each",
+      "origin": "added"
+    },
+    {
+      "id": "lk-shapes",
+      "skill": "Reading and Phonics",
+      "area": "Letter knowledge",
+      "misconception": "Does not yet recognise the taught letters",
+      "evidence": "Cannot point to or name letters that have been taught",
+      "barrier": "A",
+      "response": "Multisensory letter introduction (shape, sound, formation) with daily cumulative review",
+      "origin": "added"
+    },
+    {
+      "id": "pa-syllables",
+      "skill": "Reading and Phonics",
+      "area": "Phonemic awareness",
+      "misconception": "Cannot separate the sounds in a word",
+      "evidence": "Gives syllables instead of individual sounds",
+      "barrier": "A",
+      "response": "Oral phoneme segmentation before print (sound boxes, counters, tapping)",
+      "origin": "roadmap"
+    },
+    {
+      "id": "pa-first-sound",
+      "skill": "Reading and Phonics",
+      "area": "Phonemic awareness",
+      "misconception": "Cannot hear the first sound in a spoken word",
+      "evidence": "Cannot say which of 'mat, sun, map' start the same way",
+      "barrier": "A",
+      "response": "Oral sound isolation games with no print: 'I spy something starting with /m/'; mouth-shape mirrors",
+      "origin": "added"
+    },
+    {
+      "id": "pa-oral-blend",
+      "skill": "Reading and Phonics",
+      "area": "Phonemic awareness",
+      "misconception": "Cannot blend sounds they hear",
+      "evidence": "Teacher says /s/-/u/-/n/ and the learner cannot say 'sun'",
+      "barrier": "A",
+      "response": "Oral blending before print: stretch the sounds ('sssuuunnn'), robot talk, start with two sounds",
+      "origin": "added"
+    },
+    {
+      "id": "ph-name-sound",
+      "skill": "Reading and Phonics",
+      "area": "Alphabetic principle",
+      "misconception": "Thinks the letter name is the sound",
+      "evidence": "Says the letter name (e.g. 'em') instead of the sound /m/",
+      "barrier": "B",
+      "response": "Explicit sound discrimination and grapheme–phoneme mapping",
+      "origin": "roadmap"
+    },
+    {
+      "id": "ph-familiar-only",
+      "skill": "Reading and Phonics",
+      "area": "Alphabetic principle",
+      "misconception": "Relies on memorised words instead of decoding",
+      "evidence": "Reads familiar words but cannot read unfamiliar CVC words",
+      "barrier": "A",
+      "response": "Hear, segment, map sounds to letters, blend, read, encode, apply in text",
+      "origin": "roadmap"
+    },
+    {
+      "id": "ph-first-letter",
+      "skill": "Reading and Phonics",
+      "area": "Blending",
+      "misconception": "Reads from the first letter only",
+      "evidence": "Guesses words that start with the same sound",
+      "barrier": "B",
+      "response": "Segment every phoneme, then blend all the way through the word",
+      "origin": "roadmap"
+    },
+    {
+      "id": "bl-sounds-no-word",
+      "skill": "Reading and Phonics",
+      "area": "Blending",
+      "misconception": "Says each sound but cannot blend them into a word",
+      "evidence": "Reads /c/ /a/ /t/ correctly but does not say 'cat'",
+      "barrier": "D",
+      "response": "Continuous blending: hold each sound into the next; start with stretchy sounds (m, s, a); successive blending (ca… cat)",
+      "origin": "added"
+    },
+    {
+      "id": "bl-reversed",
+      "skill": "Reading and Phonics",
+      "area": "Blending",
+      "misconception": "Blends out of order",
+      "evidence": "Reads 'tac' or 'act' for cat",
+      "barrier": "B",
+      "response": "Finger-track left to right; sweep under the word; sound boxes with arrows",
+      "origin": "added"
+    },
+    {
+      "id": "rd-pictures",
+      "skill": "Reading and Phonics",
+      "area": "Reading",
+      "misconception": "Guesses words from the pictures",
+      "evidence": "Correct only when the picture supports the word",
+      "barrier": "B",
+      "response": "Cover picture cues; decode first, then confirm meaning with the picture",
+      "origin": "roadmap"
+    },
+    {
+      "id": "fl-word-by-word",
+      "skill": "Reading and Phonics",
+      "area": "Fluency",
+      "misconception": "Reads word by word",
+      "evidence": "Accurate but slow, laboured reading without phrasing",
+      "barrier": "D",
+      "response": "Model phrasing; repeated, meaningful rereading; echo and choral reading",
+      "origin": "roadmap"
+    },
+    {
+      "id": "cm-isolated",
+      "skill": "Reading and Phonics",
+      "area": "Comprehension",
+      "misconception": "Retells isolated events",
+      "evidence": "Cannot say what the story is mostly about",
+      "barrier": "A",
+      "response": "Sequencing with picture cards and modelling of the main idea",
+      "origin": "roadmap"
+    },
+    {
+      "id": "cm-literal-only",
+      "skill": "Reading and Phonics",
+      "area": "Comprehension",
+      "misconception": "Answers literal but not inferential questions",
+      "evidence": "Performance drops when the question asks why or what might happen",
+      "barrier": "A",
+      "response": "Explicit inference modelling and graduated questioning (literal to inferential)",
+      "origin": "roadmap"
+    },
+    {
+      "id": "rd-word-calling",
+      "skill": "Reading and Phonics",
+      "area": "Comprehension",
+      "misconception": "Decodes accurately but does not attend to meaning",
+      "evidence": "Reads the text correctly but cannot answer simple questions about it",
+      "barrier": "E",
+      "response": "Pre-teach key vocabulary; stop and talk about meaning; oral retell after each page",
+      "origin": "added"
+    },
+    {
+      "id": "cm-unsupported",
+      "skill": "Reading and Phonics",
+      "area": "Inference",
+      "misconception": "Gives answers not supported by the text",
+      "evidence": "Cannot point to what in the text or picture shows the answer",
+      "barrier": "B",
+      "response": "Ask 'What makes you think that?'; model finding evidence",
+      "origin": "roadmap"
+    },
+    {
+      "id": "or-instructions",
+      "skill": "Listening and Speaking",
+      "area": "Listening",
+      "misconception": "Follows only part of an instruction",
+      "evidence": "Completes the first step of a two-step instruction only",
+      "barrier": "D",
+      "response": "Chunk instructions; visual cue cards; learner repeats the steps back before starting",
+      "origin": "added"
+    },
+    {
+      "id": "or-one-word",
+      "skill": "Listening and Speaking",
+      "area": "Oral language",
+      "misconception": "Answers in single words",
+      "evidence": "Gives one-word answers even when prompted for more",
+      "barrier": "E",
+      "response": "Model full-sentence answers; sentence frames; think-pair-share oral rehearsal",
+      "origin": "added"
+    },
+    {
+      "id": "or-sequence",
+      "skill": "Listening and Speaking",
+      "area": "Oral language",
+      "misconception": "Retells events out of order",
+      "evidence": "Mixes the beginning, middle and end when retelling",
+      "barrier": "A",
+      "response": "Picture sequencing cards; first, then, last frames; act out the story",
+      "origin": "added"
+    },
+    {
+      "id": "or-general-words",
+      "skill": "Listening and Speaking",
+      "area": "Vocabulary",
+      "misconception": "Uses broad, general words",
+      "evidence": "Says 'thing', 'nice', 'big' instead of precise words",
+      "barrier": "E",
+      "response": "Explicit vocabulary instruction with pictures and objects; build word webs",
+      "origin": "roadmap"
+    },
+    {
+      "id": "wr-disconnected",
+      "skill": "Writing",
+      "area": "Writing",
+      "misconception": "Writes ideas as disconnected sentences",
+      "evidence": "Sentences do not link to one another",
+      "barrier": "A",
+      "response": "Oral rehearsal, sentence combining and sequencing",
+      "origin": "roadmap"
+    },
+    {
+      "id": "wr-no-punctuation",
+      "skill": "Writing",
+      "area": "Writing",
+      "misconception": "Does not mark sentence boundaries",
+      "evidence": "Writing has no capital letters or full stops",
+      "barrier": "A",
+      "response": "Model and orally 'say the sentence'; capital-and-full-stop checklist; shared editing",
+      "origin": "added"
+    },
+    {
+      "id": "wr-oral-grammar",
+      "skill": "Writing",
+      "area": "Grammar",
+      "misconception": "Writes exactly as they speak",
+      "evidence": "The same sentence errors recur in writing",
+      "barrier": "E",
+      "response": "Explicit sentence modelling and guided transformation",
+      "origin": "roadmap"
+    },
+    {
+      "id": "wr-spelling-vowels",
+      "skill": "Writing",
+      "area": "Spelling",
+      "misconception": "Leaves out vowels when spelling",
+      "evidence": "Writes 'ct' for cat, 'dg' for dog",
+      "barrier": "A",
+      "response": "Oral segmenting with sound boxes before writing; vowel focus with anchor pictures",
+      "origin": "added"
+    },
+    {
+      "id": "hw-formation",
+      "skill": "Writing",
+      "area": "Handwriting",
+      "misconception": "Knows the letter but forms it inconsistently",
+      "evidence": "Letters start in the wrong place or vary in size",
+      "barrier": "G",
+      "response": "Multisensory formation practice and reduced copying load",
+      "origin": "roadmap"
+    },
+    {
+      "id": "wr-copy-slow",
+      "skill": "Writing",
+      "area": "Handwriting",
+      "misconception": "Copies letter by letter from the board",
+      "evidence": "Very slow copying, loses place, incomplete work",
+      "barrier": "G",
+      "response": "Copy from a card on the desk; copy whole words; reduce copying length",
+      "origin": "added"
+    },
+    {
+      "id": "gen-challenge",
+      "skill": "*",
+      "area": "Challenge",
+      "misconception": "Has already mastered the outcome",
+      "evidence": "Completes tasks quickly and accurately; disengages",
+      "barrier": "H",
+      "response": "Increase complexity: explain, justify, apply to a new text, create",
+      "origin": "roadmap"
+    },
+    {
+      "id": "gen-attention",
+      "skill": "*",
+      "area": "Participation",
+      "misconception": "Cannot sustain attention in long whole-class input",
+      "evidence": "Off task after a few minutes; better in short, active tasks",
+      "barrier": "F",
+      "response": "3–5 minute segments, movement breaks, active response (cards, gestures)",
+      "origin": "added"
+    }
+  ],
+  "decoding": {
+    "note": "Decoding has four components. Diagnose which one breaks down; each needs a different response.",
+    "components": [
+      {
+        "name": "Letter knowledge",
+        "what": "Recognises the shapes and names of letters and letter combinations"
+      },
+      {
+        "name": "Phonemic awareness",
+        "what": "Purely auditory: hears, isolates, blends, segments and swaps individual sounds in spoken words — no print"
+      },
+      {
+        "name": "Alphabetic principle",
+        "what": "Knows that letters (graphemes) map systematically to sounds (phonemes)"
+      },
+      {
+        "name": "Blending",
+        "what": "Says the sounds left to right and smooths them into a word (and segments words into sounds to spell)"
+      }
+    ]
+  }
 }

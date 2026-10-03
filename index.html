@@ -97,6 +97,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .star.lit{color:#f59e0b}
 .ok{text-align:center;padding:2rem;color:#16a34a;font-size:14px}
 @media(max-width:560px){.pg{grid-template-columns:1fr}.tiers{grid-template-columns:1fr}}
+.grp{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.04em;margin:8px 0 2px}
 .diag{border:1px solid #ddd6fe;background:#faf5ff;border-radius:10px;padding:10px 12px;margin-bottom:8px}
 .diag p{font-size:12px;margin-top:5px;line-height:1.5}
 .dims{width:100%;border-collapse:collapse;font-size:12px}
@@ -450,9 +451,11 @@ function renderStruggles(){
 function renderErrors(){
   const box=$('errList');box.innerHTML='';
   if(!PED){box.innerHTML='<p class="hint">Describe the errors you saw in the box below.</p>';return;}
-  const items=PED.misconceptions.filter(m=>m.skill===V.skill||m.skill==='*');
-  items.forEach(m=>{const btn=document.createElement('button');btn.className='ch';
-    btn.innerHTML='<span class="tag">'+esc(m.area)+'</span><strong>'+esc(m.misconception)+'</strong><br><span style="font-size:12px;color:#6b7280">You see: '+esc(m.evidence)+'</span>';
+  const items=[...PED.misconceptions.filter(m=>m.skill===V.skill),...PED.misconceptions.filter(m=>m.skill==='*')];
+  let lastArea=null;
+  items.forEach(m=>{if(m.area!==lastArea){lastArea=m.area;const hd=document.createElement('p');hd.className='grp';hd.textContent=m.area;box.appendChild(hd);}
+    const btn=document.createElement('button');btn.className='ch';
+    btn.innerHTML='<strong>'+esc(m.misconception)+'</strong><br><span style="font-size:12px;color:#6b7280">You see: '+esc(m.evidence)+'</span>';
     if(V.errors.includes(m.id))btn.classList.add('s');
     btn.onclick=()=>{btn.classList.toggle('s');V.errors=V.errors.includes(m.id)?V.errors.filter(x=>x!==m.id):[...V.errors,m.id];};
     box.appendChild(btn);});
@@ -483,7 +486,9 @@ function pickPathways(){
   const add=k=>{if(!keys.includes(k))keys.push(k);};
   if(/handwrit|form(s|ing)? .*letter|letter formation|pencil|capital letters correctly|lower case letters/.test(t))add('handwriting');
   if(/phon|sound|blend|segment|decod|cvc|letter-sound|digraph|consonant|vowel/.test(t))add('phonics');
-  if(/rhyme|syllable|phonemic|aurally/.test(t))add('phonological');
+  if(/phonemic|blending sounds|segmenting words|aurally|initial sounds/.test(t))add('phonemic');
+  if(/rhyme|syllable/.test(t))add('phonological');
+  if(/recognises and names|letters of the alphabet|letter recognition/.test(t))add('letterKnowledge');
   if(/fluen|reads aloud|expression|pace|reread/.test(t))add('fluency');
   if(/comprehen|question|predict|infer|story|retell|sequence|main idea|character/.test(t))add('comprehension');
   if(/writ|sentence|caption|news|paragraph|label|list of words/.test(t))add('writing');
@@ -504,6 +509,7 @@ function buildPrompt(){
   const term=PED&&PED.terms[V.term];
   const paths=PED?pickPathways().map(k=>PED.pathways[k]).filter(Boolean):[];
   const errs=PED?PED.misconceptions.filter(m=>V.errors.includes(m.id)):[];
+  const dec=PED&&PED.decoding&&(V.skill==='Reading and Phonics'||/decod|phon|blend|sound/.test(ot.toLowerCase()))?PED.decoding:null;
   const barriers=PED?PED.barriers.map(x=>x.key+'. '+x.name+' — '+x.description).join('\n'):'';
   const dims=PED?Object.entries(PED.dimensions).map(([k,v])=>k+': '+v).join('\n'):'';
   return [
@@ -515,6 +521,7 @@ function buildPrompt(){
 'CAPS outcome for this lesson (the SAME outcome for every learner): '+ot+(V.outcomeFormal?' (assessed in Formal Assessment Activity '+V.outcomeFormal.acts.join(' & ')+' this term)':''),
 capsItems?'CAPS formal assessment items for this term and skill:\n'+capsItems:'',
 term?'Term focus — '+term.theme+'. Guiding question: '+term.question+' Pedagogical sequence: '+term.sequence+'. Look for: '+term.look_for+'.':'',
+dec?'Decoding model: '+dec.note+'\n'+dec.components.map(x=>'- '+x.name+': '+x.what).join('\n')+'\nIn the diagnosis, say which decoding component is breaking down. Teach phonemic awareness orally (no letters) before linking sounds to print.':'',
 paths.length?'Evidence-informed teaching pathway(s) to follow:\n'+paths.map(p=>'- '+p.name+': '+p.steps.join(' → ')).join('\n'):'',
 '',
 'CLASS EVIDENCE (source: '+src+'; '+total+' learners)',
