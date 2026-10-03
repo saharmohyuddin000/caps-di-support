@@ -1,5 +1,5 @@
 {
-  "about": "CAPS-DI pedagogical knowledge base. CAPS says WHAT must be learned; these rules say HOW it is taught; learner data decides how teaching is adapted. Items marked origin=roadmap come from the CAPS-DI pedagogical roadmap; origin=added are common Foundation Phase errors added for coverage and should be reviewed.",
+  "about": "CAPS-DI pedagogical knowledge base. CAPS says WHAT must be learned; these rules say HOW it is taught; learner data decides how teaching is adapted. Items marked origin=roadmap come from the CAPS-DI pedagogical roadmap; origin=author were added by the CAPS-DI author; origin=added are common Foundation Phase errors added for coverage and should be reviewed.",
   "barriers": [
     {
       "key": "A",
@@ -207,6 +207,16 @@
       "barrier": "A",
       "response": "Multisensory letter introduction (shape, sound, formation) with daily cumulative review",
       "origin": "added"
+    },
+    {
+      "id": "lk-name-sound-link",
+      "skill": "Reading and Phonics",
+      "area": "Letter knowledge",
+      "misconception": "Cannot link the letter's sound to its name",
+      "evidence": "Knows the letter name but not its sound, or the sound but not which letter (name) it belongs to",
+      "barrier": "A",
+      "response": "Teach name, sound and shape together for each taught letter (say the name, say the sound, trace the shape); daily quick matching: show the letter and say name and sound, hear the sound and point to the letter",
+      "origin": "author"
     },
     {
       "id": "pa-syllables",
