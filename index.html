@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- CAPS DI Support. © 2026 Research and Development Africa (RADAF). All rights reserved. See LICENSE. -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -327,6 +328,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 
 </div>
 </div>
+<p style="text-align:center;font-size:11px;color:#9ca3af;margin:20px 16px 28px">© 2026 Research and Development Africa (RADAF). All rights reserved. CAPS DI and its pedagogical content may not be copied, reproduced or adapted without written permission.</p>
 
 <script>
 // ---------- Constants ----------
@@ -381,8 +383,8 @@ function $(id){return document.getElementById(id);}
 // ---------- Password gate ----------
 function checkPw(){
   // Not case-sensitive, so phone auto-capitals don't lock teachers out.
-  // capsteach2026! = teachers and DBE (changed often before user testing).
-  if(['teachersupport2026!','divreview2026','capsteach2026!'].includes($('pwInput').value.trim().toLowerCase())){
+  // capsteach2026! = teachers, DBE and DIV reviewers (changed often before user testing).
+  if(['teachersupport2026!','capsteach2026!'].includes($('pwInput').value.trim().toLowerCase())){
     $('gate').style.display='none';$('appWrap').style.display='block';init();
   }else{$('pwErr').style.display='block';$('pwInput').value='';}
 }
