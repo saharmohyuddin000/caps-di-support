@@ -97,6 +97,13 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .star.lit{color:#f59e0b}
 .ok{text-align:center;padding:2rem;color:#16a34a;font-size:14px}
 @media(max-width:560px){.pg{grid-template-columns:1fr}.tiers{grid-template-columns:1fr}}
+.diag{border:1px solid #ddd6fe;background:#faf5ff;border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.diag p{font-size:12px;margin-top:5px;line-height:1.5}
+.dims{width:100%;border-collapse:collapse;font-size:12px}
+.dims td{border-top:1px solid #f3f4f6;padding:8px 6px;vertical-align:top;line-height:1.5}
+.dims td:first-child{width:34%;color:#1f2937}.dims td:first-child span{color:#9ca3af;font-size:11px}
+.mis{border-left:3px solid #f59e0b;background:#fffbeb;border-radius:0 8px 8px 0;padding:8px 10px;margin-bottom:8px}
+.mis p{font-size:12px;line-height:1.5;margin-top:2px}.mis .say{color:#166534}
 @media print{body{background:#fff;padding:0}.steps,.hdr,.noprint,button{display:none!important}.card{border:none;padding:0}}
 </style>
 </head>
@@ -162,6 +169,10 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <p class="hint">Select all that apply. These shape the scaffolding and individual supports in the plan.</p>
     <div class="pg" id="profiles"></div>
     <div class="div"></div>
+    <span class="lbl">Home languages in the class</span>
+    <p class="hint">Used for home-language bridging and to spot language barriers.</p>
+    <div class="pr" id="hl"></div>
+    <div class="div"></div>
     <span class="sublbl">Anything else about your class? (optional)</span>
     <textarea id="tn" placeholder="e.g. Large class of 40+. One learner has an individual support plan..."></textarea>
   </div>
@@ -190,8 +201,12 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <p class="hint">From the CAPS assessment items for this term. Select any that apply.</p>
     <div class="olist" id="struggleList"></div>
     <div class="div"></div>
-    <span class="sublbl">Anything else from the assessment? (optional)</span>
-    <textarea id="assessNote" placeholder="e.g. 6 learners confuse b and d. 4 learners can blend but not segment..."></textarea>
+    <span class="lbl">What errors did you observe?</span>
+    <p class="hint">Select the patterns you saw in learners' work. CAPS DI uses them to work out the likely barrier and the right response.</p>
+    <div class="olist" id="errList"></div>
+    <div class="div"></div>
+    <span class="sublbl">Describe what you saw (optional, but the more specific the better)</span>
+    <textarea id="assessNote" placeholder="e.g. 6 learners read familiar words but cannot read unfamiliar CVC words. 4 learners say letter names instead of sounds..."></textarea>
   </div>
   <div style="display:flex;gap:8px">
     <button class="btn2" onclick="go2()">← Back</button>
@@ -201,7 +216,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 
 <!-- SCREEN 4: PLAN -->
 <div id="sc4" style="display:none">
-  <div id="ld" class="load"><span class="spin"></span><span id="ldmsg">Building your plan from the class data…</span></div>
+  <div id="ld" class="load"><span class="spin"></span><span id="ldmsg">Diagnosing barriers and building your lesson…</span></div>
   <div id="pc" style="display:none">
     <div class="meta" id="mt"></div>
     <div class="card" id="pl"></div>
@@ -320,8 +335,9 @@ const DOMAINS=[
   {t:'Communication & social learning',items:['Turn-taking support was provided during discussions','Learners could hold a tactile object or move gently while listening','Teacher rephrased questions when understanding was unclear','Learners were asked to explain their thinking']},
   {t:'Assessment for learning',items:['The learning intention and success criteria were shared with learners','Understanding was checked during each tier','The exit task was given and recorded by CAPS level','Learners will be regrouped using the exit task results']}];
 
-let CAPS=null;
-function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
+let CAPS=null,PED=null;
+const LANGS=['English','isiZulu','isiXhosa','Afrikaans','Sepedi','Setswana','Sesotho','Xitsonga','siSwati','Tshivenda','isiNdebele','Other'];
+function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
 let V=freshState();
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -341,16 +357,23 @@ async function init(){
   pills('sk',SKILLS,V.skill,v=>{V.skill=v;resetOutcome();renderOutcomes();});
   $('profiles').innerHTML=PROFILES.map((p,i)=>'<div class="pc" data-i="'+i+'"><i class="ti '+p.i+'"></i><div><div class="t">'+esc(p.t)+'</div><div class="u">'+esc(p.u)+'</div></div></div>').join('');
   $('profiles').querySelectorAll('.pc').forEach(el=>el.onclick=()=>{el.classList.toggle('s');const v=PROFILES[+el.dataset.i].v;V.profiles=V.profiles.includes(v)?V.profiles.filter(x=>x!==v):[...V.profiles,v];});
+  multiPills('hl',LANGS,'languages');
   pills('src',SOURCES.map(s=>s.l),SOURCES.find(s=>s.k===V.source).l,l=>{V.source=SOURCES.find(s=>s.l===l).k;});
   levelTable('lvt','levels','lvTotal',true);
   levelTable('lvt2','exitLevels','lvTotal2',false);
   if(!$('co').dataset.bound)$('co').dataset.bound='1',$('co').addEventListener('input',function(){if(this.value.trim()){V.outcome=null;document.querySelectorAll('#og .ch').forEach(c=>c.classList.remove('s'));}cb();});
   if(CAPS){renderOutcomes();return;}
+  try{const r2=await fetch('data/pedagogy.json');if(r2.ok)PED=await r2.json();}catch(_){PED=null;}
   try{const r=await fetch('data/caps-ehl.json');if(!r.ok)throw new Error(r.status);CAPS=await r.json();}
   catch(e){CAPS=null;$('og').innerHTML='<p class="warn">Could not load the CAPS content ('+esc(e.message)+'). You can still describe your own outcome below.</p>';return;}
   renderOutcomes();
 }
 
+function multiPills(id,values,key){
+  const box=$(id);
+  box.innerHTML=values.map(v=>'<button class="p'+(V[key].includes(v)?' s':'')+'">'+esc(v)+'</button>').join('');
+  [...box.children].forEach((b,i)=>b.onclick=()=>{const v=values[i];b.classList.toggle('s');V[key]=V[key].includes(v)?V[key].filter(x=>x!==v):[...V[key],v];});
+}
 function pills(id,values,selected,onPick){
   const box=$(id);
   box.innerHTML=values.map(v=>'<button class="p'+(v===selected?' s':'')+'">'+esc(v)+'</button>').join('');
@@ -364,7 +387,7 @@ function formalItems(b){
   (b.formal||[]).forEach(f=>{const k=f.text.toLowerCase();if(!m.has(k))m.set(k,{text:f.text,area:f.area,acts:[]});const e=m.get(k);if(!e.acts.includes(f.activity))e.acts.push(f.activity);});
   return [...m.values()];
 }
-function resetOutcome(){V.outcome=null;V.outcomeFormal=null;V.struggles=[];cb();}
+function resetOutcome(){V.outcome=null;V.outcomeFormal=null;V.struggles=[];V.errors=[];cb();}
 function renderOutcomes(){
   const og=$('og');
   if(!CAPS)return;
@@ -424,6 +447,17 @@ function renderStruggles(){
     box.appendChild(btn);});
 }
 
+function renderErrors(){
+  const box=$('errList');box.innerHTML='';
+  if(!PED){box.innerHTML='<p class="hint">Describe the errors you saw in the box below.</p>';return;}
+  const items=PED.misconceptions.filter(m=>m.skill===V.skill||m.skill==='*');
+  items.forEach(m=>{const btn=document.createElement('button');btn.className='ch';
+    btn.innerHTML='<span class="tag">'+esc(m.area)+'</span><strong>'+esc(m.misconception)+'</strong><br><span style="font-size:12px;color:#6b7280">You see: '+esc(m.evidence)+'</span>';
+    if(V.errors.includes(m.id))btn.classList.add('s');
+    btn.onclick=()=>{btn.classList.toggle('s');V.errors=V.errors.includes(m.id)?V.errors.filter(x=>x!==m.id):[...V.errors,m.id];};
+    box.appendChild(btn);});
+}
+
 // ---------- Navigation ----------
 function setStep(n){
   [1,2,3,4,5,6].forEach(i=>{const e=$('s'+i);e.className='stp'+(i===n?' on':i<n?' dn':'');e.querySelector('.dot').textContent=i<n?'✓':i;});
@@ -432,7 +466,7 @@ function setStep(n){
 }
 function go1(){setStep(1);}
 function go2(){setStep(2);}
-function go3(){renderStruggles();refreshLevelInputs('lvt','levels');updateTotals('levels','lvTotal',true);setStep(3);}
+function go3(){renderStruggles();renderErrors();refreshLevelInputs('lvt','levels');updateTotals('levels','lvTotal',true);setStep(3);}
 function go5(){buildChecklist();refreshLevelInputs('lvt2','exitLevels');updateTotals('exitLevels','lvTotal2',false);setStep(5);}
 function go6(){setStep(6);}
 function backToPlan(){if(V.planData)setStep(4);else go4();}
@@ -443,6 +477,20 @@ function planNext(){
 }
 
 // ---------- Screen 4: plan ----------
+function pickPathways(){
+  const t=(currentOutcome()+' '+V.struggles.join(' ')).toLowerCase();
+  const keys=[];
+  const add=k=>{if(!keys.includes(k))keys.push(k);};
+  if(/handwrit|form(s|ing)? .*letter|letter formation|pencil|capital letters correctly|lower case letters/.test(t))add('handwriting');
+  if(/phon|sound|blend|segment|decod|cvc|letter-sound|digraph|consonant|vowel/.test(t))add('phonics');
+  if(/rhyme|syllable|phonemic|aurally/.test(t))add('phonological');
+  if(/fluen|reads aloud|expression|pace|reread/.test(t))add('fluency');
+  if(/comprehen|question|predict|infer|story|retell|sequence|main idea|character/.test(t))add('comprehension');
+  if(/writ|sentence|caption|news|paragraph|label|list of words/.test(t))add('writing');
+  if(/listen|speak|talk|discuss|oral|vocabulary|describ|instruction|song|rhyme/.test(t))add('oral');
+  if(!keys.length)add(V.skill==='Writing'?'writing':V.skill==='Listening and Speaking'?'oral':'phonics');
+  return keys.slice(0,2);
+}
 function buildPrompt(){
   const ot=currentOutcome();
   const total=V.levels.reduce((a,b)=>a+b,0);
@@ -453,47 +501,70 @@ function buildPrompt(){
   const capsItems=b?formalItems(b).map(f=>'- '+f.text).slice(0,12).join('\n'):'';
   const src=SOURCES.find(s=>s.k===V.source).l;
   const tn=$('tn').value.trim(), an=$('assessNote').value.trim();
+  const term=PED&&PED.terms[V.term];
+  const paths=PED?pickPathways().map(k=>PED.pathways[k]).filter(Boolean):[];
+  const errs=PED?PED.misconceptions.filter(m=>V.errors.includes(m.id)):[];
+  const barriers=PED?PED.barriers.map(x=>x.key+'. '+x.name+' — '+x.description).join('\n'):'';
+  const dims=PED?Object.entries(PED.dimensions).map(([k,v])=>k+': '+v).join('\n'):'';
   return [
-'You are CAPS DI Support, a planning assistant for South African Foundation Phase English Home Language teachers.',
-'Write ONE data-informed, differentiated lesson plan using Assessment for Learning and task tiering.',
+'You are CAPS DI, a CAPS-aligned, learner-responsive pedagogical decision-support system for South African Foundation Phase English Home Language teachers.',
+'Design principle: CAPS says WHAT all learners must learn; evidence-informed pedagogy says HOW it is taught; this class\'s data decides HOW the teaching is adapted. Never label learners as weak — reason from evidence to a likely instructional barrier.',
 '',
 'CONTEXT',
 'Grade: '+V.grade+' | Term: '+V.term+' | Skill area: '+V.skill+' | Subject: English Home Language (CAPS)',
-'CAPS outcome for this lesson: '+ot+(V.outcomeFormal?' (assessed in Formal Assessment Activity '+V.outcomeFormal.acts.join(' & ')+' this term)':''),
+'CAPS outcome for this lesson (the SAME outcome for every learner): '+ot+(V.outcomeFormal?' (assessed in Formal Assessment Activity '+V.outcomeFormal.acts.join(' & ')+' this term)':''),
 capsItems?'CAPS formal assessment items for this term and skill:\n'+capsItems:'',
+term?'Term focus — '+term.theme+'. Guiding question: '+term.question+' Pedagogical sequence: '+term.sequence+'. Look for: '+term.look_for+'.':'',
+paths.length?'Evidence-informed teaching pathway(s) to follow:\n'+paths.map(p=>'- '+p.name+': '+p.steps.join(' → ')).join('\n'):'',
 '',
-'CLASS ASSESSMENT DATA (source: '+src+'; '+total+' learners)',
+'CLASS EVIDENCE (source: '+src+'; '+total+' learners)',
 levelLines,
 tierLines,
-V.struggles.length?'Learners found these parts hard: '+V.struggles.join(' | '):'',
-an?'Teacher notes on the assessment: '+an:'',
+V.struggles.length?'CAPS items learners found hard: '+V.struggles.join(' | '):'',
+errs.length?'Observed error patterns (with the knowledge-base response):\n'+errs.map(m=>'- '+m.misconception+' — evidence: '+m.evidence+' — likely barrier '+m.barrier+' — response: '+m.response).join('\n'):'',
+an?'Teacher\'s description of what she saw: '+an:'',
+'Home languages in class: '+(V.languages.length?V.languages.join(', '):'not specified'),
 'Learner needs: '+(V.profiles.length?V.profiles.join('; '):'general mixed-ability class'),
 tn?'Class notes: '+tn:'',
 '',
-'PLANNING PRINCIPLES (follow all)',
-'1. Task tiering: all three tiers work on the SAME CAPS outcome; they differ only in complexity and support. Foundational = essential skill with most structure (e.g. matching, sentence starters, concrete objects). Intermediate = applies the skill with some independence. Advanced = extension and higher-order thinking (e.g. creating, explaining reasoning). Pitch each tier to the learners in it and to the difficulties listed.',
-'2. Scaffolding: teacher models first (I do), then guided practice (we do), then independent work (you do). For each tier give prompt-fading steps from most support to independence.',
-'3. Inclusive delivery: one concept at a time; instruction in short 3–5 minute segments followed by a brief regulated movement or sensory break; concrete before pictorial before abstract; multi-sensory input (touch, movement, rhythm, sound); turn-taking cues; rephrase questions when unclear.',
-'4. Assessment for Learning: a clear learning intention, 2–3 child-friendly success criteria starting "I can", a quick check for understanding in each tier, and a short exit task aligned to the CAPS outcome that the teacher scores against CAPS levels.',
-'5. Resources must be zero-cost or locally available unless the class notes say otherwise. If EAL learners are present, include home-language bridging.',
-'6. Be specific and practical: real words, letters, sentences or examples a '+V.grade+' teacher can use tomorrow. Total lesson time about 45–60 minutes.',
+'BARRIER TYPES (use these labels in the diagnosis)',
+barriers,
+'',
+'FIVE DIMENSIONS OF DIFFERENTIATION (same outcome; change only these)',
+dims,
+'',
+'RULES',
+'1. Diagnosis: from the evidence above, name 1–3 likely barriers (using the letters A–H), what evidence points to each, the likely misconception or cause, and the instructional response. If evidence is thin, say what the teacher should check.',
+'2. Task tiering: all three tiers work on the same CAPS outcome; they differ in complexity and support. Foundational = essential skill with most structure; Intermediate = applies the skill with some independence; Advanced = extension and higher-order thinking. Pitch each to its learners and their barriers.',
+'3. Teaching sequence: teacher modelling (I do), guided practice (we do), independent practice (you do). Prompt-fading steps for each tier, from most support to independence.',
+'4. Inclusive delivery: one concept at a time; 3–5 minute input segments then a short movement or sensory break; concrete → pictorial → abstract; multisensory input; turn-taking cues; rephrase unclear questions; home-language bridging where relevant.',
+'5. Assessment for Learning: learning intention; 2–3 "I can" success criteria; a check for understanding per tier; an exit task phrased as a precise question ("Can the learner independently ...?") and scored against CAPS levels.',
+'6. Misconceptions to watch: likely wrong responses, what each means, and exactly what the teacher can say or do.',
+'7. Resources zero-cost or locally available unless class notes say otherwise. Use real words, letters, sentences and examples a '+V.grade+' teacher can use tomorrow. About 45–60 minutes in total.',
+'8. Do not cite research papers or authors.',
 '',
 'Return ONLY valid JSON in exactly this shape (no markdown):',
-'{"learningIntention":"We are learning to ...","successCriteria":["I can ...","I can ..."],'+
+'{"diagnosis":[{"barrier":"B. Misconception","evidence":"...","likelyCause":"...","response":"..."}],'+
+'"prerequisites":["what learners must already know"],"coreStrategy":"name of the teaching approach and one sentence on why it fits this evidence",'+
+'"learningIntention":"We are learning to ...","successCriteria":["I can ...","I can ..."],'+
 '"wholeClass":{"duration":"10 min","steps":["I do: ...","We do: ..."],"movementBreak":"..."},'+
-'"tiers":{"foundational":{"duration":"15 min","task":"...","scaffolding":"...","promptFading":["full model ...","verbal prompt ...","independent ..."],"resources":["..."],"checkForUnderstanding":"..."},'+
+'"tiers":{"foundational":{"duration":"15 min","task":"...","scaffolding":"...","promptFading":["...","...","..."],"resources":["..."],"checkForUnderstanding":"..."},'+
 '"intermediate":{"duration":"15 min","task":"...","scaffolding":"...","promptFading":["...","...","..."],"resources":["..."],"checkForUnderstanding":"..."},'+
 '"advanced":{"duration":"15 min","task":"...","scaffolding":"...","promptFading":["...","..."],"resources":["..."],"checkForUnderstanding":"..."}},'+
-'"individualSupports":["specific support for a learner need listed above"],'+
-'"exitTask":{"task":"...","alignedTo":"which CAPS item it checks","scoring":[{"levels":"Levels 1–3","evidence":"what the learner does"},{"levels":"Levels 4–5","evidence":"..."},{"levels":"Levels 6–7","evidence":"..."}]},'+
-'"dataInsight":"One sentence on how the class data shaped this plan","nextSteps":"One sentence on how to regroup learners using the exit task results"}'
+'"differentiation":{"access":"...","process":"...","support":"...","response":"...","challenge":"..."},'+
+'"misconceptionsToWatch":[{"ifYouSee":"...","itMayMean":"...","sayOrDo":"..."}],'+
+'"individualSupports":["..."],'+
+'"exitTask":{"question":"Can the learner independently ...?","task":"...","alignedTo":"which CAPS item it checks","scoring":[{"levels":"Levels 1–3","evidence":"..."},{"levels":"Levels 4–5","evidence":"..."},{"levels":"Levels 6–7","evidence":"..."}]},'+
+'"dataInsight":"One sentence on how the class evidence shaped this plan","nextSteps":"One sentence on how to adjust the next lesson using the exit task results"}'
   ].filter(x=>x!=='').join('\n');
 }
 
-// Quality check: a plan is only shown complete if every Assessment-for-Learning and tiering element is present.
+// Quality check: a plan is only shown complete if every diagnostic, tiering and Assessment-for-Learning element is present.
 function planIssues(p){
   const issues=[];const s=v=>typeof v==='string'&&v.trim().length>3;
   if(!p||typeof p!=='object')return['the plan is empty'];
+  if(!Array.isArray(p.diagnosis)||!p.diagnosis.some(d=>d&&s(d.barrier)&&s(d.response)))issues.push('diagnosis (barrier + response)');
+  if(!Array.isArray(p.prerequisites)||!p.prerequisites.filter(s).length)issues.push('prerequisites');
   if(!s(p.learningIntention))issues.push('learningIntention');
   if(!Array.isArray(p.successCriteria)||p.successCriteria.filter(s).length<2)issues.push('at least 2 successCriteria');
   if(!p.wholeClass||!Array.isArray(p.wholeClass.steps)||!p.wholeClass.steps.length)issues.push('wholeClass.steps');
@@ -504,6 +575,9 @@ function planIssues(p){
     if(!s(x.checkForUnderstanding))issues.push('tiers.'+t.k+'.checkForUnderstanding');
     if(!Array.isArray(x.promptFading)||x.promptFading.length<2)issues.push('tiers.'+t.k+'.promptFading (2+ steps)');});
   if(tasks.length===3&&new Set(tasks).size<3)issues.push('three different tier tasks');
+  const d=p.differentiation||{};
+  ['access','process','support','response','challenge'].forEach(k=>{if(!s(d[k]))issues.push('differentiation.'+k);});
+  if(!Array.isArray(p.misconceptionsToWatch)||!p.misconceptionsToWatch.some(m=>m&&s(m.ifYouSee)&&s(m.sayOrDo)))issues.push('misconceptionsToWatch');
   if(!p.exitTask||!s(p.exitTask.task))issues.push('exitTask.task');
   if(!p.exitTask||!Array.isArray(p.exitTask.scoring)||p.exitTask.scoring.length<3)issues.push('exitTask.scoring for 3 level bands');
   return issues;
@@ -515,7 +589,7 @@ async function go4(){
   if(V.levels.reduce((a,b)=>a+b,0)===0){go3();return;}
   generating=true;
   setStep(4);
-  $('ld').style.display='block';$('pc').style.display='none';$('ldmsg').textContent='Building your plan from the class data…';
+  $('ld').style.display='block';$('pc').style.display='none';$('ldmsg').textContent='Diagnosing barriers and building your lesson…';
   const c=tierCounts(V.levels);
   $('mt').innerHTML='<strong>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</strong><br>Outcome: '+esc(currentOutcome())+'<br><span style="color:#6b7280">'+TIERS.map((t,i)=>t.name+': '+c[i]).join(' · ')+' learners</span>';
   try{
@@ -541,11 +615,20 @@ async function go4(){
 }
 
 function list(a){return Array.isArray(a)?a.filter(x=>typeof x==='string'&&x.trim()):[];}
+const DIM_LABELS={access:['Access','How learners take in the content'],process:['Process','How learners work with it'],support:['Support','Scaffolds to provide, then fade'],response:['Response','How learners show understanding'],challenge:['Challenge','Stretch for those who have mastered it']};
 function renderPlan(p){
   const c=tierCounts(V.levels);
   let h='';
   if(p._issues&&p._issues.length)h+='<div class="qnote"><i class="ti ti-alert-triangle"></i> Quality check: this plan is missing '+esc(p._issues.join(', '))+'. You can generate again from the previous screen.</div>';
   if(p.dataInsight)h+='<div class="insight"><i class="ti ti-chart-bar"></i> <strong>Data insight:</strong> '+esc(p.dataInsight)+'</div>';
+  const dg=Array.isArray(p.diagnosis)?p.diagnosis.filter(d=>d&&d.barrier):[];
+  if(dg.length){h+='<div class="sec"><h3><i class="ti ti-stethoscope"></i> What the evidence suggests</h3>'+dg.map(d=>
+    '<div class="diag"><span class="tbadge" style="background:#ede9fe;color:#5b21b6">'+esc(d.barrier)+'</span>'+
+    (d.evidence?'<p><strong>Evidence:</strong> '+esc(d.evidence)+'</p>':'')+(d.likelyCause?'<p><strong>Likely cause:</strong> '+esc(d.likelyCause)+'</p>':'')+
+    (d.response?'<p><strong>Response:</strong> '+esc(d.response)+'</p>':'')+'</div>').join('')+'</div>';}
+  if(p.coreStrategy||list(p.prerequisites).length){
+    h+='<div class="sec"><h3><i class="ti ti-route"></i> Core teaching strategy</h3>'+(p.coreStrategy?'<p>'+esc(p.coreStrategy)+'</p>':'')+
+      (list(p.prerequisites).length?'<div class="kv"><strong>Learners need to know first:</strong> '+list(p.prerequisites).map(esc).join(' · ')+'</div>':'')+'</div>';}
   h+='<div class="sec li-box"><h3><i class="ti ti-target"></i> Learning intention</h3><p>'+esc(p.learningIntention)+'</p>';
   const sc=list(p.successCriteria);if(sc.length)h+='<p style="margin-top:8px;font-weight:600;font-size:12px">Success criteria</p><ul>'+sc.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
   h+='</div><div class="div"></div>';
@@ -561,10 +644,16 @@ function renderPlan(p){
       (list(x.resources).length?'<div class="kv"><strong>Resources:</strong> '+list(x.resources).map(esc).join(' · ')+'</div>':'')+
       (x.checkForUnderstanding?'<div class="cfu"><strong>Check for understanding:</strong> '+esc(x.checkForUnderstanding)+'</div>':'')+'</div>';});
   h+='</div>';
+  const d=p.differentiation||{};
+  if(Object.keys(DIM_LABELS).some(k=>d[k])){h+='<div class="sec"><h3><i class="ti ti-adjustments"></i> Differentiation — what changes, not what is expected</h3><table class="dims">'+
+    Object.entries(DIM_LABELS).filter(([k])=>d[k]).map(([k,[l,sub]])=>'<tr><td><strong>'+l+'</strong><br><span>'+sub+'</span></td><td>'+esc(d[k])+'</td></tr>').join('')+'</table></div>';}
+  const mw=Array.isArray(p.misconceptionsToWatch)?p.misconceptionsToWatch.filter(m=>m&&m.ifYouSee):[];
+  if(mw.length){h+='<div class="sec"><h3><i class="ti ti-eye"></i> Misconceptions to watch</h3>'+mw.map(m=>
+    '<div class="mis"><p><strong>If you see:</strong> '+esc(m.ifYouSee)+'</p>'+(m.itMayMean?'<p><strong>It may mean:</strong> '+esc(m.itMayMean)+'</p>':'')+(m.sayOrDo?'<p class="say"><strong>Say or do:</strong> '+esc(m.sayOrDo)+'</p>':'')+'</div>').join('')+'</div>';}
   const is=list(p.individualSupports);
   if(is.length)h+='<div class="sec"><h3><i class="ti ti-heart-handshake"></i> Individual supports</h3><ul>'+is.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>';
   const e=p.exitTask||{};
-  if(e.task){h+='<div class="sec exit"><h3><i class="ti ti-clipboard-check"></i> Exit task</h3><p>'+esc(e.task)+'</p>'+(e.alignedTo?'<p class="who" style="margin-top:4px">Checks: '+esc(e.alignedTo)+'</p>':'');
+  if(e.task){h+='<div class="sec exit"><h3><i class="ti ti-clipboard-check"></i> Exit task</h3>'+(e.question?'<p style="font-weight:600">'+esc(e.question)+'</p>':'')+'<p>'+esc(e.task)+'</p>'+(e.alignedTo?'<p class="who" style="margin-top:4px">Checks: '+esc(e.alignedTo)+'</p>':'');
     if(Array.isArray(e.scoring)&&e.scoring.length)h+='<table>'+e.scoring.map(r=>'<tr><td>'+esc(r&&r.levels)+'</td><td>'+esc(r&&r.evidence)+'</td></tr>').join('')+'</table>';
     h+='</div>';}
   if(p.nextSteps)h+='<div class="kv" style="margin-top:12px"><strong>Next steps:</strong> '+esc(p.nextSteps)+'</div>';
