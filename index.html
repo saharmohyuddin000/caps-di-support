@@ -167,6 +167,10 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <p class="hint">Saved on this phone, so they open even without signal.</p>
     <div class="olist" id="savedList"></div>
   </div>
+  <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#eff6ff;border-color:#bfdbfe">
+    <span style="font-size:13px;color:#1e3a8a"><strong>First time here?</strong> See CAPS DI with a realistic Grade 1 class in about a minute.</span>
+    <button class="btn2" onclick="loadExample()" style="background:#2563eb;color:#fff;border-color:#2563eb"><i class="ti ti-player-play"></i> Try an example class</button>
+  </div>
   <div class="card">
     <span class="lbl">Grade</span>
     <div class="pr" id="gr"></div>
@@ -365,7 +369,7 @@ function $(id){return document.getElementById(id);}
 
 // ---------- Password gate ----------
 function checkPw(){
-  if($('pwInput').value==='teachersupport2026!'){
+  if(['teachersupport2026!','DIVreview2026'].includes($('pwInput').value.trim())){
     $('gate').style.display='none';$('appWrap').style.display='block';init();
   }else{$('pwErr').style.display='block';$('pwInput').value='';}
 }
@@ -479,6 +483,30 @@ function renderErrors(){
     if(V.errors.includes(m.id))btn.classList.add('s');
     btn.onclick=()=>{btn.classList.toggle('s');V.errors=V.errors.includes(m.id)?V.errors.filter(x=>x!==m.id):[...V.errors,m.id];};
     box.appendChild(btn);});
+}
+
+// ---------- Example class for first-time users and reviewers ----------
+function loadExample(){
+  if(!CAPS){alert('The CAPS content is still loading. Please try again in a moment.');return;}
+  V=freshState();
+  V.grade='Grade 1';V.term='Term 1';V.skill='Reading and Phonics';
+  pills('gr',GRADES,V.grade,v=>{V.grade=v;resetOutcome();renderOutcomes();});
+  pills('tr',TERMS,V.term,v=>{V.term=v;resetOutcome();renderOutcomes();});
+  pills('sk',SKILLS,V.skill,v=>{V.skill=v;resetOutcome();renderOutcomes();});
+  const fi=formalItems(block());const pick=fi.find(f=>/build up short words/i.test(f.text))||fi[0];
+  V.outcome=pick.text;V.outcomeFormal=pick;renderOutcomes();$('co').value='';cb();
+  V.profiles=[PROFILES[0].v,PROFILES[4].v,PROFILES[8].v];
+  $('profiles').querySelectorAll('.pc').forEach(el=>el.classList.toggle('s',[0,4,8].includes(+el.dataset.i)));
+  V.languages=['English','isiZulu','Sepedi'];multiPills('hl',LANGS,'languages');
+  $('tn').value='Class of 35. Many learners are still settling into English as the language of learning.';
+  V.levels=[4,6,8,7,5,3,2];V.source='formal';
+  pills('src',SOURCES.map(s=>s.l),SOURCES.find(s=>s.k===V.source).l,l=>{V.source=SOURCES.find(s=>s.l===l).k;});
+  V.errors=['ph-familiar-only','ph-name-sound','bl-sounds-no-word'];
+  $('assessNote').value='8 learners read familiar words like cat and mat but cannot read unfamiliar CVC words such as hop or bun. Several say letter names instead of sounds.';
+  go3();
+  const b=document.createElement('div');b.className='data-banner';b.id='exBanner';b.style.background='#eff6ff';b.style.borderColor='#bfdbfe';b.style.color='#1e3a8a';
+  b.innerHTML='<i class="ti ti-info-circle" style="font-size:16px;flex-shrink:0"></i><span>Example class loaded: 35 Grade 1 learners after the Term 1 phonics assessment. Change anything you like, then press <strong>Generate my plan</strong>.</span>';
+  const old=$('exBanner');if(old)old.remove();$('sc3').querySelector('.card').prepend(b);
 }
 
 // ---------- Navigation ----------
