@@ -514,6 +514,7 @@ function pickPathways(){
   const add=k=>{if(!keys.includes(k))keys.push(k);};
   if(/handwrit|form(s|ing)? .*letter|letter formation|pencil|capital letters correctly|lower case letters/.test(t))add('handwriting');
   if(/phon|sound|blend|segment|decod|cvc|letter-sound|digraph|consonant|vowel/.test(t))add('phonics');
+  if(/segment|spell|encod|dictat|build(s)? (up )?(short )?words/.test(t))add('segmenting');
   if(/phonemic|blending sounds|segmenting words|aurally|initial sounds/.test(t))add('phonemic');
   if(/rhyme|syllable/.test(t))add('phonological');
   if(/recognises and names|letters of the alphabet|letter recognition/.test(t))add('letterKnowledge');
@@ -537,7 +538,7 @@ function buildPrompt(){
   const term=PED&&PED.terms[V.term];
   const paths=PED?pickPathways().map(k=>PED.pathways[k]).filter(Boolean):[];
   const errs=PED?PED.misconceptions.filter(m=>V.errors.includes(m.id)):[];
-  const dec=PED&&PED.decoding&&(V.skill==='Reading and Phonics'||/decod|phon|blend|sound/.test(ot.toLowerCase()))?PED.decoding:null;
+  const dec=PED&&PED.decoding&&(V.skill==='Reading and Phonics'||/decod|phon|blend|segment|spell|sound/.test(ot.toLowerCase()))?PED.decoding:null;
   const pg=progression();
   const barriers=PED?PED.barriers.map(x=>x.key+'. '+x.name+' — '+x.description).join('\n'):'';
   const dims=PED?Object.entries(PED.dimensions).map(([k,v])=>k+': '+v).join('\n'):'';
@@ -552,7 +553,7 @@ capsItems?'CAPS formal assessment items for this term and skill:\n'+capsItems:''
 pg&&pg.prev&&pg.prev.items.length?'CAPS progression — what learners should already have covered ('+pg.prev.label+'):\n'+pg.prev.items.map(x=>'- '+x).join('\n')+'\nBase the prerequisites on these CAPS items; Foundational-tier learners may still need them re-taught.':(V.grade==='Grade R'&&V.term==='Term 1'?'This is the start of Grade R: there is no earlier CAPS content; build on home language and everyday experience.':''),
 pg&&pg.next&&pg.next.items.length?'CAPS progression — where this leads next ('+pg.next.label+'):\n'+pg.next.items.map(x=>'- '+x).join('\n')+'\nUse these to shape the Advanced tier\'s challenge without leaving this term\'s outcome.':'',
 term?'Term focus — '+term.theme+'. Guiding question: '+term.question+' Pedagogical sequence: '+term.sequence+'. Look for: '+term.look_for+'.':'',
-dec?'Decoding model: '+dec.note+'\n'+dec.components.map(x=>'- '+x.name+': '+x.what).join('\n')+'\nIn the diagnosis, say which decoding component is breaking down. Teach phonemic awareness orally (no letters) before linking sounds to print.':'',
+dec?'Decoding model: '+dec.note+'\n'+dec.components.map(x=>'- '+x.name+': '+x.what).join('\n')+'\nIn the diagnosis, say which component is breaking down (blending is for reading, segmenting is for spelling — a learner can manage one but not the other). Teach phonemic awareness orally (no letters) before linking sounds to print.':'',
 paths.length?'Evidence-informed teaching pathway(s) to follow:\n'+paths.map(p=>'- '+p.name+': '+p.steps.join(' → ')).join('\n'):'',
 '',
 'CLASS EVIDENCE (source: '+src+'; '+total+' learners)',

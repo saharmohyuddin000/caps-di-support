@@ -54,12 +54,12 @@
       "name": "Systematic explicit phonics",
       "steps": [
         "Review letter-sound links (alphabetic principle)",
-        "Hear and segment the sounds orally",
+        "Hear the sounds in the spoken word",
         "Map each sound to its letter",
-        "Blend left to right into the word",
-        "Read the word",
-        "Spell (encode) it",
-        "Apply in decodable text"
+        "Blend left to right and read the word",
+        "Then segment: break the word back into its sounds",
+        "Spell (encode) it, a letter for each sound",
+        "Apply in decodable text and dictation"
       ]
     },
     "phonological": {
@@ -147,6 +147,17 @@
         "Segment spoken words into sounds",
         "Swap a sound to make a new word",
         "Then link the sounds to letters"
+      ]
+    },
+    "segmenting": {
+      "name": "Segmenting for spelling (encoding)",
+      "steps": [
+        "Say the word slowly",
+        "Tap or push a counter for each sound",
+        "Count the sounds",
+        "Write a letter for each sound in order",
+        "Check by blending back what was written",
+        "Apply in dictated words and short sentences"
       ]
     }
   },
@@ -278,6 +289,36 @@
       "origin": "added"
     },
     {
+      "id": "sg-first-only",
+      "skill": "Reading and Phonics",
+      "area": "Segmenting",
+      "misconception": "Hears only the first sound of a word",
+      "evidence": "Asked for the sounds in 'cat', says /c/ and stops; spells cat as 'c' or 'k'",
+      "barrier": "A",
+      "response": "Sound boxes with counters: push one counter per sound; stretch the word slowly ('mmmaaat')",
+      "origin": "added"
+    },
+    {
+      "id": "sg-onset-rime",
+      "skill": "Reading and Phonics",
+      "area": "Segmenting",
+      "misconception": "Splits words into chunks, not single sounds",
+      "evidence": "Says 'c – at' instead of /c/ /a/ /t/",
+      "barrier": "B",
+      "response": "Model one sound per finger or counter; contrast chunk vs sound; practise with two- then three-sound words",
+      "origin": "added"
+    },
+    {
+      "id": "sg-order",
+      "skill": "Reading and Phonics",
+      "area": "Segmenting",
+      "misconception": "Hears the sounds but writes them in the wrong order",
+      "evidence": "Writes 'tac' or 'cta' for cat",
+      "barrier": "B",
+      "response": "Say-tap-write: tap each sound left to right on the arm or sound boxes, then write each letter in that order; blend back to check",
+      "origin": "added"
+    },
+    {
       "id": "rd-pictures",
       "skill": "Reading and Phonics",
       "area": "Reading",
@@ -398,16 +439,6 @@
       "origin": "added"
     },
     {
-      "id": "wr-oral-grammar",
-      "skill": "Writing",
-      "area": "Grammar",
-      "misconception": "Writes exactly as they speak",
-      "evidence": "The same sentence errors recur in writing",
-      "barrier": "E",
-      "response": "Explicit sentence modelling and guided transformation",
-      "origin": "roadmap"
-    },
-    {
       "id": "wr-spelling-vowels",
       "skill": "Writing",
       "area": "Spelling",
@@ -416,6 +447,16 @@
       "barrier": "A",
       "response": "Oral segmenting with sound boxes before writing; vowel focus with anchor pictures",
       "origin": "added"
+    },
+    {
+      "id": "wr-oral-grammar",
+      "skill": "Writing",
+      "area": "Grammar",
+      "misconception": "Writes exactly as they speak",
+      "evidence": "The same sentence errors recur in writing",
+      "barrier": "E",
+      "response": "Explicit sentence modelling and guided transformation",
+      "origin": "roadmap"
     },
     {
       "id": "hw-formation",
@@ -459,7 +500,7 @@
     }
   ],
   "decoding": {
-    "note": "Decoding has four components. Diagnose which one breaks down; each needs a different response.",
+    "note": "Decoding and encoding have five components, taught in this order: letter knowledge, phonemic awareness, alphabetic principle, blending, then segmenting. Diagnose which one breaks down; each needs a different response.",
     "components": [
       {
         "name": "Letter knowledge",
@@ -475,7 +516,11 @@
       },
       {
         "name": "Blending",
-        "what": "Says the sounds left to right and smooths them into a word (and segments words into sounds to spell)"
+        "what": "Says the sounds left to right and smooths them into a word (reading)"
+      },
+      {
+        "name": "Segmenting",
+        "what": "The reverse of blending: breaks a spoken word into all its separate sounds and writes a letter for each sound (spelling / encoding)"
       }
     ]
   }
