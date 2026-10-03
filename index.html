@@ -60,6 +60,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .lvtable td{padding:5px 4px;border-bottom:1px solid #f3f4f6;vertical-align:middle}
 .lvtable td.lv{font-weight:600;color:#374151;width:56px}
 .lvtable td.rg{color:#9ca3af;width:70px}
+.lvtable tr.hd td{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.03em}
 .lvtable input{width:72px;padding:6px 8px;text-align:center}
 .lvtable tr.tf td.lv{color:#dc2626}.lvtable tr.tmid td.lv{color:#b45309}.lvtable tr.ta td.lv{color:#16a34a}
 .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
@@ -212,13 +213,13 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
   <div class="card">
     <div class="data-banner">
       <i class="ti ti-chart-bar" style="font-size:16px;flex-shrink:0;margin-top:1px"></i>
-      <span>Enter how many learners achieved each CAPS level on this outcome. The plan's three task levels are sized from these numbers.</span>
+      <span>Enter how many learners achieved each CAPS rating on this outcome. The plan's three task levels are sized from these numbers.</span>
     </div>
     <span class="lbl">Which assessment are these results from?</span>
     <p class="hint">No upload or recording needed. Tick where your marks come from, then type the numbers below.</p>
     <div class="pr" id="src"></div>
     <div class="div"></div>
-    <span class="lbl">Learners at each CAPS achievement level</span>
+    <span class="lbl">Learners at each CAPS rating</span>
     <p class="hint">Type how many of your learners scored at each level on this outcome. Leave 0 where there are none.</p>
     <table class="lvtable" id="lvt"></table>
     <p id="lvTotal" style="font-size:12px;color:#374151;margin-top:8px"></p>
@@ -332,14 +333,14 @@ const SKILLS=['Listening and Speaking','Reading and Phonics','Writing'];
 // National Curriculum Statement Grades R-12 scale of achievement.
 const AREA_LABEL={'Shared Reading':'Shared Reading · comprehension','Group Guided Reading':'Group Guided Reading · reading and comprehension','Emergent reading':'Emergent reading','Phonics':'Phonics','Handwriting':'Handwriting','Writing':'Writing','Listening and Speaking':'Listening and Speaking'};
 const LEVELS=[
-  {n:1,name:'Not achieved',range:'0–29%'},{n:2,name:'Elementary',range:'30–39%'},{n:3,name:'Moderate',range:'40–49%'},
-  {n:4,name:'Adequate',range:'50–59%'},{n:5,name:'Substantial',range:'60–69%'},{n:6,name:'Meritorious',range:'70–79%'},
-  {n:7,name:'Outstanding',range:'80–100%'}];
+  {n:1,name:'Not achieved',range:'0–29%'},{n:2,name:'Elementary achievement',range:'30–39%'},{n:3,name:'Moderate achievement',range:'40–49%'},
+  {n:4,name:'Adequate achievement',range:'50–59%'},{n:5,name:'Substantial achievement',range:'60–69%'},{n:6,name:'Meritorious achievement',range:'70–79%'},
+  {n:7,name:'Outstanding achievement',range:'80–100%'}];
 // Task tiering: same CAPS outcome, three levels of complexity and support.
 const TIERS=[
-  {k:'foundational',name:'Foundational',levels:[1,2,3],cls:'tf',bg:'tf-bg',desc:'Levels 1–3 · essential skills, most structure and support'},
-  {k:'intermediate',name:'Intermediate',levels:[4,5],cls:'tmid',bg:'ti-bg',desc:'Levels 4–5 · applies the skill with some independence'},
-  {k:'advanced',name:'Advanced',levels:[6,7],cls:'ta',bg:'ta-bg',desc:'Levels 6–7 · extension and higher-order thinking'}];
+  {k:'foundational',name:'Foundational',levels:[1,2,3],cls:'tf',bg:'tf-bg',desc:'Ratings 1–3 · essential skills, most structure and support'},
+  {k:'intermediate',name:'Intermediate',levels:[4,5],cls:'tmid',bg:'ti-bg',desc:'Ratings 4–5 · applies the skill with some independence'},
+  {k:'advanced',name:'Advanced',levels:[6,7],cls:'ta',bg:'ta-bg',desc:'Ratings 6–7 · extension and higher-order thinking'}];
 const PROFILES=[
   {i:'ti-brain',t:'Attention regulation',u:'Short bursts + movement breaks',v:'attention regulation needs — 3–5 minute instruction segments followed by short regulated movement or sensory breaks'},
   {i:'ti-run',t:'Movement-based',u:'Flexible positioning, rhythm',v:'movement-based and kinaesthetic learners — standing, pointers, rhythm tapping, body movement'},
@@ -361,7 +362,7 @@ const DOMAINS=[
   {t:'Scaffolding & prompt fading',items:['Teacher modelled the task before learners attempted it','Verbal prompts were provided when necessary','Physical or hand-over-hand help was used only if required','Prompts were gradually reduced to build independence']},
   {t:'Differentiated instruction',items:['Learners worked at the task level matched to their assessment data','Tiered task versions were provided for the same outcome','Extension opportunities were offered to advanced learners','One concept was taught at a time']},
   {t:'Communication & social learning',items:['Turn-taking support was provided during discussions','Learners could hold a tactile object or move gently while listening','Teacher rephrased questions when understanding was unclear','Learners were asked to explain their thinking']},
-  {t:'Assessment for learning',items:['The learning intention and success criteria were shared with learners','Understanding was checked during each tier','The exit task was given and recorded by CAPS level','Learners will be regrouped using the exit task results']}];
+  {t:'Assessment for learning',items:['The learning intention and success criteria were shared with learners','Understanding was checked during each tier','The exit task was given and recorded by CAPS rating','Learners will be regrouped using the exit task results']}];
 
 let CAPS=null,PED=null;
 const LANGS=['English','isiZulu','isiXhosa','Afrikaans','Sepedi','Setswana','Sesotho','Xitsonga','siSwati','Tshivenda','isiNdebele','Other'];
@@ -455,8 +456,9 @@ function cb(){$('b1').disabled=!(V.grade&&V.term&&V.skill&&(V.outcome||$('co').v
 
 // ---------- Screen 3: assessment data ----------
 function levelTable(tableId,key,totalId,withPreview){
-  $(tableId).innerHTML=LEVELS.map(l=>{const t=TIERS.find(t=>t.levels.includes(l.n));
-    return '<tr class="'+t.cls+'"><td class="lv">Level '+l.n+'</td><td>'+esc(l.name)+'</td><td class="rg">'+l.range+'</td><td style="text-align:right"><input class="num" type="number" min="0" max="80" inputmode="numeric" data-lv="'+(l.n-1)+'" value="'+(V[key][l.n-1]||'')+'" placeholder="0" aria-label="Learners at level '+l.n+'"></td></tr>';}).join('');
+  // Shown 7 to 1, as on the national rating scale; data stays indexed by level.
+  $(tableId).innerHTML='<tr class="hd"><td class="lv">Rating</td><td>Achievement level</td><td class="rg">Percentage</td><td style="text-align:right">Learners</td></tr>'+[...LEVELS].reverse().map(l=>{const t=TIERS.find(t=>t.levels.includes(l.n));
+    return '<tr class="'+t.cls+'"><td class="lv">'+l.n+'</td><td>'+esc(l.name)+'</td><td class="rg">'+l.range+'</td><td style="text-align:right"><input class="num" type="number" min="0" max="80" inputmode="numeric" data-lv="'+(l.n-1)+'" value="'+(V[key][l.n-1]||'')+'" placeholder="0" aria-label="Learners at level '+l.n+'"></td></tr>';}).join('');
   $(tableId).querySelectorAll('input').forEach(inp=>inp.addEventListener('input',()=>{
     const n=Math.max(0,Math.min(80,parseInt(inp.value,10)||0));V[key][+inp.dataset.lv]=n;updateTotals(key,totalId,withPreview);}));
   updateTotals(key,totalId,withPreview);
@@ -588,7 +590,7 @@ function buildPrompt(){
   const ot=currentOutcome();
   const total=V.levels.reduce((a,b)=>a+b,0);
   const c=tierCounts(V.levels);
-  const levelLines=LEVELS.map(l=>'Level '+l.n+' ('+l.name+', '+l.range+'): '+V.levels[l.n-1]).join('; ');
+  const levelLines=LEVELS.map(l=>'Rating '+l.n+' ('+l.name+', '+l.range+'): '+V.levels[l.n-1]).join('; ');
   const tierLines=TIERS.map((t,i)=>t.name+' tier (CAPS '+t.desc.split(' · ')[0]+'): '+c[i]+' learners').join('; ');
   const b=block();
   const capsItems=b?formalItems(b).map(f=>'- '+f.text).slice(0,12).join('\n'):'';
@@ -637,7 +639,7 @@ dims,
 '2. Task tiering: all three tiers work on the same CAPS outcome; they differ in complexity and support. Foundational = essential skill with most structure; Intermediate = applies the skill with some independence; Advanced = extension and higher-order thinking. Pitch each to its learners and their barriers.',
 '3. Teaching sequence: teacher modelling (I do), guided practice (we do), independent practice (you do). Prompt-fading steps for each tier, from most support to independence.',
 '4. Inclusive delivery: one concept at a time; 3–5 minute input segments then a short movement or sensory break; concrete → pictorial → abstract; multisensory input; turn-taking cues; rephrase unclear questions; home-language bridging where relevant.',
-'5. Assessment for Learning: learning intention; 2–3 "I can" success criteria; a check for understanding per tier; an exit task phrased as a precise question ("Can the learner independently ...?") and scored against CAPS levels.',
+'5. Assessment for Learning: learning intention; 2–3 "I can" success criteria; a check for understanding per tier; an exit task phrased as a precise question ("Can the learner independently ...?") and scored against the 7-point CAPS rating scale (1 Not achieved to 7 Outstanding achievement).',
 '6. Misconceptions to watch: likely wrong responses, what each means, and exactly what the teacher can say or do.',
 '7. Resources zero-cost or locally available unless class notes say otherwise. Use real words, letters, sentences and examples a '+V.grade+' teacher can use tomorrow. About 45–60 minutes in total.',
 '8. Do not cite research papers or authors.',
@@ -653,7 +655,7 @@ dims,
 '"differentiation":{"access":"...","process":"...","support":"...","response":"...","challenge":"..."},'+
 '"misconceptionsToWatch":[{"ifYouSee":"...","itMayMean":"...","sayOrDo":"..."}],'+
 '"individualSupports":["..."],'+
-'"exitTask":{"question":"Can the learner independently ...?","task":"...","alignedTo":"which CAPS item it checks","scoring":[{"levels":"Levels 1–3","evidence":"..."},{"levels":"Levels 4–5","evidence":"..."},{"levels":"Levels 6–7","evidence":"..."}]},'+
+'"exitTask":{"question":"Can the learner independently ...?","task":"...","alignedTo":"which CAPS item it checks","scoring":[{"levels":"Ratings 1–3","evidence":"..."},{"levels":"Ratings 4–5","evidence":"..."},{"levels":"Ratings 6–7","evidence":"..."}]},'+
 '"dataInsight":"One sentence on how the class evidence shaped this plan","nextSteps":"One sentence on how to adjust the next lesson using the exit task results"}'
   ].filter(x=>x!=='').join('\n');
 }
