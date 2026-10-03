@@ -97,6 +97,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .star.lit{color:#f59e0b}
 .ok{text-align:center;padding:2rem;color:#16a34a;font-size:14px}
 @media(max-width:560px){.pg{grid-template-columns:1fr}.tiers{grid-template-columns:1fr}}
+.prog{display:flex;flex-direction:column;gap:6px}.prog>div{border:1px solid #e0e3e8;border-radius:8px;padding:8px 10px}.prog .now{border-color:#93c5fd;background:#eff6ff}.prog ul{padding-left:16px;margin-top:4px}.prog li,.prog p{font-size:12px;line-height:1.45;margin-top:2px}
 .grp{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.04em;margin:8px 0 2px}
 .diag{border:1px solid #ddd6fe;background:#faf5ff;border-radius:10px;padding:10px 12px;margin-bottom:8px}
 .diag p{font-size:12px;margin-top:5px;line-height:1.5}
@@ -479,6 +480,33 @@ function planNext(){
   go3();
 }
 
+// ---------- CAPS progression: CAPS is the bridge from Grade R to Grade 3 ----------
+const STOP=new Set('the a an and or of to in on for with from such as e.g eg using use uses their own that is are be by at it its this these some at least learners learner words word simple short'.split(' '));
+function words(t){return new Set(String(t).toLowerCase().replace(/[^a-z\s-]/g,' ').split(/\s+/).filter(w=>w.length>2&&!STOP.has(w)));}
+function neighbour(dir){
+  const gi=GRADES.indexOf(V.grade),ti=TERMS.indexOf(V.term);
+  let g=gi,t=ti+dir;
+  if(t<0){g--;t=3;} if(t>3){g++;t=0;}
+  if(g<0||g>=GRADES.length)return null;
+  const b=((CAPS.grades[GRADES[g]]||{})[TERMS[t]]||{})[V.skill];
+  return b?{grade:GRADES[g],term:TERMS[t],block:b}:null;
+}
+function related(b,ot,n){
+  const target=words(ot);
+  const pool=[...new Set([...(b.formal||[]).map(f=>f.text),...(b.content||[])])];
+  return pool.map(t=>{const w=words(t);let s=0;w.forEach(x=>{if(target.has(x))s++;});return{t,s};})
+    .filter(x=>x.s>0).sort((a,b)=>b.s-a.s)
+    .filter((x,i,arr)=>arr.findIndex(y=>y.t.toLowerCase().replace(/[^a-z]/g,'').slice(0,40)===x.t.toLowerCase().replace(/[^a-z]/g,'').slice(0,40))===i)
+    .slice(0,n).map(x=>x.t);
+}
+function progression(){
+  if(!CAPS||!V.skill)return null;
+  const ot=currentOutcome();
+  const prev=neighbour(-1),next=neighbour(1);
+  return{prev:prev?{label:prev.grade+' '+prev.term,items:related(prev.block,ot,4)}:null,
+         next:next?{label:next.grade+' '+next.term,items:related(next.block,ot,3)}:null};
+}
+
 // ---------- Screen 4: plan ----------
 function pickPathways(){
   const t=(currentOutcome()+' '+V.struggles.join(' ')).toLowerCase();
@@ -510,6 +538,7 @@ function buildPrompt(){
   const paths=PED?pickPathways().map(k=>PED.pathways[k]).filter(Boolean):[];
   const errs=PED?PED.misconceptions.filter(m=>V.errors.includes(m.id)):[];
   const dec=PED&&PED.decoding&&(V.skill==='Reading and Phonics'||/decod|phon|blend|sound/.test(ot.toLowerCase()))?PED.decoding:null;
+  const pg=progression();
   const barriers=PED?PED.barriers.map(x=>x.key+'. '+x.name+' — '+x.description).join('\n'):'';
   const dims=PED?Object.entries(PED.dimensions).map(([k,v])=>k+': '+v).join('\n'):'';
   return [
@@ -520,6 +549,8 @@ function buildPrompt(){
 'Grade: '+V.grade+' | Term: '+V.term+' | Skill area: '+V.skill+' | Subject: English Home Language (CAPS)',
 'CAPS outcome for this lesson (the SAME outcome for every learner): '+ot+(V.outcomeFormal?' (assessed in Formal Assessment Activity '+V.outcomeFormal.acts.join(' & ')+' this term)':''),
 capsItems?'CAPS formal assessment items for this term and skill:\n'+capsItems:'',
+pg&&pg.prev&&pg.prev.items.length?'CAPS progression — what learners should already have covered ('+pg.prev.label+'):\n'+pg.prev.items.map(x=>'- '+x).join('\n')+'\nBase the prerequisites on these CAPS items; Foundational-tier learners may still need them re-taught.':(V.grade==='Grade R'&&V.term==='Term 1'?'This is the start of Grade R: there is no earlier CAPS content; build on home language and everyday experience.':''),
+pg&&pg.next&&pg.next.items.length?'CAPS progression — where this leads next ('+pg.next.label+'):\n'+pg.next.items.map(x=>'- '+x).join('\n')+'\nUse these to shape the Advanced tier\'s challenge without leaving this term\'s outcome.':'',
 term?'Term focus — '+term.theme+'. Guiding question: '+term.question+' Pedagogical sequence: '+term.sequence+'. Look for: '+term.look_for+'.':'',
 dec?'Decoding model: '+dec.note+'\n'+dec.components.map(x=>'- '+x.name+': '+x.what).join('\n')+'\nIn the diagnosis, say which decoding component is breaking down. Teach phonemic awareness orally (no letters) before linking sounds to print.':'',
 paths.length?'Evidence-informed teaching pathway(s) to follow:\n'+paths.map(p=>'- '+p.name+': '+p.steps.join(' → ')).join('\n'):'',
@@ -634,6 +665,12 @@ function renderPlan(p){
     '<div class="diag"><span class="tbadge" style="background:#ede9fe;color:#5b21b6">'+esc(d.barrier)+'</span>'+
     (d.evidence?'<p><strong>Evidence:</strong> '+esc(d.evidence)+'</p>':'')+(d.likelyCause?'<p><strong>Likely cause:</strong> '+esc(d.likelyCause)+'</p>':'')+
     (d.response?'<p><strong>Response:</strong> '+esc(d.response)+'</p>':'')+'</div>').join('')+'</div>';}
+  const pg=progression();
+  if(pg&&((pg.prev&&pg.prev.items.length)||(pg.next&&pg.next.items.length))){
+    h+='<div class="sec"><h3><i class="ti ti-timeline"></i> CAPS progression</h3><div class="prog">'+
+      (pg.prev&&pg.prev.items.length?'<div><span class="who">Before · '+esc(pg.prev.label)+'</span><ul>'+pg.prev.items.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>':'')+
+      '<div class="now"><span class="who">Now · '+esc(V.grade)+' '+esc(V.term)+'</span><p>'+esc(currentOutcome())+'</p></div>'+
+      (pg.next&&pg.next.items.length?'<div><span class="who">Next · '+esc(pg.next.label)+'</span><ul>'+pg.next.items.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>':'')+'</div></div>';}
   if(p.coreStrategy||list(p.prerequisites).length){
     h+='<div class="sec"><h3><i class="ti ti-route"></i> Core teaching strategy</h3>'+(p.coreStrategy?'<p>'+esc(p.coreStrategy)+'</p>':'')+
       (list(p.prerequisites).length?'<div class="kv"><strong>Learners need to know first:</strong> '+list(p.prerequisites).map(esc).join(' · ')+'</div>':'')+'</div>';}
