@@ -1,0 +1,229 @@
+{
+  "note": "Error patterns shown to teachers. © 2026 RADAF. All rights reserved.",
+  "misconceptions": [
+    {
+      "id": "ph-bd",
+      "skill": "Reading and Phonics",
+      "area": "Letter knowledge",
+      "misconception": "Confuses visually similar letters",
+      "evidence": "Reads or writes b for d, p for q"
+    },
+    {
+      "id": "lk-shapes",
+      "skill": "Reading and Phonics",
+      "area": "Letter knowledge",
+      "misconception": "Does not yet recognise the taught letters",
+      "evidence": "Cannot point to or name letters that have been taught"
+    },
+    {
+      "id": "lk-name-sound-link",
+      "skill": "Reading and Phonics",
+      "area": "Letter knowledge",
+      "misconception": "Cannot link the letter's sound to its name",
+      "evidence": "Knows the letter name but not its sound, or the sound but not which letter (name) it belongs to"
+    },
+    {
+      "id": "pa-syllables",
+      "skill": "Reading and Phonics",
+      "area": "Phonemic awareness",
+      "misconception": "Cannot separate the sounds in a word",
+      "evidence": "Gives syllables instead of individual sounds"
+    },
+    {
+      "id": "pa-first-sound",
+      "skill": "Reading and Phonics",
+      "area": "Phonemic awareness",
+      "misconception": "Cannot hear the first sound in a spoken word",
+      "evidence": "Cannot say which of 'mat, sun, map' start the same way"
+    },
+    {
+      "id": "pa-oral-blend",
+      "skill": "Reading and Phonics",
+      "area": "Phonemic awareness",
+      "misconception": "Cannot blend sounds they hear",
+      "evidence": "Teacher says /s/-/u/-/n/ and the learner cannot say 'sun'"
+    },
+    {
+      "id": "ph-name-sound",
+      "skill": "Reading and Phonics",
+      "area": "Alphabetic principle",
+      "misconception": "Thinks the letter name is the sound",
+      "evidence": "Says the letter name (e.g. 'em') instead of the sound /m/"
+    },
+    {
+      "id": "ph-familiar-only",
+      "skill": "Reading and Phonics",
+      "area": "Alphabetic principle",
+      "misconception": "Relies on memorised words instead of decoding",
+      "evidence": "Reads familiar words but cannot read unfamiliar CVC words"
+    },
+    {
+      "id": "ph-first-letter",
+      "skill": "Reading and Phonics",
+      "area": "Blending",
+      "misconception": "Reads from the first letter only",
+      "evidence": "Guesses words that start with the same sound"
+    },
+    {
+      "id": "bl-sounds-no-word",
+      "skill": "Reading and Phonics",
+      "area": "Blending",
+      "misconception": "Says each sound but cannot blend them into a word",
+      "evidence": "Reads /c/ /a/ /t/ correctly but does not say 'cat'"
+    },
+    {
+      "id": "bl-reversed",
+      "skill": "Reading and Phonics",
+      "area": "Blending",
+      "misconception": "Blends out of order",
+      "evidence": "Reads 'tac' or 'act' for cat"
+    },
+    {
+      "id": "sg-first-only",
+      "skill": "Reading and Phonics",
+      "area": "Segmenting",
+      "misconception": "Hears only the first sound of a word",
+      "evidence": "Asked for the sounds in 'cat', says /c/ and stops; spells cat as 'c' or 'k'"
+    },
+    {
+      "id": "sg-onset-rime",
+      "skill": "Reading and Phonics",
+      "area": "Segmenting",
+      "misconception": "Splits words into chunks, not single sounds",
+      "evidence": "Says 'c – at' instead of /c/ /a/ /t/"
+    },
+    {
+      "id": "sg-order",
+      "skill": "Reading and Phonics",
+      "area": "Segmenting",
+      "misconception": "Hears the sounds but writes them in the wrong order",
+      "evidence": "Writes 'tac' or 'cta' for cat"
+    },
+    {
+      "id": "rd-pictures",
+      "skill": "Reading and Phonics",
+      "area": "Reading",
+      "misconception": "Guesses words from the pictures",
+      "evidence": "Correct only when the picture supports the word"
+    },
+    {
+      "id": "fl-word-by-word",
+      "skill": "Reading and Phonics",
+      "area": "Fluency",
+      "misconception": "Reads word by word",
+      "evidence": "Accurate but slow, laboured reading without phrasing"
+    },
+    {
+      "id": "cm-isolated",
+      "skill": "Reading and Phonics",
+      "area": "Comprehension",
+      "misconception": "Retells isolated events",
+      "evidence": "Cannot say what the story is mostly about"
+    },
+    {
+      "id": "cm-literal-only",
+      "skill": "Reading and Phonics",
+      "area": "Comprehension",
+      "misconception": "Answers literal but not inferential questions",
+      "evidence": "Performance drops when the question asks why or what might happen"
+    },
+    {
+      "id": "rd-word-calling",
+      "skill": "Reading and Phonics",
+      "area": "Comprehension",
+      "misconception": "Decodes accurately but does not attend to meaning",
+      "evidence": "Reads the text correctly but cannot answer simple questions about it"
+    },
+    {
+      "id": "cm-unsupported",
+      "skill": "Reading and Phonics",
+      "area": "Inference",
+      "misconception": "Gives answers not supported by the text",
+      "evidence": "Cannot point to what in the text or picture shows the answer"
+    },
+    {
+      "id": "or-instructions",
+      "skill": "Listening and Speaking",
+      "area": "Listening",
+      "misconception": "Follows only part of an instruction",
+      "evidence": "Completes the first step of a two-step instruction only"
+    },
+    {
+      "id": "or-one-word",
+      "skill": "Listening and Speaking",
+      "area": "Oral language",
+      "misconception": "Answers in single words",
+      "evidence": "Gives one-word answers even when prompted for more"
+    },
+    {
+      "id": "or-sequence",
+      "skill": "Listening and Speaking",
+      "area": "Oral language",
+      "misconception": "Retells events out of order",
+      "evidence": "Mixes the beginning, middle and end when retelling"
+    },
+    {
+      "id": "or-general-words",
+      "skill": "Listening and Speaking",
+      "area": "Vocabulary",
+      "misconception": "Uses broad, general words",
+      "evidence": "Says 'thing', 'nice', 'big' instead of precise words"
+    },
+    {
+      "id": "wr-disconnected",
+      "skill": "Writing",
+      "area": "Writing",
+      "misconception": "Writes ideas as disconnected sentences",
+      "evidence": "Sentences do not link to one another"
+    },
+    {
+      "id": "wr-no-punctuation",
+      "skill": "Writing",
+      "area": "Writing",
+      "misconception": "Does not mark sentence boundaries",
+      "evidence": "Writing has no capital letters or full stops"
+    },
+    {
+      "id": "wr-spelling-vowels",
+      "skill": "Writing",
+      "area": "Spelling",
+      "misconception": "Leaves out vowels when spelling",
+      "evidence": "Writes 'ct' for cat, 'dg' for dog"
+    },
+    {
+      "id": "wr-oral-grammar",
+      "skill": "Writing",
+      "area": "Grammar",
+      "misconception": "Writes exactly as they speak",
+      "evidence": "The same sentence errors recur in writing"
+    },
+    {
+      "id": "hw-formation",
+      "skill": "Writing",
+      "area": "Handwriting",
+      "misconception": "Knows the letter but forms it inconsistently",
+      "evidence": "Letters start in the wrong place or vary in size"
+    },
+    {
+      "id": "wr-copy-slow",
+      "skill": "Writing",
+      "area": "Handwriting",
+      "misconception": "Copies letter by letter from the board",
+      "evidence": "Very slow copying, loses place, incomplete work"
+    },
+    {
+      "id": "gen-challenge",
+      "skill": "*",
+      "area": "Challenge",
+      "misconception": "Has already mastered the outcome",
+      "evidence": "Completes tasks quickly and accurately; disengages"
+    },
+    {
+      "id": "gen-attention",
+      "skill": "*",
+      "area": "Participation",
+      "misconception": "Cannot sustain attention in long whole-class input",
+      "evidence": "Off task after a few minutes; better in short, active tasks"
+    }
+  ]
+}
