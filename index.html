@@ -67,6 +67,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .tbox{border-radius:8px;padding:10px;font-size:12px;line-height:1.4}
 .tbox b{display:block;font-size:20px;margin-bottom:2px}
 .tf-bg{background:#fef2f2;color:#991b1b}.ti-bg{background:#fffbeb;color:#92400e}.ta-bg{background:#f0fdf4;color:#166534}
+.passage{font-size:16px;line-height:1.8;background:#fffdf5;border:1px solid #f3e8c8;border-radius:8px;padding:10px 12px;white-space:pre-wrap;margin:6px 0}
 .warn{font-size:12px;color:#b45309;margin-top:8px}
 .data-banner{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#92400e;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
 .meta{font-size:12px;color:#374151;padding:10px 12px;background:#eff6ff;border-radius:0 8px 8px 0;border-left:3px solid #2563eb;margin-bottom:1rem;line-height:1.7}
@@ -198,6 +199,10 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <span class="lbl">Home languages in the class</span>
     <p class="hint">Used for home-language bridging and to spot language barriers.</p>
     <div class="pr" id="hl"></div>
+    <div class="div"></div>
+    <span class="lbl">Reading materials in your class</span>
+    <p class="hint">Select what you have. If you have no big books or graded readers, CAPS DI writes a short reading passage for each group, pitched to their level and needs.</p>
+    <div class="pr" id="res"></div>
     <div class="div"></div>
     <span class="sublbl">Anything else about your class? (optional)</span>
     <textarea id="tn" placeholder="e.g. Large class of 40+. One learner has an individual support plan..."></textarea>
@@ -332,6 +337,7 @@ const TERMS=['Term 1','Term 2','Term 3','Term 4'];
 const SKILLS=['Listening and Speaking','Reading and Phonics','Writing'];
 // National Curriculum Statement Grades R-12 scale of achievement.
 const AREA_LABEL={'Shared Reading':'Shared Reading · comprehension','Group Guided Reading':'Group Guided Reading · reading and comprehension','Emergent reading':'Emergent reading','Phonics':'Phonics','Handwriting':'Handwriting','Writing':'Writing','Listening and Speaking':'Listening and Speaking'};
+const RESOURCES=['Big books','Graded readers','Decodable (phonics) readers','Letter and word flashcards','DBE workbooks','None of these'];
 const LEVELS=[
   {n:1,name:'Not achieved',range:'0–29%'},{n:2,name:'Elementary achievement',range:'30–39%'},{n:3,name:'Moderate achievement',range:'40–49%'},
   {n:4,name:'Adequate achievement',range:'50–59%'},{n:5,name:'Substantial achievement',range:'60–69%'},{n:6,name:'Meritorious achievement',range:'70–79%'},
@@ -366,7 +372,7 @@ const DOMAINS=[
 
 let CAPS=null,PED=null;
 const LANGS=['English','isiZulu','isiXhosa','Afrikaans','Sepedi','Setswana','Sesotho','Xitsonga','siSwati','Tshivenda','isiNdebele','Other'];
-function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
+function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],resources:[],rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
 let V=freshState();
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -389,6 +395,7 @@ async function init(){
   $('profiles').innerHTML=PROFILES.map((p,i)=>'<div class="pc" data-i="'+i+'"><i class="ti '+p.i+'"></i><div><div class="t">'+esc(p.t)+'</div><div class="u">'+esc(p.u)+'</div></div></div>').join('');
   $('profiles').querySelectorAll('.pc').forEach(el=>el.onclick=()=>{el.classList.toggle('s');const v=PROFILES[+el.dataset.i].v;V.profiles=V.profiles.includes(v)?V.profiles.filter(x=>x!==v):[...V.profiles,v];});
   multiPills('hl',LANGS,'languages');
+  multiPills('res',RESOURCES,'resources');
   pills('src',SOURCES.map(s=>s.l),SOURCES.find(s=>s.k===V.source).l,l=>{V.source=SOURCES.find(s=>s.l===l).k;});
   levelTable('lvt','levels','lvTotal',true);
   levelTable('lvt2','exitLevels','lvTotal2',false);
@@ -512,6 +519,7 @@ function loadExample(){
   V.profiles=[PROFILES[0].v,PROFILES[4].v,PROFILES[8].v];
   $('profiles').querySelectorAll('.pc').forEach(el=>el.classList.toggle('s',[0,4,8].includes(+el.dataset.i)));
   V.languages=['English','isiZulu','Sepedi'];multiPills('hl',LANGS,'languages');
+  V.resources=['DBE workbooks'];multiPills('res',RESOURCES,'resources');
   $('tn').value='Class of 35. Many learners are still settling into English as the language of learning.';
   V.levels=[4,6,8,7,5,3,2];V.source='formal';
   pills('src',SOURCES.map(s=>s.l),SOURCES.find(s=>s.k===V.source).l,l=>{V.source=SOURCES.find(s=>s.l===l).k;});
@@ -586,7 +594,13 @@ function pickPathways(){
   if(!keys.length)add(V.skill==='Writing'?'writing':V.skill==='Listening and Speaking'?'oral':'phonics');
   return keys.slice(0,2);
 }
+// Graded passages are written when the class is working on reading but has no big books or graded readers.
+function needPassages(){
+  if(V.grade==='Grade R'||V.skill!=='Reading and Phonics')return false;
+  return !V.resources.some(r=>r==='Big books'||r==='Graded readers');
+}
 function buildPrompt(){
+  const passages=needPassages();
   const ot=currentOutcome();
   const total=V.levels.reduce((a,b)=>a+b,0);
   const c=tierCounts(V.levels);
@@ -624,6 +638,7 @@ V.struggles.length?'CAPS items learners found hard: '+V.struggles.join(' | '):''
 errs.length?'Observed error patterns (with the knowledge-base response):\n'+errs.map(m=>'- '+m.misconception+' — evidence: '+m.evidence+' — likely barrier '+m.barrier+' — response: '+m.response).join('\n'):'',
 an?'Teacher\'s description of what she saw: '+an:'',
 'Home languages in class: '+(V.languages.length?V.languages.join(', '):'not specified'),
+'Reading materials available: '+(V.resources.length?V.resources.join(', '):'not specified')+(passages?' — no big books or graded readers, so you must write the graded passages described in rule 9.':''),
 'Learner needs: '+(V.profiles.length?V.profiles.join('; '):'general mixed-ability class'),
 tn?'Class notes: '+tn:'',
 '',
@@ -643,6 +658,7 @@ dims,
 '6. Misconceptions to watch: likely wrong responses, what each means, and exactly what the teacher can say or do.',
 '7. Resources zero-cost or locally available unless class notes say otherwise. Use real words, letters, sentences and examples a '+V.grade+' teacher can use tomorrow. About 45–60 minutes in total.',
 '8. Do not cite research papers or authors.',
+passages?'9. Graded passages: the teacher has no big books or graded readers. Write one ORIGINAL short passage per tier on the same topic, so the class can discuss one story while each group reads at its own level. Foundational: decodable — only letters, sounds and high-frequency words taught by this point in CAPS for '+V.grade+' '+V.term+', 3–5 very short sentences with a repeated pattern. Intermediate: 5–8 sentences, mostly decodable plus common sight words. Advanced: 8–12 sentences with richer vocabulary and one idea that needs inferring. Give each passage 2–3 questions (literal for Foundational; literal and one inference for Intermediate; including one higher-order question for Advanced). Adapt for the learner needs listed (e.g. large print, picture cues to draw, fewer lines, read-aloud or echo-reading for learners who cannot yet read independently) in accessNotes. Use South African names, places and everyday contexts.':'',
 '',
 'Return ONLY valid JSON in exactly this shape (no markdown):',
 '{"diagnosis":[{"barrier":"B. Misconception","evidence":"...","likelyCause":"...","response":"..."}],'+
@@ -656,7 +672,8 @@ dims,
 '"misconceptionsToWatch":[{"ifYouSee":"...","itMayMean":"...","sayOrDo":"..."}],'+
 '"individualSupports":["..."],'+
 '"exitTask":{"question":"Can the learner independently ...?","task":"...","alignedTo":"which CAPS item it checks","scoring":[{"levels":"Ratings 1–3","evidence":"..."},{"levels":"Ratings 4–5","evidence":"..."},{"levels":"Ratings 6–7","evidence":"..."}]},'+
-'"dataInsight":"One sentence on how the class evidence shaped this plan","nextSteps":"One sentence on how to adjust the next lesson using the exit task results"}'
+'"dataInsight":"One sentence on how the class evidence shaped this plan","nextSteps":"One sentence on how to adjust the next lesson using the exit task results"'+
+(passages?',"passages":{"foundational":{"title":"...","text":"...","features":"what makes it right for this group","questions":["..."],"accessNotes":"..."},"intermediate":{...same keys},"advanced":{...same keys}}':'')+'}'
   ].filter(x=>x!=='').join('\n');
 }
 
@@ -681,6 +698,7 @@ function planIssues(p){
   if(!Array.isArray(p.misconceptionsToWatch)||!p.misconceptionsToWatch.some(m=>m&&s(m.ifYouSee)&&s(m.sayOrDo)))issues.push('misconceptionsToWatch');
   if(!p.exitTask||!s(p.exitTask.task))issues.push('exitTask.task');
   if(!p.exitTask||!Array.isArray(p.exitTask.scoring)||p.exitTask.scoring.length<3)issues.push('exitTask.scoring for 3 level bands');
+  if(needPassages())TIERS.forEach(t=>{const x=p.passages&&p.passages[t.k];if(!x||!s(x.text)||!Array.isArray(x.questions)||!x.questions.length)issues.push('passages.'+t.k+' (text + questions)');});
   return issues;
 }
 
@@ -761,6 +779,13 @@ function renderPlan(p){
     '<div class="mis"><p><strong>If you see:</strong> '+esc(m.ifYouSee)+'</p>'+(m.itMayMean?'<p><strong>It may mean:</strong> '+esc(m.itMayMean)+'</p>':'')+(m.sayOrDo?'<p class="say"><strong>Say or do:</strong> '+esc(m.sayOrDo)+'</p>':'')+'</div>').join('')+'</div>';}
   const is=list(p.individualSupports);
   if(is.length)h+='<div class="sec"><h3><i class="ti ti-heart-handshake"></i> Individual supports</h3><ul>'+is.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>';
+  const ps=p.passages&&typeof p.passages==='object'?TIERS.map((t,i)=>[t,i,p.passages[t.k]]).filter(([,,x])=>x&&x.text):[];
+  if(ps.length){h+='<div class="sec"><h3><i class="ti ti-book"></i> Reading passages for each group <button class="btn2" style="margin-left:auto;padding:4px 10px;font-size:12px" onclick="printPassages()"><i class="ti ti-printer"></i> Print</button></h3><p class="hint">Written for this class because no big books or graded readers were selected. Same topic, three levels.</p>'+
+    ps.map(([t,i,x])=>'<div class="tier"><div class="th"><span class="tbadge '+t.bg+'">'+t.name+'</span><span class="who">'+c[i]+' learners</span></div>'+
+      (x.title?'<p style="font-weight:600;font-size:14px">'+esc(x.title)+'</p>':'')+'<p class="passage">'+esc(x.text)+'</p>'+
+      (list(x.questions).length?'<div class="kv"><strong>Questions:</strong><ol style="margin:4px 0 0 18px">'+list(x.questions).map(q=>'<li>'+esc(q)+'</li>').join('')+'</ol></div>':'')+
+      (x.features?'<div class="kv"><strong>Why this level:</strong> '+esc(x.features)+'</div>':'')+
+      (x.accessNotes?'<div class="kv"><strong>Adaptations:</strong> '+esc(x.accessNotes)+'</div>':'')+'</div>').join('')+'</div>';}
   const e=p.exitTask||{};
   if(e.task){h+='<div class="sec exit"><h3><i class="ti ti-clipboard-check"></i> Exit task</h3>'+(e.question?'<p style="font-weight:600">'+esc(e.question)+'</p>':'')+'<p>'+esc(e.task)+'</p>'+(e.alignedTo?'<p class="who" style="margin-top:4px">Checks: '+esc(e.alignedTo)+'</p>':'');
     if(Array.isArray(e.scoring)&&e.scoring.length)h+='<table>'+e.scoring.map(r=>'<tr><td>'+esc(r&&r.levels)+'</td><td>'+esc(r&&r.evidence)+'</td></tr>').join('')+'</table>';
@@ -769,6 +794,14 @@ function renderPlan(p){
   $('pl').innerHTML=h;
 }
 
+function printPassages(){
+  const p=V.planData;if(!p||!p.passages)return;
+  const body=TIERS.map(t=>{const x=p.passages[t.k];if(!x||!x.text)return '';
+    return '<section><p class="g">'+esc(t.name)+' group</p><h2>'+esc(x.title||'')+'</h2><p class="t">'+esc(x.text)+'</p><ol>'+list(x.questions).map(q=>'<li>'+esc(q)+'</li>').join('')+'</ol></section>';}).join('');
+  const w=window.open('','_blank');if(!w){alert('Allow pop-ups to print the passages.');return;}
+  w.document.write('<!doctype html><meta charset="utf-8"><title>Reading passages</title><style>body{font-family:Arial,sans-serif;margin:24px}section{page-break-after:always}p.g{color:#666;font-size:14px}h2{font-size:28px}p.t{font-size:26px;line-height:1.8;white-space:pre-wrap}li{font-size:20px;margin:8px 0}</style>'+body);
+  w.document.close();w.focus();w.print();
+}
 function extractJson(raw){
   const cleaned=String(raw||'').replace(/```json|```/g,'').trim();
   try{return JSON.parse(cleaned);}catch(_){}
