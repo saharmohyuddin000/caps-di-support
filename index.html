@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CAPS DI Support — Teacher Demo</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CAPS DI">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -98,6 +103,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .ok{text-align:center;padding:2rem;color:#16a34a;font-size:14px}
 @media(max-width:560px){.pg{grid-template-columns:1fr}.tiers{grid-template-columns:1fr}}
 .prog{display:flex;flex-direction:column;gap:6px}.prog>div{border:1px solid #e0e3e8;border-radius:8px;padding:8px 10px}.prog .now{border-color:#93c5fd;background:#eff6ff}.prog ul{padding-left:16px;margin-top:4px}.prog li,.prog p{font-size:12px;line-height:1.45;margin-top:2px}
+.badge{font-size:11px;font-weight:600;color:#92400e;background:#fef3c7;border-radius:10px;padding:3px 9px;display:inline-flex;gap:4px;align-items:center}
 .grp{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.04em;margin:8px 0 2px}
 .diag{border:1px solid #ddd6fe;background:#faf5ff;border-radius:10px;padding:10px 12px;margin-bottom:8px}
 .diag p{font-size:12px;margin-top:5px;line-height:1.5}
@@ -130,7 +136,14 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 <div id="appWrap" style="display:none">
 <div class="app">
 <div class="hdr">
-  <h1><i class="ti ti-school" style="font-size:20px"></i> CAPS DI Support</h1>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+    <h1><i class="ti ti-school" style="font-size:20px"></i> CAPS DI Support</h1>
+    <div style="display:flex;gap:6px;align-items:center">
+      <span id="offlineBadge" class="badge" style="display:none"><i class="ti ti-wifi-off"></i> Offline</span>
+      <button id="installBtn" class="btn2" style="display:none;padding:6px 12px" onclick="installApp()"><i class="ti ti-download"></i> Install app</button>
+    </div>
+  </div>
+  <p id="iosHint" style="display:none;font-size:12px;color:#2563eb">To install on iPhone: tap Share, then "Add to Home Screen".</p>
   <p>English Home Language · Foundation Phase · Assessment for Learning · Plans tiered from your class's CAPS results</p>
 </div>
 <div class="steps">
@@ -149,6 +162,11 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 
 <!-- SCREEN 1: OUTCOME -->
 <div id="sc1">
+  <div class="card" id="savedCard" style="display:none">
+    <span class="lbl">Your saved plans</span>
+    <p class="hint">Saved on this phone, so they open even without signal.</p>
+    <div class="olist" id="savedList"></div>
+  </div>
   <div class="card">
     <span class="lbl">Grade</span>
     <div class="pr" id="gr"></div>
@@ -364,6 +382,7 @@ async function init(){
   levelTable('lvt','levels','lvTotal',true);
   levelTable('lvt2','exitLevels','lvTotal2',false);
   if(!$('co').dataset.bound)$('co').dataset.bound='1',$('co').addEventListener('input',function(){if(this.value.trim()){V.outcome=null;document.querySelectorAll('#og .ch').forEach(c=>c.classList.remove('s'));}cb();});
+  renderSaved();
   if(CAPS){renderOutcomes();return;}
   try{const r2=await fetch('data/pedagogy.json');if(r2.ok)PED=await r2.json();}catch(_){PED=null;}
   try{const r=await fetch('data/caps-ehl.json');if(!r.ok)throw new Error(r.status);CAPS=await r.json();}
@@ -627,6 +646,7 @@ let generating=false;
 async function go4(){
   if(generating)return;
   if(V.levels.reduce((a,b)=>a+b,0)===0){go3();return;}
+  if(!navigator.onLine){alert('You are offline. A new plan needs a connection, but your saved plans still open from the first screen.');return;}
   generating=true;
   setStep(4);
   $('ld').style.display='block';$('pc').style.display='none';$('ldmsg').textContent='Diagnosing barriers and building your lesson…';
@@ -645,6 +665,7 @@ async function go4(){
     plan._issues=issues;
     V.planData=plan;V.checks={};
     renderPlan(plan);
+    savePlan();
   }catch(e){
     V.planData=null;
     console.error('Plan generation failed:',e);
@@ -730,6 +751,46 @@ async function requestPlan(prompt){
   }
   throw lastErr;
 }
+
+// ---------- Saved plans (this phone only; class-level data, no learner names) ----------
+const SAVE_KEY='capsdi.savedPlans.v1';
+function readSaved(){try{return JSON.parse(localStorage.getItem(SAVE_KEY)||'[]');}catch(_){return[];}}
+function savePlan(){
+  try{
+    const list=readSaved();
+    list.unshift({at:new Date().toISOString(),grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome(),levels:V.levels.slice(),plan:V.planData});
+    localStorage.setItem(SAVE_KEY,JSON.stringify(list.slice(0,20)));
+  }catch(_){}
+  renderSaved();
+}
+function renderSaved(){
+  const list=readSaved(),box=$('savedList');if(!box)return;
+  $('savedCard').style.display=list.length?'block':'none';box.innerHTML='';
+  list.forEach((s,i)=>{const b=document.createElement('button');b.className='ch';
+    b.innerHTML='<span class="tag">'+esc(s.grade)+' · '+esc(s.term)+'</span><span class="tag">'+esc(s.skill)+'</span>'+esc(s.outcome)+'<br><span style="font-size:11px;color:#9ca3af">'+esc(new Date(s.at).toLocaleDateString())+'</span>';
+    b.onclick=()=>openSaved(i);box.appendChild(b);});
+}
+function openSaved(i){
+  const s=readSaved()[i];if(!s)return;
+  Object.assign(V,{grade:s.grade,term:s.term,skill:s.skill,outcome:s.outcome,outcomeFormal:null,levels:s.levels.slice(),planData:s.plan,checks:{}});
+  const c=tierCounts(V.levels);
+  $('mt').innerHTML='<strong>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</strong><br>Outcome: '+esc(V.outcome)+'<br><span style="color:#6b7280">'+TIERS.map((t,j)=>t.name+': '+c[j]).join(' · ')+' learners · saved '+esc(new Date(s.at).toLocaleDateString())+'</span>';
+  renderPlan(s.plan);$('ld').style.display='none';$('pc').style.display='block';setStep(4);
+}
+
+// ---------- Installable app ----------
+let installEvt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;$('installBtn').style.display='inline-flex';});
+window.addEventListener('appinstalled',()=>{$('installBtn').style.display='none';});
+async function installApp(){if(!installEvt)return;installEvt.prompt();await installEvt.userChoice.catch(()=>null);installEvt=null;$('installBtn').style.display='none';}
+function showOnline(){$('offlineBadge').style.display=navigator.onLine?'none':'inline-flex';}
+window.addEventListener('online',showOnline);window.addEventListener('offline',showOnline);
+document.addEventListener('DOMContentLoaded',()=>{
+  showOnline();
+  const ios=/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.navigator.standalone;
+  if(ios)$('iosHint').style.display='block';
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+});
 
 // ---------- Screen 5: checklist ----------
 function buildChecklist(){
