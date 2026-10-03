@@ -178,6 +178,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <div class="pr" id="tr"></div>
     <span class="lbl" style="margin-top:12px">Skill area</span>
     <div class="pr" id="sk"></div>
+    <p class="hint" style="margin-top:6px">Reading comprehension is under <b>Reading and Phonics</b> (Shared Reading and Group Guided Reading), as in CAPS.</p>
     <div class="div"></div>
     <div id="og"><p class="hint">Select grade, term and skill area above to see the CAPS content for that term.</p></div>
     <div class="or">or describe your own outcome</div>
@@ -328,6 +329,7 @@ const GRADES=['Grade R','Grade 1','Grade 2','Grade 3'];
 const TERMS=['Term 1','Term 2','Term 3','Term 4'];
 const SKILLS=['Listening and Speaking','Reading and Phonics','Writing'];
 // National Curriculum Statement Grades R-12 scale of achievement.
+const AREA_LABEL={'Shared Reading':'Shared Reading · comprehension','Group Guided Reading':'Group Guided Reading · reading and comprehension','Emergent reading':'Emergent reading','Phonics':'Phonics','Handwriting':'Handwriting','Writing':'Writing','Listening and Speaking':'Listening and Speaking'};
 const LEVELS=[
   {n:1,name:'Not achieved',range:'0–29%'},{n:2,name:'Elementary',range:'30–39%'},{n:3,name:'Moderate',range:'40–49%'},
   {n:4,name:'Adequate',range:'50–59%'},{n:5,name:'Substantial',range:'60–69%'},{n:6,name:'Meritorious',range:'70–79%'},
@@ -435,11 +437,17 @@ function renderOutcomes(){
   const mk=(list,boxId,isFormal)=>{const box=$(boxId);if(!box)return;
     list.forEach(it=>{const btn=document.createElement('button');btn.className='ch';
       const text=isFormal?it.text:it;
-      btn.innerHTML=(isFormal?'<span class="tag fa">FAA '+it.acts.sort().join(' & ')+'</span>'+(it.area?'<span class="tag">'+esc(it.area)+'</span>':''):'')+esc(text);
+      btn.innerHTML=(isFormal?'<span class="tag fa">FAA '+it.acts.sort().join(' & ')+'</span>':'')+esc(text);
       btn.onclick=()=>{document.querySelectorAll('#og .ch').forEach(c=>c.classList.remove('s'));btn.classList.add('s');V.outcome=text;V.outcomeFormal=isFormal?it:null;$('co').value='';cb();};
       if(V.outcome===text)btn.classList.add('s');
       box.appendChild(btn);});};
-  mk(fi,'olF',true);mk(other,'olC',false);
+  // Group formal items under their CAPS heading so comprehension is easy to find.
+  if(fi.length){const order=['Emergent reading','Phonics','Shared Reading','Group Guided Reading','Listening and Speaking','Handwriting','Writing'];
+    fi.sort((a,b)=>(order.indexOf(a.area)+1||99)-(order.indexOf(b.area)+1||99));
+    const box=$('olF');let last=null;
+    fi.forEach(it=>{if(it.area!==last){last=it.area;const h=document.createElement('span');h.className='sublbl';h.style.cssText='display:block;margin:10px 0 4px';h.textContent=AREA_LABEL[it.area]||it.area||'Other';box.appendChild(h);}mk([it],'olF',true);});
+  }
+  mk(other,'olC',false);
 }
 function currentOutcome(){return V.outcome||$('co').value.trim();}
 function cb(){$('b1').disabled=!(V.grade&&V.term&&V.skill&&(V.outcome||$('co').value.trim().length>5));}
