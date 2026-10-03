@@ -496,7 +496,7 @@ function related(b,ot,n){
   const pool=[...new Set([...(b.formal||[]).map(f=>f.text),...(b.content||[])])];
   return pool.map(t=>{const w=words(t);let s=0;w.forEach(x=>{if(target.has(x))s++;});return{t,s};})
     .filter(x=>x.s>0).sort((a,b)=>b.s-a.s)
-    .filter((x,i,arr)=>arr.findIndex(y=>y.t.toLowerCase().replace(/[^a-z]/g,'').slice(0,40)===x.t.toLowerCase().replace(/[^a-z]/g,'').slice(0,40))===i)
+    .filter((x,i,arr)=>!arr.slice(0,i).some(y=>{const a=words(x.t),b=words(y.t);let n=0;a.forEach(w=>{if(b.has(w))n++;});return n/Math.max(1,Math.min(a.size,b.size))>0.7;}))
     .slice(0,n).map(x=>x.t);
 }
 function progression(){
