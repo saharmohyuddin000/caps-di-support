@@ -198,6 +198,7 @@ textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px 12px
       <span class="slider-val" id="sv_below">30%</span>
     </div>
 
+    <p id="slTotal" style="font-size:11px;color:#6b7280;margin-top:4px">Total: 100%</p>
     <div class="div"></div>
     <span class="sublbl" style="font-size:13px;font-weight:600;margin-bottom:8px">What can most learners already do?</span>
     <p style="font-size:12px;color:#6b7280;margin-bottom:10px">Select all that apply — this tells the AI what baseline to build from.</p>
@@ -250,7 +251,7 @@ textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px 12px
     <textarea id="tdate" style="min-height:38px" placeholder="e.g. 4 June 2026"></textarea>
   </div>
   <div style="display:flex;gap:8px">
-    <button class="btn2" onclick="go4()">← Back</button>
+    <button class="btn2" onclick="backToPlan()">← Back</button>
     <button class="btn" style="flex:1;margin-top:0" onclick="go6()">Rate this plan →</button>
   </div>
 </div>
@@ -356,6 +357,12 @@ function initAssessGrids(){
 function updateSlider(type,val){
   V['sl'+type.charAt(0).toUpperCase()+type.slice(1)]=parseInt(val);
   document.getElementById('sv_'+type).textContent=val+'%';
+  updateSliderTotal();
+}
+function updateSliderTotal(){
+  const t=V.slAbove+V.slApproach+V.slBelow;const el=document.getElementById('slTotal');if(!el)return;
+  el.textContent=t===100?'Total: 100%':'Total: '+t+'% — these three should add up to 100%';
+  el.style.color=t===100?'#6b7280':'#b45309';
 }
 
 function sg2(el,v){V.grade=v;V.outcome=null;V.term=null;document.querySelectorAll('#gr .p').forEach(p=>p.classList.remove('s'));el.classList.add('s');ro();cb();}
@@ -380,8 +387,12 @@ function go2(){setStep(2);}
 function go3(){initAssessGrids();setStep(3);}
 function go5(){buildChecklist();setStep(5);}
 function go6(){setStep(6);}
+function backToPlan(){if(V.planData)setStep(4);else go4();}
 
+let generating=false;
 async function go4(){
+  if(generating)return;
+  generating=true;
   setStep(4);
   document.getElementById('ld').style.display='block';
   document.getElementById('pc').style.display='none';
@@ -402,12 +413,13 @@ async function go4(){
     V.planData=plan;
     renderPlan(plan);
   }catch(e){
+    V.planData=null;
     console.error('Plan generation failed:',e);
     const msg=String(e&&e.message?e.message:e).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
     document.getElementById('pl').innerHTML='<p style="color:#dc2626;font-size:13px;padding:0.5rem">Could not generate plan. Please try again.</p><p style="color:#6b7280;font-size:11px;padding:0 0.5rem">Details: '+msg+'</p>';
     document.getElementById('ld').style.display='none';
     document.getElementById('pc').style.display='block';
-  }
+  }finally{generating=false;}
 }
 
 // The AI key is held by the Cloudflare Worker, never in this public page.
@@ -425,7 +437,11 @@ async function requestPlan(prompt){
   let lastErr;
   for(let attempt=1;attempt<=2;attempt++){
     try{
-      const res=await fetch(PLAN_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
+      const ctl=new AbortController();const timer=setTimeout(()=>ctl.abort(),60000);
+      let res;
+      try{res=await fetch(PLAN_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt}),signal:ctl.signal});}
+      catch(err){throw new Error(err.name==='AbortError'?'The request took too long. Check your internet connection and try again.':'Could not reach the plan service. Check your internet connection.');}
+      finally{clearTimeout(timer);}
       let data;
       try{data=await res.json();}catch(_){throw new Error('Server returned status '+res.status);}
       if(!res.ok||data.error)throw new Error(data.error||('Server returned status '+res.status));
@@ -437,13 +453,14 @@ async function requestPlan(prompt){
   throw lastErr;
 }
 
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function renderPlan(p){
   const tiers=[{k:'tier1',b:'b1'},{k:'tier2',b:'b2'},{k:'tier3',b:'b3'},{k:'extension',b:'be'}];
   let h='';
-  if(p.dataInsight){h+='<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#16a34a"><i class="ti ti-chart-bar" style="font-size:13px;margin-right:4px;vertical-align:-1px"></i><strong>Data insight:</strong> '+p.dataInsight+'</div>';}
-  tiers.forEach(t=>{const d=p[t.k];if(!d)return;h+='<div style="margin-bottom:1rem"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span class="tbadge '+t.b+'">'+d.title+'</span><span style="font-size:11px;color:#9ca3af">'+(d.duration||'')+'</span></div><ul style="padding-left:18px;margin:0 0 7px">'+(d.activities||[]).map(a=>'<li style="font-size:13px;color:#1a1a1a;margin:4px 0;line-height:1.5">'+a+'</li>').join('')+'</ul><div class="tm"><strong>Teacher move:</strong> '+(d.teacherMove||'')+'</div>'+(d.sensoryBreak?'<div class="sb"><strong>Movement break:</strong> '+d.sensoryBreak+'</div>':'')+(d.promptLevel?'<div class="pl">'+d.promptLevel+'</div>':'')+'<div style="height:1px;background:#f3f4f6;margin:11px 0"></div></div>';});
-  if(p.resources)h+='<div class="res"><strong>Resources:</strong> '+p.resources.join(' · ')+'</div>';
-  if(p.assessment)h+='<div class="asx"><strong>Quick assessment:</strong> '+p.assessment+'</div>';
+  if(p.dataInsight){h+='<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#16a34a"><i class="ti ti-chart-bar" style="font-size:13px;margin-right:4px;vertical-align:-1px"></i><strong>Data insight:</strong> '+esc(p.dataInsight)+'</div>';}
+  tiers.forEach(t=>{const d=p[t.k];if(!d)return;h+='<div style="margin-bottom:1rem"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span class="tbadge '+t.b+'">'+esc(d.title)+'</span><span style="font-size:11px;color:#9ca3af">'+esc(d.duration)+'</span></div><ul style="padding-left:18px;margin:0 0 7px">'+(Array.isArray(d.activities)?d.activities:[]).map(a=>'<li style="font-size:13px;color:#1a1a1a;margin:4px 0;line-height:1.5">'+esc(a)+'</li>').join('')+'</ul><div class="tm"><strong>Teacher move:</strong> '+esc(d.teacherMove)+'</div>'+(d.sensoryBreak?'<div class="sb"><strong>Movement break:</strong> '+esc(d.sensoryBreak)+'</div>':'')+(d.promptLevel?'<div class="pl">'+esc(d.promptLevel)+'</div>':'')+'<div style="height:1px;background:#f3f4f6;margin:11px 0"></div></div>';});
+  if(Array.isArray(p.resources))h+='<div class="res"><strong>Resources:</strong> '+p.resources.map(esc).join(' · ')+'</div>';
+  if(p.assessment)h+='<div class="asx"><strong>Quick assessment:</strong> '+esc(p.assessment)+'</div>';
   document.getElementById('pl').innerHTML=h;
   document.getElementById('ld').style.display='none';
   document.getElementById('pc').style.display='block';
@@ -451,9 +468,9 @@ function renderPlan(p){
 
 function buildChecklist(){
   const base=['Short instruction segments (3-5 min) used before movement breaks','Teacher modelled the task fully before learner attempt','Prompts were gradually reduced to build learner independence','Tasks were differentiated based on learner assessment data','One concept was introduced at a time','Learners were grouped according to their current performance level'];
-  const extra=V.planData&&V.planData.checklistItems?V.planData.checklistItems:[];
+  const extra=V.planData&&Array.isArray(V.planData.checklistItems)?V.planData.checklistItems:[];
   const all=[...new Set([...base,...extra])];
-  document.getElementById('cl').innerHTML=all.map((item,i)=>'<div class="chk-item"><div class="chk-box" id="cb'+i+'" onclick="tick('+i+')" role="checkbox" aria-checked="false"></div><span style="font-size:13px;color:#374151;line-height:1.5">'+item+'</span></div>').join('');
+  document.getElementById('cl').innerHTML=all.map((item,i)=>'<div class="chk-item"><div class="chk-box" id="cb'+i+'" onclick="tick('+i+')" role="checkbox" aria-checked="false"></div><span style="font-size:13px;color:#374151;line-height:1.5">'+esc(item)+'</span></div>').join('');
 }
 
 function tick(i){const b=document.getElementById('cb'+i);const on=b.classList.toggle('ticked');b.setAttribute('aria-checked',on);b.innerHTML=on?'<i class="ti ti-check" style="font-size:10px;color:#fff"></i>':'';}
@@ -469,7 +486,7 @@ function rst(){
   document.querySelectorAll('.star').forEach(s=>s.classList.remove('lit'));
   document.getElementById('sl_above').value=30;document.getElementById('sv_above').textContent='30%';
   document.getElementById('sl_approach').value=40;document.getElementById('sv_approach').textContent='40%';
-  document.getElementById('sl_below').value=30;document.getElementById('sv_below').textContent='30%';
+  document.getElementById('sl_below').value=30;document.getElementById('sv_below').textContent='30%';updateSliderTotal();
   document.getElementById('canDoGrid').innerHTML='';
   document.getElementById('struggleGrid').innerHTML='';
   ro();setStep(1);
