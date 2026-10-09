@@ -40,6 +40,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .ch .tag.fa{background:#fef3c7;color:#92400e}
 .ch.s{border-color:#93c5fd;background:#eff6ff;color:#1d4ed8}
 details.more{margin-top:8px}
+.btn2.wa{color:#15803d;border-color:#86efac}
+.about summary{font-size:14px;font-weight:600;cursor:pointer;color:#1f2937;display:flex;align-items:center;gap:6px}
+.about p{font-size:13px;line-height:1.55;margin-top:10px}.about ul{padding-left:18px;margin-top:4px}.about li{font-size:13px;line-height:1.5;margin:4px 0}
 details.more summary{font-size:12px;color:#2563eb;cursor:pointer;margin-bottom:8px}
 .pg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .pc{padding:10px 12px;border:1px solid #e0e3e8;border-radius:8px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;background:#fff}
@@ -191,6 +194,32 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <span style="font-size:13px;color:#1e3a8a"><strong>First time here?</strong> See CAPS DI with a realistic Grade 1 class in about a minute.</span>
     <button class="btn2" onclick="loadExample()" style="background:#2563eb;color:#fff;border-color:#2563eb"><i class="ti ti-school"></i> Try an example class</button>
   </div>
+  <div class="card about">
+    <details>
+      <summary><i class="ti ti-book-2"></i> About CAPS DI and its evidence base</summary>
+      <p><b>What it does.</b> CAPS DI turns the CAPS ratings and errors a teacher already records into tomorrow's differentiated lesson: it diagnoses why learners are stuck, sizes three task groups from the data, plans remediation for learners far behind, and closes the loop with an exit task that regroups learners for the next lesson.</p>
+      <p><b>Who decides what.</b> CAPS DI's teaching decisions (lesson focus, time split, groups, remediation, benchmarks) follow fixed, written rules set by a Foundation Phase literacy specialist. The AI only writes the classroom content within those decisions.</p>
+      <p><b>Grounded in South African reading research.</b></p>
+      <ul>
+        <li><b>CAPS</b> English Home Language Grades R–3 (DBE): outcomes, Formal Assessment Activities and the 7-point rating scale.</li>
+        <li><b>National reading benchmarks:</b> 40 letter-sounds per minute by the end of Grade 1; English First Additional Language fluency of 30, 50 and 70 correct words per minute by the end of Grades 2, 3 and 4 (Wills, Ardington, Pretorius &amp; Sebaeng, 2022, with the DBE).</li>
+        <li><b>Decoding:</b> Sesotho and isiZulu Reading Project, Module 3 (University of Johannesburg and JET Education Services): phonics lesson structure, stages of reading, the Simple View of Reading and diagnostic rules.</li>
+        <li><b>Vocabulary and comprehension:</b> Funda Wande Reading Academy (words of the week, comprehension strategies, question types).</li>
+        <li><b>Classroom routines:</b> DBE/NECT Primary School Reading Improvement Programme (group guided reading).</li>
+      </ul>
+      <p class="who">Guidance from these sources is paraphrased and cited, not copied. Teaching videos are linked from the publishers' own sites (NECT, Funda Wande).</p>
+      <p><b>What to look for in a plan.</b></p>
+      <ul>
+        <li><b>Lesson design</b> (top): today's focus and why, time split, groups, weekly rotation, reading benchmark.</li>
+        <li><b>What the evidence suggests:</b> whether the difficulty is decoding, comprehension or both, and why.</li>
+        <li><b>Watch how to teach it:</b> short teaching videos for the main skill.</li>
+        <li><b>Reading passages</b> at three levels and a printable <b>word wall</b>.</li>
+        <li><b>Remediation plan</b> for learners on Ratings 1–2, with an exit check and SIAS steps.</li>
+      </ul>
+      <p><b>On WhatsApp.</b> Any plan can be sent to WhatsApp as a short, low-data summary with <b>Send to WhatsApp</b>, for the teacher's own phone or a colleague. A full WhatsApp companion, where teachers make plans and send exit-task results by chat, is the next build.</p>
+      <p class="who">This prototype covers English Home Language, Grades R–3. African home-language and English First Additional Language versions are planned.</p>
+    </details>
+  </div>
   <div class="card">
     <span class="lbl">Grade</span>
     <div class="pr" id="gr"></div>
@@ -275,6 +304,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <div style="display:flex;gap:8px;flex-wrap:wrap" class="noprint">
       <button class="btn2" onclick="go3()">← Back</button>
       <button class="btn2" onclick="window.print()"><i class="ti ti-printer"></i> Print</button>
+      <button class="btn2 wa" onclick="shareWhatsApp()"><i class="ti ti-brand-whatsapp"></i> Send to WhatsApp</button>
       <button class="btn" style="flex:1;margin-top:0" onclick="go5()">Checklist &amp; results →</button>
     </div>
   </div>
@@ -546,9 +576,10 @@ function loadExample(){
   pills('src',SOURCES.map(s=>s.l),SOURCES.find(s=>s.k===V.source).l,l=>{V.source=SOURCES.find(s=>s.l===l).k;});
   V.errors=['ph-familiar-only','ph-name-sound','bl-sounds-no-word'];
   $('assessNote').value='8 learners read familiar words like cat and mat but cannot read unfamiliar CVC words such as hop or bun. Several say letter names instead of sounds.';
+  V.remed={on:true,domain:null};
   go3();
   const b=document.createElement('div');b.className='data-banner';b.id='exBanner';b.style.background='#eff6ff';b.style.borderColor='#bfdbfe';b.style.color='#1e3a8a';
-  b.innerHTML='<i class="ti ti-info-circle" style="font-size:16px;flex-shrink:0"></i><span>Example class loaded: 35 Grade 1 learners after the Term 1 phonics assessment. Change anything you like, then press <strong>Generate my plan</strong>.</span>';
+  b.innerHTML='<i class="ti ti-info-circle" style="font-size:16px;flex-shrink:0"></i><span>Example class loaded: 35 Grade 1 learners after the Term 1 phonics assessment. A <strong>remediation plan</strong> is switched on for the 10 learners on Ratings 1–2 (scroll down to see it). Change anything you like, then press <strong>Generate my plan</strong>.</span>';
   const old=$('exBanner');if(old)old.remove();$('sc3').querySelector('.card').prepend(b);
 }
 
@@ -980,6 +1011,25 @@ function renderPlan(p){
   $('pl').innerHTML=h;
 }
 
+// Short, low-data version of the plan for WhatsApp (opens WhatsApp with the text ready to send).
+function planSummaryText(p){
+  const d=p._design,c=tierCounts(V.levels),L=[];
+  L.push('*CAPS DI lesson plan*');L.push(V.grade+' · '+V.term+' · '+V.skill);L.push('Outcome: '+currentOutcome());
+  if(p.learningIntention)L.push('','*Learning intention:* '+p.learningIntention);
+  if(d)L.push('*Focus:* '+d.focus,'*Time:* whole class '+d.split[0]+' min · groups '+d.split[1]+' · individual '+d.split[2]+' · exit task '+d.split[3]);
+  TIERS.forEach((t,i)=>{const x=(p.tiers||{})[t.k];if(x&&x.task)L.push('','*'+t.name+'* ('+c[i]+' learners): '+x.task);});
+  const ww=Array.isArray(p.wordsOfTheWeek)?p.wordsOfTheWeek.filter(w=>w&&w.word).map(w=>w.word):[];
+  if(ww.length)L.push('','*Words of the week:* '+ww.join(', '));
+  if(p.remediation&&Array.isArray(p.remediation.sessions))L.push('','*Remediation:* '+(p.remediation.focus||'')+' · '+p.remediation.sessions.length+' sessions of 15 min');
+  if(p.exitTask&&p.exitTask.task)L.push('','*Exit task:* '+(p.exitTask.question||p.exitTask.task));
+  L.push('','After the lesson, enter the exit-task results in CAPS DI to plan the next lesson.');
+  return L.join('\n');
+}
+function shareWhatsApp(){
+  const p=V.planData;if(!p)return;
+  let t=planSummaryText(p);if(t.length>3500)t=t.slice(0,3490)+'…';
+  window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank','noopener');
+}
 function printWords(){
   const p=V.planData;const ww=p&&Array.isArray(p.wordsOfTheWeek)?p.wordsOfTheWeek.filter(w=>w&&w.word):[];if(!ww.length)return;
   const w=window.open('','_blank');if(!w){alert('Allow pop-ups to print the word cards.');return;}
