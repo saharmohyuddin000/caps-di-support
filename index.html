@@ -40,6 +40,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .ch .tag.fa{background:#fef3c7;color:#92400e}
 .ch.s{border-color:#93c5fd;background:#eff6ff;color:#1d4ed8}
 details.more{margin-top:8px}
+.offnote{display:flex;gap:8px;align-items:flex-start;background:#fffbeb;border:1px solid #fcd34d;color:#78350f;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;line-height:1.5}
+#toast{position:fixed;left:12px;right:12px;bottom:16px;z-index:50;display:none;align-items:center;gap:8px;background:#166534;color:#fff;border-radius:10px;padding:12px 14px;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+#toast button{margin-left:auto;background:#fff;color:#166534;border:0;border-radius:6px;padding:6px 10px;font-weight:600}
 .btn2.wa{color:#15803d;border-color:#86efac}
 .about summary{font-size:14px;font-weight:600;cursor:pointer;color:#1f2937;display:flex;align-items:center;gap:6px}
 .about p{font-size:13px;line-height:1.55;margin-top:10px}.about ul{padding-left:18px;margin-top:4px}.about li{font-size:13px;line-height:1.5;margin:4px 0}
@@ -216,6 +219,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
         <li><b>Reading passages</b> at three levels and a printable <b>word wall</b>.</li>
         <li><b>Remediation plan</b> for learners on Ratings 1–2, with an exit check and SIAS steps.</li>
       </ul>
+      <p><b>Without internet.</b> With no signal, CAPS DI still makes a basic plan on the phone from its own rules and knowledge base, and makes the full plan automatically once the phone is back online.</p>
       <p><b>On WhatsApp.</b> Any plan can be sent to WhatsApp as a short, low-data summary with <b>Send to WhatsApp</b>, for the teacher's own phone or a colleague. A full WhatsApp companion, where teachers make plans and send exit-task results by chat, is the next build.</p>
       <p class="who">This prototype covers English Home Language, Grades R–3. African home-language and English First Additional Language versions are planned.</p>
     </details>
@@ -450,7 +454,7 @@ async function init(){
   levelTable('lvt','levels','lvTotal',true);
   levelTable('lvt2','exitLevels','lvTotal2',false);
   if(!$('co').dataset.bound)$('co').dataset.bound='1',$('co').addEventListener('input',function(){if(this.value.trim()){V.outcome=null;document.querySelectorAll('#og .ch').forEach(c=>c.classList.remove('s'));}cb();});
-  renderSaved();
+  renderSaved();setTimeout(processQueue,1500);
   if(CAPS){renderOutcomes();return;}
   try{const rv=await fetch('data/videos.json');if(rv.ok)VIDEOS=await rv.json();}catch(_){VIDEOS=null;}
   try{const r2=await fetch('data/pedagogy.json');if(r2.ok)PED=await r2.json();}catch(_){PED=null;}
@@ -905,7 +909,7 @@ let generating=false;
 async function go4(){
   if(generating)return;
   if(V.levels.reduce((a,b)=>a+b,0)===0){go3();return;}
-  if(!navigator.onLine){alert('You are offline. A new plan needs a connection, but your saved plans still open from the first screen.');return;}
+  if(!navigator.onLine){showOfflinePlan();return;}
   generating=true;
   setStep(4);
   $('ld').style.display='block';$('pc').style.display='none';$('ldmsg').textContent='Diagnosing barriers and building your lesson…';
@@ -926,6 +930,7 @@ async function go4(){
     renderPlan(plan);
     savePlan();
   }catch(e){
+    if(e&&e.network){generating=false;showOfflinePlan();return;}
     V.planData=null;
     console.error('Plan generation failed:',e);
     $('pl').innerHTML='<p style="color:#dc2626;font-size:13px;padding:0.5rem">Could not generate plan. Please try again.</p><p style="color:#6b7280;font-size:11px;padding:0 0.5rem">Details: '+esc(e&&e.message?e.message:e)+'</p>';
@@ -934,12 +939,101 @@ async function go4(){
   }
 }
 
+// ---------- Offline: basic plan from CAPS DI's own rules, full plan when back online ----------
+const QUEUE_KEY='capsdi.pendingPlans.v1';
+function readQueue(){try{return JSON.parse(localStorage.getItem(QUEUE_KEY)||'[]');}catch(_){return[];}}
+function writeQueue(q){try{localStorage.setItem(QUEUE_KEY,JSON.stringify(q.slice(0,10)));}catch(_){}}
+function offlinePlan(){
+  const d=lessonDesign(),ot=currentOutcome();
+  // CAPS outcomes start with a verb like 'Reads' or 'Identifies'; turn it into 'read', 'identify'.
+  const low=(ot.charAt(0).toLowerCase()+ot.slice(1)).replace(/\.$/,'').replace(/^(\w+?)(ies|sses|shes|ches|xes|s)\b/,(m,st,end)=>st+(end==='ies'?'y':end==='s'?'':end.slice(0,-2)));
+  const errs=PED?PED.misconceptions.filter(m=>V.errors.includes(m.id)):[];
+  const bar=k=>{const b=PED&&PED.barriers.find(x=>x.key===k);return b?k+'. '+b.name:k;};
+  const pk=pickPathways(),path=PED&&PED.pathways[pk[0]],steps=path?path.steps:[];
+  const pg=progression();
+  const p={_offline:true,_design:d,_teachDomain:teachDomain(),
+    diagnosis:errs.length?errs.slice(0,3).map(m=>({barrier:bar(m.barrier),evidence:m.evidence,likelyCause:m.misconception,response:m.response})):
+      [{barrier:d.mode==='reteach'?'A. Prerequisite gap':'Check the evidence',evidence:d.why.replace(/<[^>]+>/g,''),likelyCause:'Tick the error patterns you observed for a more precise diagnosis.',response:d.focus}],
+    coreStrategy:path?path.name+': '+steps.join(' → '):'',
+    prerequisites:pg&&pg.prev&&pg.prev.items.length?pg.prev.items.slice(0,3):[],
+    learningIntention:'We are learning to '+low,
+    successCriteria:['I can show this on my own','I can explain how I did it'],
+    wholeClass:{duration:d.split[0]+' min',steps:steps.slice(0,3).map((x,i)=>['I do','We do','You do'][i]+': '+x),
+      movementBreak:V.profiles.some(v=>/attention|movement/.test(v))?'After each 3–5 minute input, a 1-minute movement or stretching break.':''},
+    tiers:{
+      foundational:{duration:d.split[1]+' min (groups)',task:(d.mode==='reteach'?'Reteach the prerequisite, then the outcome, ':'Work on the outcome ')+'in small steps with the teacher: '+(errs[0]?errs[0].response:(steps[0]||'model, practise together, then try alone'))+'.',
+        scaffolding:'Concrete materials, modelling for every step, one new thing at a time.',promptFading:['Full model','Partial prompt','Independent attempt'],checkForUnderstanding:'Each learner shows the skill once on their own while you watch.'},
+      intermediate:{duration:d.split[1]+' min (groups)',task:'Practise the outcome with a partner using a routine the class already knows, then a short independent task.',
+        scaffolding:'Worked example on the board; partner checks.',promptFading:['Partner support','Independent'],checkForUnderstanding:'Learners complete two items alone; check one per learner.'},
+      advanced:{duration:d.split[1]+' min (groups)',task:'Apply the outcome in a new or harder example and explain the thinking to a partner.',
+        scaffolding:'Challenge card; minimal support.',promptFading:['Brief check-in','Independent'],checkForUnderstanding:'Learner explains how they did it in one or two sentences.'}},
+    misconceptionsToWatch:errs.map(m=>({ifYouSee:m.evidence,itMayMean:m.misconception,sayOrDo:m.response})),
+    individualSupports:d.watch.map(w=>w.replace(/<[^>]+>/g,'')),
+    exitTask:{question:'Can the learner independently '+low+'?',task:'Ask each learner to show the skill once on their own (5 minutes). Record who could do it alone, with help, or not yet.',alignedTo:ot,
+      scoring:[{levels:'Ratings 1–3',evidence:'Not yet, even with help'},{levels:'Ratings 4–5',evidence:'Can do it with some help or errors'},{levels:'Ratings 6–7',evidence:'Does it alone, accurately, and can explain it'}]}};
+  if(V.remed.on&&remedCount()){
+    const rd=REMED_DOMAINS.find(x=>x.k===V.remed.domain)||REMED_DOMAINS[0];
+    const rp=PED&&PED.pathways[rd.path],rs=rp?rp.steps:[];
+    const lk=['letterKnowledge','alphabetic'].includes(rd.k)&&V.grade==='Grade 1';
+    p._remed={n:remedCount(),k:rd.k};
+    p.remediation={focus:rd.l,why:remedCount()+' learners are on Ratings 1–'+RULES.remediationMaxRating+' for this outcome.',
+      entryCheck:'A 2-minute one-to-one check of '+rd.l.toLowerCase()+' using this term\'s letters, sounds or words.',
+      sessions:[0,1,2,3,4,5].map(i=>({n:i+1,focus:rs.length?rs[i%rs.length]:rd.l,activity:i<3?'Teach and practise this step with the group; use concrete materials and plenty of repetition.':'Revise the earlier steps, then practise this one until learners can do it alone.',minutes:15})),
+      progressCheck:'After session 3, repeat the entry check and compare.',
+      exitCriteria:lk?'Rejoins the Foundational group when the learner sounds about 40 letters correctly in one minute (Grade 1 benchmark), or gets 4 of 5 items right on two different days.':'Rejoins the Foundational group after getting 4 of 5 items right on two different days.',
+      ifNoProgress:'Begin the SIAS process: complete the SNA 1 and discuss the learner with the School-Based Support Team.'};
+  }
+  return p;
+}
+function showOfflinePlan(){
+  const plan=offlinePlan();
+  // Queue the full plan so it is made automatically when the phone is back online.
+  try{
+    const q=readQueue();
+    q.push({at:new Date().toISOString(),prompt:buildPrompt(),
+      state:JSON.parse(JSON.stringify(Object.assign({},V,{planData:null}))),
+      meta:{grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome(),levels:V.levels.slice()},
+      extras:{_design:plan._design,_teachDomain:plan._teachDomain,_remed:plan._remed||null}});
+    writeQueue(q);
+  }catch(_){}
+  setStep(4);
+  const c=tierCounts(V.levels);
+  $('mt').innerHTML='<strong>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</strong><br>Outcome: '+esc(currentOutcome())+'<br><span style="color:#6b7280">'+TIERS.map((t,i)=>t.name+': '+c[i]).join(' · ')+' learners</span>';
+  V.planData=plan;V.checks={};renderPlan(plan);savePlan();
+  $('ld').style.display='none';$('pc').style.display='block';
+}
+let processingQueue=false;
+async function processQueue(){
+  if(processingQueue||!navigator.onLine||!readQueue().length)return;
+  processingQueue=true;
+  try{
+    while(readQueue().length&&navigator.onLine){
+      const item=readQueue()[0];
+      let plan;
+      try{plan=await requestPlan(item.prompt);}
+      catch(e){if(e&&e.network)break;writeQueue(readQueue().slice(1));continue;}
+      const saved=V;V=Object.assign(freshState(),item.state);
+      try{plan._issues=planIssues(plan);}finally{V=saved;}
+      Object.assign(plan,item.extras||{});
+      saveEntry(Object.assign({at:new Date().toISOString()},item.meta,{plan}));
+      writeQueue(readQueue().slice(1));
+      notify('Your full plan for '+item.meta.grade+' · '+item.meta.term+' is ready.');
+    }
+  }finally{processingQueue=false;}
+}
+function notify(msg){
+  let t=$('toast');if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t);}
+  t.innerHTML='<i class="ti ti-circle-check"></i> <span>'+esc(msg)+'</span> <button onclick="openSaved(0);document.getElementById(\'toast\').style.display=\'none\'">Open</button>';
+  t.style.display='flex';setTimeout(()=>{t.style.display='none';},20000);
+}
+window.addEventListener('online',()=>{processQueue();});
 function list(a){return Array.isArray(a)?a.filter(x=>typeof x==='string'&&x.trim()):[];}
 const DIM_LABELS={access:['Access','How learners take in the content'],process:['Process','How learners work with it'],support:['Support','Scaffolds to provide, then fade'],response:['Response','How learners show understanding'],challenge:['Challenge','Stretch for those who have mastered it']};
 function renderPlan(p){
   const c=tierCounts(V.levels);
   let h='';
   if(p._issues&&p._issues.length)h+='<div class="qnote"><i class="ti ti-alert-triangle"></i> Quality check: this plan is missing '+esc(p._issues.join(', '))+'. You can generate again from the previous screen.</div>';
+  if(p._offline)h+='<div class="offnote"><i class="ti ti-wifi-off"></i><span><b>Basic plan, made without internet.</b> Built on your phone from CAPS DI\'s teaching rules and knowledge base; the full plan adds tailored activities, reading passages and a word wall. '+(readQueue().length?'Your full plan will be made automatically as soon as you are back online, and saved under Your saved plans.':'Generate again when you are online for the full plan.')+'</span></div>';
   if(p._design)h+=designPanel(p._design);
   if(p.dataInsight)h+='<div class="insight"><i class="ti ti-chart-bar"></i> <strong>Data insight:</strong> '+esc(p.dataInsight)+'</div>';
   const dg=Array.isArray(p.diagnosis)?p.diagnosis.filter(d=>d&&d.barrier):[];
@@ -1076,7 +1170,7 @@ async function requestPlan(prompt){
       const ctl=new AbortController();const timer=setTimeout(()=>ctl.abort(),60000);
       let res;
       try{res=await fetch(PLAN_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt}),signal:ctl.signal});}
-      catch(err){throw new Error(err.name==='AbortError'?'The request took too long. Check your internet connection and try again.':'Could not reach the plan service. Check your internet connection.');}
+      catch(err){const ne=new Error(err.name==='AbortError'?'The request took too long. Check your internet connection and try again.':'Could not reach the plan service. Check your internet connection.');ne.network=true;throw ne;}
       finally{clearTimeout(timer);}
       let data;
       try{data=await res.json();}catch(_){throw new Error('Server returned status '+res.status);}
@@ -1090,19 +1184,16 @@ async function requestPlan(prompt){
 // ---------- Saved plans (this phone only; class-level data, no learner names) ----------
 const SAVE_KEY='capsdi.savedPlans.v1';
 function readSaved(){try{return JSON.parse(localStorage.getItem(SAVE_KEY)||'[]');}catch(_){return[];}}
-function savePlan(){
-  try{
-    const list=readSaved();
-    list.unshift({at:new Date().toISOString(),grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome(),levels:V.levels.slice(),plan:V.planData});
-    localStorage.setItem(SAVE_KEY,JSON.stringify(list.slice(0,20)));
-  }catch(_){}
+function savePlan(){saveEntry({at:new Date().toISOString(),grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome(),levels:V.levels.slice(),plan:V.planData});}
+function saveEntry(entry){
+  try{const list=readSaved();list.unshift(entry);localStorage.setItem(SAVE_KEY,JSON.stringify(list.slice(0,20)));}catch(_){}
   renderSaved();
 }
 function renderSaved(){
   const list=readSaved(),box=$('savedList');if(!box)return;
   $('savedCard').style.display=list.length?'block':'none';box.innerHTML='';
   list.forEach((s,i)=>{const b=document.createElement('button');b.className='ch';
-    b.innerHTML='<span class="tag">'+esc(s.grade)+' · '+esc(s.term)+'</span><span class="tag">'+esc(s.skill)+'</span>'+esc(s.outcome)+'<br><span style="font-size:11px;color:#9ca3af">'+esc(new Date(s.at).toLocaleDateString())+'</span>';
+    b.innerHTML='<span class="tag">'+esc(s.grade)+' · '+esc(s.term)+'</span><span class="tag">'+esc(s.skill)+'</span>'+(s.plan&&s.plan._offline?'<span class="tag" style="background:#fef3c7;color:#92400e">basic · offline</span>':'')+esc(s.outcome)+'<br><span style="font-size:11px;color:#9ca3af">'+esc(new Date(s.at).toLocaleDateString())+'</span>';
     b.onclick=()=>openSaved(i);box.appendChild(b);});
 }
 function openSaved(i){
