@@ -106,7 +106,9 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .remplan .dlbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:#6b7280;margin:10px 0 4px}
 .remplan{border:1px solid #fecaca;background:#fffafa;border-radius:10px;padding:12px 14px}
 .rsess{width:100%;border-collapse:collapse;margin:8px 0}.rsess td{border-top:1px solid #fde2e2;padding:6px 4px;font-size:12px;vertical-align:top}.rsess td:first-child{width:78px;white-space:nowrap}.rsess span{color:#6b7280}
-.vids{list-style:none;padding-left:0}.vids li{font-size:12px;margin:4px 0}.vids a{color:#1d4ed8;text-decoration:none;font-weight:600}
+.vids{list-style:none;padding-left:0}.vlbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:#6b7280;margin:10px 0 2px}
+.wwall{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.wwall div{border:2px solid #fde68a;background:#fffbeb;border-radius:8px;padding:8px;text-align:center}
+.wwall b{display:block;font-size:18px;color:#92400e}.wwall span{display:block;font-size:11px;color:#374151;margin-top:2px}.wwall i{display:block;font-size:10px;color:#9ca3af;margin-top:2px}.vids li{font-size:12px;margin:4px 0}.vids a{color:#1d4ed8;text-decoration:none;font-weight:600}
 .insight{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#166534;line-height:1.5}
 .qnote{font-size:11px;color:#92400e;background:#fffbeb;border-radius:8px;padding:8px 10px;margin-bottom:12px}
 .dom{border:1px solid #e0e3e8;border-radius:10px;padding:12px;margin-bottom:10px}
@@ -648,6 +650,10 @@ const REMED_DOMAINS=[
   {k:'handwriting',l:'Handwriting',areas:['Handwriting'],path:'handwriting'},
   {k:'writing',l:'Writing',areas:['Writing','Grammar'],path:'writing'}];
 let VIDEOS=null;
+// Skill whose teaching videos to show under the core strategy.
+function teachDomain(){const m={phonics:'blending',phonemic:'phonemic',phonological:'phonological',letterKnowledge:'letterKnowledge',segmenting:'segmenting',fluency:'fluency',comprehension:'comprehension',oral:'oral',handwriting:'handwriting',writing:'writing'};return m[pickPathways()[0]]||null;}
+function videoList(k,max){const vids=k&&VIDEOS&&VIDEOS[k];if(!vids||!vids.length)return '';
+  return '<ul class="vids">'+vids.slice(0,max||9).map(v=>'<li><a href="'+esc(v.url)+'" target="_blank" rel="noopener"><i class="ti ti-player-play"></i> '+esc(v.title)+'</a> <span class="who">· '+esc(v.source)+'</span></li>').join('')+'</ul>';}
 function remedCount(){return V.levels.slice(0,RULES.remediationMaxRating).reduce((a,b)=>a+b,0);}
 function suggestDomain(){
   const tally={};
@@ -815,7 +821,8 @@ dims,
 '6. Misconceptions to watch: likely wrong responses, what each means, and exactly what the teacher can say or do.',
 '7. Resources zero-cost or locally available unless class notes say otherwise. Use real words, letters, sentences and examples a '+V.grade+' teacher can use tomorrow. About 45–60 minutes in total.',
 '8. Do not cite research papers or authors.',
-passages?'9. Graded passages: the teacher has no big books or graded readers. Write one ORIGINAL short passage per tier on the same topic, so the class can discuss one story while each group reads at its own level. Foundational: decodable — only letters, sounds and high-frequency words taught by this point in CAPS for '+V.grade+' '+V.term+', 3–5 very short sentences with a repeated pattern. Intermediate: 5–8 sentences, mostly decodable plus common sight words. Advanced: 8–12 sentences with richer vocabulary and one idea that needs inferring. Give each passage 2–3 questions (literal for Foundational; literal and one inference for Intermediate; including one higher-order question for Advanced). Adapt for the learner needs listed (e.g. large print, picture cues to draw, fewer lines, read-aloud or echo-reading for learners who cannot yet read independently) in accessNotes. Use South African names, places and everyday contexts.':'',
+'10. Words of the week: choose 5–8 words from today\'s text or theme for the class word wall, each with a child-friendly meaning and a picture or action to show it; use them again in the lesson. Label every comprehension question you write as (Literal), (Inferential) or (Evaluative).',
+passages?'9. Graded passages: the teacher has no big books or graded readers. Write one ORIGINAL short passage per tier on the same topic, so the class can discuss one story while each group reads at its own level. Foundational: decodable — only letters, sounds and high-frequency words taught by this point in CAPS for '+V.grade+' '+V.term+', 3–5 very short sentences with a repeated pattern. Intermediate: 5–8 sentences, mostly decodable plus common sight words. Advanced: 8–12 sentences with richer vocabulary and one idea that needs inferring. Give each passage 2–3 questions, each labelled (Literal), (Inferential) or (Evaluative): literal for Foundational; literal and one inferential for Intermediate; including one evaluative or higher-order question for Advanced. Adapt for the learner needs listed (e.g. large print, picture cues to draw, fewer lines, read-aloud or echo-reading for learners who cannot yet read independently) in accessNotes. Use South African names, places and everyday contexts.':'',
 '',
 'Return ONLY valid JSON in exactly this shape (no markdown):',
 '{"diagnosis":[{"barrier":"B. Misconception","evidence":"...","likelyCause":"...","response":"..."}],'+
@@ -829,7 +836,7 @@ passages?'9. Graded passages: the teacher has no big books or graded readers. Wr
 '"misconceptionsToWatch":[{"ifYouSee":"...","itMayMean":"...","sayOrDo":"..."}],'+
 '"individualSupports":["..."],'+
 '"exitTask":{"question":"Can the learner independently ...?","task":"...","alignedTo":"which CAPS item it checks","scoring":[{"levels":"Ratings 1–3","evidence":"..."},{"levels":"Ratings 4–5","evidence":"..."},{"levels":"Ratings 6–7","evidence":"..."}]},'+
-'"dataInsight":"One sentence on how the class evidence shaped this plan","nextSteps":"One sentence on how to adjust the next lesson using the exit task results"'+
+'"wordsOfTheWeek":[{"word":"...","meaning":"child-friendly meaning","show":"picture or action"}],"dataInsight":"One sentence on how the class evidence shaped this plan","nextSteps":"One sentence on how to adjust the next lesson using the exit task results"'+
 (V.remed.on&&remedCount()?',"remediation":{"focus":"skill targeted","why":"one sentence from the evidence","entryCheck":"2-minute check","sessions":[{"n":1,"focus":"...","activity":"exact words, letters and steps","minutes":15}],"progressCheck":"after session 3","exitCriteria":"when a learner rejoins the Foundational group","ifNoProgress":"SIAS steps"}':'')+
 (passages?',"passages":{"foundational":{"title":"...","text":"...","features":"what makes it right for this group","questions":["..."],"accessNotes":"..."},"intermediate":{...same keys},"advanced":{...same keys}}':'')+'}'
   ].filter(x=>x!=='').join('\n');
@@ -881,7 +888,7 @@ async function go4(){
       const issues2=planIssues(plan2);
       if(issues2.length<issues.length){plan=plan2;issues=issues2;}
     }
-    plan._issues=issues;plan._design=lessonDesign();if(V.remed.on&&remedCount())plan._remed={n:remedCount(),k:V.remed.domain};
+    plan._issues=issues;plan._design=lessonDesign();plan._teachDomain=teachDomain();if(V.remed.on&&remedCount())plan._remed={n:remedCount(),k:V.remed.domain};
     V.planData=plan;V.checks={};
     renderPlan(plan);
     savePlan();
@@ -915,7 +922,8 @@ function renderPlan(p){
       (pg.next&&pg.next.items.length?'<div><span class="who">Next · '+esc(pg.next.label)+'</span><ul>'+pg.next.items.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>':'')+'</div></div>';}
   if(p.coreStrategy||list(p.prerequisites).length){
     h+='<div class="sec"><h3><i class="ti ti-route"></i> Core teaching strategy</h3>'+(p.coreStrategy?'<p>'+esc(p.coreStrategy)+'</p>':'')+
-      (list(p.prerequisites).length?'<div class="kv"><strong>Learners need to know first:</strong> '+list(p.prerequisites).map(esc).join(' · ')+'</div>':'')+'</div>';}
+      (list(p.prerequisites).length?'<div class="kv"><strong>Learners need to know first:</strong> '+list(p.prerequisites).map(esc).join(' · ')+'</div>':'')+
+      (videoList(p._teachDomain,3)?'<p class="vlbl">Watch how to teach it</p>'+videoList(p._teachDomain,3):'')+'</div>';}
   h+='<div class="sec li-box"><h3><i class="ti ti-target"></i> Learning intention</h3><p>'+esc(p.learningIntention)+'</p>';
   const sc=list(p.successCriteria);if(sc.length)h+='<p style="margin-top:8px;font-weight:600;font-size:12px">Success criteria</p><ul>'+sc.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
   h+='</div><div class="div"></div>';
@@ -959,6 +967,9 @@ function renderPlan(p){
       (list(x.questions).length?'<div class="kv"><strong>Questions:</strong><ol style="margin:4px 0 0 18px">'+list(x.questions).map(q=>'<li>'+esc(q)+'</li>').join('')+'</ol></div>':'')+
       (x.features?'<div class="kv"><strong>Why this level:</strong> '+esc(x.features)+'</div>':'')+
       (x.accessNotes?'<div class="kv"><strong>Adaptations:</strong> '+esc(x.accessNotes)+'</div>':'')+'</div>').join('')+'</div>';}
+  const ww=Array.isArray(p.wordsOfTheWeek)?p.wordsOfTheWeek.filter(w=>w&&w.word):[];
+  if(ww.length){h+='<div class="sec"><h3><i class="ti ti-cards"></i> Word wall: words of the week <button class="btn2" style="margin-left:auto;padding:4px 10px;font-size:12px" onclick="printWords()"><i class="ti ti-printer"></i> Print cards</button></h3><p class="hint">Put these on the wall and use them every day this week, across reading, writing and other subjects.</p><div class="wwall">'+
+    ww.map(w=>'<div><b>'+esc(w.word)+'</b><span>'+esc(w.meaning||'')+'</span>'+(w.show?'<i>'+esc(w.show)+'</i>':'')+'</div>').join('')+'</div></div>';}
   const e=p.exitTask||{};
   if(e.task){h+='<div class="sec exit"><h3><i class="ti ti-clipboard-check"></i> Exit task</h3>'+(e.question?'<p style="font-weight:600">'+esc(e.question)+'</p>':'')+'<p>'+esc(e.task)+'</p>'+(e.alignedTo?'<p class="who" style="margin-top:4px">Checks: '+esc(e.alignedTo)+'</p>':'');
     if(Array.isArray(e.scoring)&&e.scoring.length)h+='<table>'+e.scoring.map(r=>'<tr><td>'+esc(r&&r.levels)+'</td><td>'+esc(r&&r.evidence)+'</td></tr>').join('')+'</table>';
@@ -967,6 +978,12 @@ function renderPlan(p){
   $('pl').innerHTML=h;
 }
 
+function printWords(){
+  const p=V.planData;const ww=p&&Array.isArray(p.wordsOfTheWeek)?p.wordsOfTheWeek.filter(w=>w&&w.word):[];if(!ww.length)return;
+  const w=window.open('','_blank');if(!w){alert('Allow pop-ups to print the word cards.');return;}
+  w.document.write('<!doctype html><meta charset="utf-8"><title>Words of the week</title><style>body{font-family:Arial,sans-serif;margin:16px}.c{border:3px solid #333;border-radius:12px;padding:30px 16px;margin:0 0 16px;text-align:center;page-break-inside:avoid}.c b{font-size:72px;display:block}.c span{font-size:18px;color:#444}</style>'+ww.map(x=>'<div class="c"><b>'+esc(x.word)+'</b><span>'+esc(x.meaning||'')+'</span></div>').join(''));
+  w.document.close();w.focus();w.print();
+}
 function printPassages(){
   const p=V.planData;if(!p||!p.passages)return;
   const body=TIERS.map(t=>{const x=p.passages[t.k];if(!x||!x.text)return '';
@@ -981,7 +998,7 @@ function designPanel(d){
   h+='<p class="dfocus">'+esc(d.focus)+'</p><p class="dwhy">'+d.why+'</p>';
   h+='<div class="dsplit">'+d.split.map((m,i)=>'<div style="flex:'+m+'"><b>'+m+' min</b><span>'+tl[i]+'</span></div>').join('')+'</div>';
   h+='<p class="dlbl">Groups today</p><ul class="dgroups">'+d.groups.map(g=>'<li><span class="tbadge '+g.tier.bg+'">'+esc(g.label)+'</span> '+g.size+' learners · '+(g.withTeacher?'<b>with you</b>'+(g.slot?' ('+g.slot+')':''):g.coach?'<b>short individual sessions with you</b>':g.solo?'individual task':'independent or peer task')+'</li>').join('')+'</ul>';
-  if(d.rotation&&d.rotation.length>1)h+='<p class="dlbl">Your teacher time this week'+(d.large?' (large class)':'')+'</p><table class="drot">'+d.rotation.map(r=>'<tr><td>'+esc(r.tier.name)+'</td><td>'+['Mon','Tue','Wed','Thu','Fri'].map(x=>'<span class="'+(r.days.includes(x)?'on':'')+'">'+x+'</span>').join('')+'</td></tr>').join('')+'</table>';
+  if(d.rotation&&d.rotation.length>1)h+='<p class="dlbl">Your teacher time this week'+(d.large?' (large class)':'')+'</p><table class="drot">'+d.rotation.map(r=>'<tr><td>'+esc(r.tier.name)+'</td><td>'+['Mon','Tue','Wed','Thu','Fri'].map(x=>'<span class="'+(r.days.includes(x)?'on':'')+'">'+x+'</span>').join('')+'</td></tr>').join('')+'</table>'+'<p class="who" style="margin-top:4px">Following a routine with one guided-reading group a day? Give '+esc(d.rotation[0].tier.name)+' learners the extra slots this week.</p>';
   if(d.watch&&d.watch.length)h+='<p class="dlbl">Individual support</p><ul>'+d.watch.map(w=>'<li>'+w+'</li>').join('')+'</ul>';
   h+='<p class="dlbl">What the exit task decides for tomorrow</p><ul><li><b>'+Math.round(RULES.securedAt*100)+'% or more</b> on Rating 4+: outcome secured, move to the next CAPS step.</li><li><b>'+Math.round(RULES.consolidateAt*100)+'–'+(Math.round(RULES.securedAt*100)-1)+'%</b>: consolidate the same outcome and regroup.</li><li><b>Below '+Math.round(RULES.consolidateAt*100)+'%</b>: reteach with a different approach (more concrete, more multisensory).</li></ul>';
   return h+'</div>';

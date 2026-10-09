@@ -1,22 +1,122 @@
 {
-  "note": "Teaching videos per decoding and literacy domain, shown with remediation plans. Curated list; add vetted videos here (title, source, url).",
+  "note": "Teaching videos per skill. Linked from the publishers’ public pages, not copied. Sources: NECT Foundation Phase training; Funda Wande Reading Academy.",
   "letterKnowledge": [
-    {"title": "Introduce new sounds and words (video 3)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"}
+    {
+      "title": "Introduce new sounds and words (video 3)",
+      "source": "NECT Foundation Phase training",
+      "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"
+    }
   ],
   "phonemic": [
-    {"title": "Phonemic awareness and phonics activities: introduction (video 1)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"},
-    {"title": "Differentiate new sounds (video 4)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"}
+    {
+      "title": "Phonemic awareness and phonics activities: introduction (video 1)",
+      "source": "NECT Foundation Phase training",
+      "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"
+    },
+    {
+      "title": "Differentiate new sounds (video 4)",
+      "source": "NECT Foundation Phase training",
+      "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"
+    }
   ],
   "alphabetic": [
-    {"title": "Introduce new sounds and words (video 3)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"},
-    {"title": "Letter swap (video 6)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"}
+    {
+      "title": "Introduce new sounds and words (video 3)",
+      "source": "NECT Foundation Phase training",
+      "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"
+    },
+    {
+      "title": "Letter swap (video 6)",
+      "source": "NECT Foundation Phase training",
+      "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"
+    }
   ],
   "blending": [
-    {"title": "Segment and blend (video 5)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"},
-    {"title": "Review and build (video 2)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"}
+    {
+      "title": "Segment and blend (video 5)",
+      "source": "NECT Foundation Phase training",
+      "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"
+    },
+    {
+      "title": "Review and build (video 2)",
+      "source": "NECT Foundation Phase training",
+      "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"
+    }
   ],
   "segmenting": [
-    {"title": "Segment and blend (video 5)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"},
-    {"title": "Word find (video 7)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"}
+    {
+      "title": "Segment and blend (video 5)",
+      "source": "NECT Foundation Phase training",
+      "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"
+    },
+    {
+      "title": "Word find (video 7)",
+      "source": "NECT Foundation Phase training",
+      "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"
+    }
+  ],
+  "comprehension": [
+    {
+      "title": "Teaching comprehension: overview",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/165.%20Teaching%20Comprehension%20Overview_1.mp4"
+    },
+    {
+      "title": "Activating background knowledge",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/143.%20Background%20Knowledge%20using%20a%20map%20Shorter%20version_1.mp4"
+    },
+    {
+      "title": "Predicting",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/1J.%20Predicting.mp4"
+    },
+    {
+      "title": "Visualising",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/152.%20Visualising_1.mp4"
+    },
+    {
+      "title": "Inferring",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/149.%20Inferring_1.mp4"
+    },
+    {
+      "title": "Monitoring and repair",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/148.%20Monitoring%20and%20Repair_1.mp4"
+    },
+    {
+      "title": "Summarising",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/147.%20Summarising%20Non-Fiction_1.mp4"
+    },
+    {
+      "title": "Types of questions (literal, inferential, evaluative)",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/150.%20Types%20of%20Questions_1.mp4"
+    },
+    {
+      "title": "Practising inferential questions",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/178.%20Comprehension%20Inferential%20Questions%20Practice%20Shorter_1.mp4"
+    }
+  ],
+  "oral": [
+    {
+      "title": "What is vocabulary?",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/118.%20What%20is%20Vocabulary_1.mp4"
+    },
+    {
+      "title": "Explicit vocabulary teaching: words of the week and the word wall",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/123%20What%20is%20explicit%20vocab%20teaching.mp4"
+    },
+    {
+      "title": "Incidental vocabulary teaching",
+      "source": "Funda Wande Reading Academy",
+      "url": "https://fundawande.org/img/cms/video-resources/104.%20What%20is%20incidental%20vocabulary%20teaching_1.mp4"
+    }
   ]
 }

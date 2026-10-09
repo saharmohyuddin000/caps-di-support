@@ -87,23 +87,23 @@
     "comprehension": {
       "name": "Explicit comprehension instruction",
       "steps": [
-        "Build vocabulary and background knowledge",
-        "Teacher think-aloud",
-        "Guided text discussion",
-        "Questioning from literal to inferential",
-        "Learner explains with evidence",
-        "Independent application"
+        "Activate background knowledge before reading",
+        "Teach one strategy explicitly with NEMPA: Name it, Explain it, Model it with a think-aloud, Practise together, Apply independently",
+        "Strategies across the year: predicting, visualising, inferring, monitoring and repair (stop, reread, fix), summarising",
+        "Ask a mix of literal (in the text), inferential (text clues plus what you know) and evaluative (your opinion) questions",
+        "Learner explains the answer with evidence from the text",
+        "Independent application in group guided and paired reading"
       ]
     },
     "oral": {
       "name": "Oral language and vocabulary development",
       "steps": [
-        "Introduce words with pictures and objects",
-        "Model the language structure",
-        "Oral rehearsal in pairs",
-        "Repeated use of new words",
-        "Questioning and discussion",
-        "Use words in new contexts"
+        "Choose 5–8 words of the week from the shared-reading text or theme",
+        "Introduce each word explicitly with a flash card, picture, action and a child-friendly meaning",
+        "Put the words on the word wall and revisit them every day across activities (read-aloud, phonics, writing, Life Skills, Maths)",
+        "Learners say, read and use each word in a sentence; extend learners’ answers with richer words",
+        "Read aloud daily from varied texts so learners meet words not used in everyday speech",
+        "Check: can learners use the words in speech and writing by the end of the week?"
       ]
     },
     "writing": {
@@ -597,7 +597,9 @@
   "sources": [
     "CAPS English Home Language Grades R–3 (DBE)",
     "CAPS-DI pedagogical roadmap (RADAF)",
-    "Sesotho and isiZulu Reading Project (2023), Module 3: Decoding (Centre for African Language Teaching, University of Johannesburg; JET Education Services), CC BY-NC-SA. Ideas paraphrased, not copied."
+    "Sesotho and isiZulu Reading Project (2023), Module 3: Decoding (Centre for African Language Teaching, University of Johannesburg; JET Education Services), CC BY-NC-SA. Ideas paraphrased, not copied.",
+    "Funda Wande Reading Academy (2020), Booklet 2: Comprehension (vocabulary, comprehension strategies, questioning). Ideas paraphrased; videos linked, not copied.",
+    "NECT / DBE Primary School Reading Improvement Programme (PSRIP), Grade 3 EFAL Term 3 Lesson Plan (2023): weekly routine and group guided reading. Used as a structural reference only."
   ],
   "benchmarks": {
     "letterSounds": {
@@ -828,5 +830,26 @@
       "Teach two- and three-letter sounds (e.g. hl, kh, tsh) as single units; teach consonant clusters early as sequences of sounds already learned",
       "Morphological awareness (noun prefixes, subject and object morphemes) supports reading long words, incidentally in Grades 1–2 and deliberately in Grade 3"
     ]
+  },
+  "readingActivities": {
+    "note": "Gradual release of responsibility across the five CAPS reading activities (paraphrased from Funda Wande)",
+    "order": [
+      "Teacher read-aloud (teacher reads, learners listen and think)",
+      "Shared reading (teacher and learners read an enlarged text together)",
+      "Group guided reading (small same-level group reads with the teacher)",
+      "Paired reading (learners read with a partner)",
+      "Independent reading (learners read on their own)"
+    ]
+  },
+  "groupGuidedReading": {
+    "note": "Common South African classroom routine (paraphrased from the DBE/NECT PSRIP lesson plans and Funda Wande)",
+    "points": [
+      "Many classes follow a weekly routine with one group guided reading slot a day, so the teacher reads with each group about once a week",
+      "Groups are often formed once, from listening to each learner read in the first weeks of the term",
+      "While the teacher reads with one group, the others complete a short reading worksheet that uses only phonic and sight words already taught",
+      "Seat a weaker reader next to a stronger reader so that peer support happens during independent work",
+      "Learners who finish early choose a book for independent reading"
+    ],
+    "capsDiAdds": "CAPS DI regroups learners after every exit task, from the CAPS ratings and error patterns, and tells the teacher which group needs the extra guided-reading slots this week."
   }
 }
