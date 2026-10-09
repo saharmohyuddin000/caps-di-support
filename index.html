@@ -750,7 +750,9 @@ function researchPrompt(lv){
   if(lv<2&&reading&&PED.phonicsLesson&&[...doms].some(d=>['alphabetic','blending','letterKnowledge','phonemic'].includes(d)))out.push('Phonics lesson structure to follow: '+PED.phonicsLesson.steps.join(' → ')+'. Avoid: '+PED.phonicsLesson.avoid.join('; ')+'.');
   const b=PED.benchmarks||{};
   if(reading&&V.grade==='Grade 1'&&b.letterSounds)out.push('Benchmark: '+b.letterSounds.target+' ('+b.letterSounds.what+'). '+b.letterSounds.when+'.');
-  if(reading&&(V.grade==='Grade 2'||V.grade==='Grade 3')&&b.accuracyBeforeSpeed&&doms.has('fluency'))out.push('Fluency principle: '+b.accuracyBeforeSpeed.target+'. Do not invent words-per-minute targets for English.');
+  const efal=V.languages.some(l=>l!=='English');
+  if(reading&&(V.grade==='Grade 2'||V.grade==='Grade 3')&&b.accuracyBeforeSpeed&&doms.has('fluency'))out.push('Accuracy before speed: '+b.accuracyBeforeSpeed.target);
+  if(reading&&(V.grade==='Grade 2'||V.grade==='Grade 3')&&efal&&b.orfEFAL)out.push('For learners reading English as an additional language, the EFAL minimum benchmark (developed with the DBE, 2022) is '+b.orfEFAL.targets[V.grade]+' correct words per minute by the end of '+V.grade+'. '+b.orfEFAL.zones+'. Do not set other words-per-minute targets.');
   return out.join('\n');
 }
 // The plan service accepts prompts up to 20,000 characters, so long inputs are compacted step by step.
@@ -992,6 +994,12 @@ function printPassages(){
   w.document.write('<!doctype html><meta charset="utf-8"><title>Reading passages</title><style>body{font-family:Arial,sans-serif;margin:24px}section{page-break-after:always}p.g{color:#666;font-size:14px}h2{font-size:28px}p.t{font-size:26px;line-height:1.8;white-space:pre-wrap}li{font-size:20px;margin:8px 0}</style>'+body);
   w.document.close();w.focus();w.print();
 }
+function benchmarkLine(){
+  const b=PED&&PED.benchmarks;if(!b||V.skill!=='Reading and Phonics')return '';
+  if(V.grade==='Grade 1')return 'By the end of Grade 1: <b>40 letter-sounds correct in one minute</b> (random order, one-to-one). Test near the end of Term 3 and reteach in Term 4.';
+  if((V.grade==='Grade 2'||V.grade==='Grade 3')&&V.languages.some(l=>l!=='English')&&b.orfEFAL)return 'For learners reading English as an additional language: <b>'+b.orfEFAL.targets[V.grade]+' correct words per minute</b> by the end of '+esc(V.grade)+' (EFAL minimum, 2022). Below 50, learners cannot yet understand what they read on their own.';
+  return '';
+}
 function designPanel(d){
   const tl=['Whole class','Small groups','Individual','Exit task'];
   let h='<div class="design"><h3><i class="ti ti-layout-grid"></i> Lesson design <span class="who">· decided from your class data</span></h3>';
@@ -1000,6 +1008,7 @@ function designPanel(d){
   h+='<p class="dlbl">Groups today</p><ul class="dgroups">'+d.groups.map(g=>'<li><span class="tbadge '+g.tier.bg+'">'+esc(g.label)+'</span> '+g.size+' learners · '+(g.withTeacher?'<b>with you</b>'+(g.slot?' ('+g.slot+')':''):g.coach?'<b>short individual sessions with you</b>':g.solo?'individual task':'independent or peer task')+'</li>').join('')+'</ul>';
   if(d.rotation&&d.rotation.length>1)h+='<p class="dlbl">Your teacher time this week'+(d.large?' (large class)':'')+'</p><table class="drot">'+d.rotation.map(r=>'<tr><td>'+esc(r.tier.name)+'</td><td>'+['Mon','Tue','Wed','Thu','Fri'].map(x=>'<span class="'+(r.days.includes(x)?'on':'')+'">'+x+'</span>').join('')+'</td></tr>').join('')+'</table>'+'<p class="who" style="margin-top:4px">Following a routine with one guided-reading group a day? Give '+esc(d.rotation[0].tier.name)+' learners the extra slots this week.</p>';
   if(d.watch&&d.watch.length)h+='<p class="dlbl">Individual support</p><ul>'+d.watch.map(w=>'<li>'+w+'</li>').join('')+'</ul>';
+  const bm=benchmarkLine();if(bm)h+='<p class="dlbl">Reading benchmark</p><p style="font-size:12px">'+bm+'</p>';
   h+='<p class="dlbl">What the exit task decides for tomorrow</p><ul><li><b>'+Math.round(RULES.securedAt*100)+'% or more</b> on Rating 4+: outcome secured, move to the next CAPS step.</li><li><b>'+Math.round(RULES.consolidateAt*100)+'–'+(Math.round(RULES.securedAt*100)-1)+'%</b>: consolidate the same outcome and regroup.</li><li><b>Below '+Math.round(RULES.consolidateAt*100)+'%</b>: reteach with a different approach (more concrete, more multisensory).</li></ul>';
   return h+'</div>';
 }

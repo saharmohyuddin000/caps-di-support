@@ -383,7 +383,7 @@
       "skill": "Reading and Phonics",
       "area": "Fluency",
       "misconception": "Reads slowly and makes many errors",
-      "evidence": "Fewer than about 95% of words read correctly",
+      "evidence": "Many words read wrongly: in English fewer than about 85% correct (about 95% in an African home language)",
       "barrier": "A",
       "response": "Return to targeted phonics and word reading before fluency practice",
       "origin": "research"
@@ -393,7 +393,7 @@
       "skill": "Reading and Phonics",
       "area": "Fluency",
       "misconception": "Reads accurately but very slowly",
-      "evidence": "About 95% or more of words correct, but effortful and slow",
+      "evidence": "Most words correct (English about 85% or more) but slow and effortful",
       "barrier": "D",
       "response": "Repeated reading (up to about four times) of slightly easy texts, plus wide reading; do not push for speed",
       "origin": "research"
@@ -599,7 +599,8 @@
     "CAPS-DI pedagogical roadmap (RADAF)",
     "Sesotho and isiZulu Reading Project (2023), Module 3: Decoding (Centre for African Language Teaching, University of Johannesburg; JET Education Services), CC BY-NC-SA. Ideas paraphrased, not copied.",
     "Funda Wande Reading Academy (2020), Booklet 2: Comprehension (vocabulary, comprehension strategies, questioning). Ideas paraphrased; videos linked, not copied.",
-    "NECT / DBE Primary School Reading Improvement Programme (PSRIP), Grade 3 EFAL Term 3 Lesson Plan (2023): weekly routine and group guided reading. Used as a structural reference only."
+    "NECT / DBE Primary School Reading Improvement Programme (PSRIP), Grade 3 EFAL Term 3 Lesson Plan (2023): weekly routine and group guided reading. Used as a structural reference only.",
+    "Wills, G., Ardington, C., Pretorius, E. & Sebaeng, L. (2022). Benchmarking Early Grade Reading Skills: English First Additional Language. Summary Report. Khulisa Management Services, with the DBE (USAID-funded)."
   ],
   "benchmarks": {
     "letterSounds": {
@@ -610,21 +611,35 @@
       "source": "Module 3, pp. 6, 38, 41"
     },
     "accuracyBeforeSpeed": {
-      "what": "Oral reading accuracy",
-      "target": "About 95% of words read correctly before working on reading speed",
-      "source": "Module 3, p. 66"
+      "what": "Oral reading accuracy before speed",
+      "target": "English (an opaque spelling system, and often a second language): about 85% of words correct signals developed accuracy. African home languages (transparent spelling): about 95%.",
+      "source": "EFAL benchmarking summary report (2022), p. 5; Module 3, p. 66"
     },
     "orfAfricanLanguages": {
       "what": "Oral reading fluency (words correct per minute)",
       "isiZulu": "Grade 2: 20; Grade 3: 35",
       "Sesotho": "Grade 2: 40; Grade 3: 60",
-      "note": "Different because isiZulu writes long joined (conjunctive) words. No English Home Language benchmark is given in this source; do not invent one.",
+      "note": "Different because isiZulu writes long joined (conjunctive) words. For English as a First Additional Language see orfEFAL.",
       "source": "Module 3, p. 66"
     },
     "phonicsTime": {
       "what": "Daily phonics",
       "target": "About 15 minutes a day in Grades 1–3 (CAPS); in Grade 1 Term 1 about one new sound a week, then at least two a week",
       "source": "Module 3, pp. 40–41, 53"
+    },
+    "orfEFAL": {
+      "what": "English First Additional Language oral reading fluency, correct words per minute (cwpm), minimum by the END of each grade, grade-appropriate passage, one-to-one",
+      "targets": {
+        "Grade 2": 30,
+        "Grade 3": 50,
+        "Grade 4": 70,
+        "Grade 5": 90,
+        "Grade 6": 100
+      },
+      "zones": "Below 50 cwpm learners cannot yet understand what they read; 50–89 cwpm is a development zone (typically 4–6 of 10 questions right); from about 90 cwpm most questions are answered",
+      "context": "Set from data on over 20,000 learners in no-fee schools in 6 provinces. By the end of Grade 3, 19–34% of learners in these samples could not read one English word correctly, and only 19–37% reached 50 cwpm. About 90% of learners learn in English from Grade 4.",
+      "appliesTo": "Learners reading English as an additional language. There is no official South African benchmark for English Home Language; do not apply these as HL targets.",
+      "source": "Wills, Ardington, Pretorius & Sebaeng (2022), EFAL benchmarking summary report, pp. 4–14"
     }
   },
   "phonicsLesson": {
@@ -753,7 +768,7 @@
       "domains": [
         "fluency"
       ],
-      "if": "Reading is slow and fewer than about 95% of words are correct",
+      "if": "Reading is slow and inaccurate (in English, fewer than about 85% of words correct; in an African home language, fewer than about 95%)",
       "means": "The problem is decoding accuracy, not speed",
       "do": "Go back to targeted phonics and word reading before fluency practice"
     },
@@ -761,7 +776,7 @@
       "domains": [
         "fluency"
       ],
-      "if": "Reading is about 95% accurate or better but slow",
+      "if": "Reading is accurate (English about 85% or more; African home language about 95% or more) but slow",
       "means": "Decoding is accurate but not yet automatic",
       "do": "Repeated reading (up to about four times) of slightly easy texts, plus wide reading; do not push for speed"
     },
@@ -817,6 +832,23 @@
       "if": "A learner cannot say the separate sounds in a short spoken word",
       "means": "Phonemic awareness (oral) is not yet in place, so letters cannot be linked to sounds",
       "do": "Oral segmenting and blending games without print (sound buttons, arm tapping), then link each sound to its letter"
+    },
+    {
+      "domains": [
+        "fluency",
+        "comprehension"
+      ],
+      "if": "A learner reading English as an additional language reads fewer than about 50 correct words per minute",
+      "means": "Reading is still too slow for the learner to understand the text alone (EFAL threshold); comprehension questions on independent reading will mostly fail",
+      "do": "Prioritise decoding and fluency practice for this learner; build comprehension through read-alouds and discussion until reading speed reaches about 50 words per minute"
+    },
+    {
+      "domains": [
+        "fluency"
+      ],
+      "if": "A Grade 2 learner reading English as an additional language is below about 30 correct words per minute at the end of the year",
+      "means": "The learner is unlikely to reach the Grade 3 threshold of 50 a year later without targeted support",
+      "do": "Add targeted decoding and daily repeated reading now; monitor with a 1-minute reading check each term"
     }
   ],
   "africanLanguages": {
