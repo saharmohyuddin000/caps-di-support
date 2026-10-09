@@ -1,5 +1,5 @@
 {
-  "about": "© 2026 RADAF. All rights reserved. CAPS-DI pedagogical knowledge base. CAPS says WHAT must be learned; these rules say HOW it is taught; learner data decides how teaching is adapted. Items marked origin=roadmap come from the CAPS-DI pedagogical roadmap; origin=author were added by the CAPS-DI author; origin=added are common Foundation Phase errors added for coverage and should be reviewed.",
+  "about": "© 2026 RADAF. All rights reserved. CAPS-DI pedagogical knowledge base. CAPS says WHAT must be learned; these rules say HOW it is taught; learner data decides how teaching is adapted. Items marked origin=roadmap come from the CAPS-DI pedagogical roadmap; origin=author were added by the CAPS-DI author; origin=added are common Foundation Phase errors added for coverage and should be reviewed. origin=research items are paraphrased from published South African reading research listed in sources.",
   "barriers": [
     {
       "key": "A",
@@ -219,6 +219,16 @@
       "origin": "author"
     },
     {
+      "id": "lk-chant",
+      "skill": "Reading and Phonics",
+      "area": "Letter knowledge",
+      "misconception": "Knows the letters in order but not mixed up",
+      "evidence": "Recites the alphabet or sound chart but cannot give the sounds when letters are shown out of order",
+      "barrier": "B",
+      "response": "Replace chanting with shuffled-card practice to individuals; return to missed cards after two or three others",
+      "origin": "research"
+    },
+    {
       "id": "pa-syllables",
       "skill": "Reading and Phonics",
       "area": "Phonemic awareness",
@@ -263,10 +273,20 @@
       "skill": "Reading and Phonics",
       "area": "Alphabetic principle",
       "misconception": "Relies on memorised words instead of decoding",
-      "evidence": "Reads familiar words but cannot read unfamiliar CVC words",
+      "evidence": "Reads familiar words but cannot read unfamiliar CVC words; reads familiar words but fails on made-up (nonsense) words",
       "barrier": "A",
       "response": "Hear, segment, map sounds to letters, blend, read, encode, apply in text",
       "origin": "roadmap"
+    },
+    {
+      "id": "ph-digraph-split",
+      "skill": "Reading and Phonics",
+      "area": "Alphabetic principle",
+      "misconception": "Reads a two-letter sound as two sounds",
+      "evidence": "Reads sh as s-h, ch as c-h or th as t-h",
+      "barrier": "A",
+      "response": "Teach each digraph explicitly as one sound after its single letters, with plenty of word practice",
+      "origin": "research"
     },
     {
       "id": "ph-first-letter",
@@ -297,6 +317,16 @@
       "barrier": "B",
       "response": "Finger-track left to right; sweep under the word; sound boxes with arrows",
       "origin": "added"
+    },
+    {
+      "id": "bl-clusters",
+      "skill": "Reading and Phonics",
+      "area": "Blending",
+      "misconception": "Stalls on consonant blends",
+      "evidence": "Knows each letter but gets stuck on st, bl, fr or similar blends",
+      "barrier": "A",
+      "response": "Show the blend as two known sounds said quickly together, then practise in words",
+      "origin": "research"
     },
     {
       "id": "sg-first-only",
@@ -347,6 +377,36 @@
       "barrier": "D",
       "response": "Model phrasing; repeated, meaningful rereading; echo and choral reading",
       "origin": "roadmap"
+    },
+    {
+      "id": "fl-inaccurate",
+      "skill": "Reading and Phonics",
+      "area": "Fluency",
+      "misconception": "Reads slowly and makes many errors",
+      "evidence": "Fewer than about 95% of words read correctly",
+      "barrier": "A",
+      "response": "Return to targeted phonics and word reading before fluency practice",
+      "origin": "research"
+    },
+    {
+      "id": "fl-accurate-slow",
+      "skill": "Reading and Phonics",
+      "area": "Fluency",
+      "misconception": "Reads accurately but very slowly",
+      "evidence": "About 95% or more of words correct, but effortful and slow",
+      "barrier": "D",
+      "response": "Repeated reading (up to about four times) of slightly easy texts, plus wide reading; do not push for speed",
+      "origin": "research"
+    },
+    {
+      "id": "fl-monotone",
+      "skill": "Reading and Phonics",
+      "area": "Fluency",
+      "misconception": "Reads without expression or phrasing",
+      "evidence": "Flat, word-by-word voice; ignores full stops and question marks",
+      "barrier": "B",
+      "response": "Model expressive reading; echo and choral reading; teach phrasing and punctuation cues",
+      "origin": "research"
     },
     {
       "id": "cm-isolated",
@@ -532,6 +592,241 @@
         "name": "Segmenting",
         "what": "The reverse of blending: breaks a spoken word into all its separate sounds and writes a letter for each sound (spelling / encoding)"
       }
+    ]
+  },
+  "sources": [
+    "CAPS English Home Language Grades R–3 (DBE)",
+    "CAPS-DI pedagogical roadmap (RADAF)",
+    "Sesotho and isiZulu Reading Project (2023), Module 3: Decoding (Centre for African Language Teaching, University of Johannesburg; JET Education Services), CC BY-NC-SA. Ideas paraphrased, not copied."
+  ],
+  "benchmarks": {
+    "letterSounds": {
+      "what": "Letter-sound knowledge: 1-minute, one-to-one test, letters in random order, errors subtracted (as in EGRA)",
+      "target": "40 letters correct per minute by the end of Grade 1",
+      "when": "Test near the end of Term 3 in Grade 1; use Term 4 to reteach the sounds learners still miss",
+      "why": "South African studies found learners below about 40 letters per minute could not yet read words",
+      "source": "Module 3, pp. 6, 38, 41"
+    },
+    "accuracyBeforeSpeed": {
+      "what": "Oral reading accuracy",
+      "target": "About 95% of words read correctly before working on reading speed",
+      "source": "Module 3, p. 66"
+    },
+    "orfAfricanLanguages": {
+      "what": "Oral reading fluency (words correct per minute)",
+      "isiZulu": "Grade 2: 20; Grade 3: 35",
+      "Sesotho": "Grade 2: 40; Grade 3: 60",
+      "note": "Different because isiZulu writes long joined (conjunctive) words. No English Home Language benchmark is given in this source; do not invent one.",
+      "source": "Module 3, p. 66"
+    },
+    "phonicsTime": {
+      "what": "Daily phonics",
+      "target": "About 15 minutes a day in Grades 1–3 (CAPS); in Grade 1 Term 1 about one new sound a week, then at least two a week",
+      "source": "Module 3, pp. 40–41, 53"
+    }
+  },
+  "phonicsLesson": {
+    "note": "Structure of an effective phonics lesson (about 15–20 minutes), in our own words",
+    "steps": [
+      "Brisk review of known sounds in RANDOM order (not chanted in sequence), about 5 minutes",
+      "Explicit teaching of the new sound: I do, we do, you do; link sound, letter shape and a key word",
+      "Blend the new sound with known sounds into words straight away, every day",
+      "Segment spoken words into sounds and spell them with letter cards",
+      "Apply in a short decodable text that uses only taught sounds and sight words",
+      "Quick individual checks: point to cards out of order and come back to missed ones after two or three others"
+    ],
+    "avoid": [
+      "Chanting the alphabet or sound charts as the main activity",
+      "Predictable picture books that let learners guess instead of decode",
+      "Introducing words with sounds not yet taught"
+    ]
+  },
+  "readingStages": {
+    "frith": [
+      {
+        "stage": "Pictorial (logographic)",
+        "looksLike": "Recognises familiar words or logos by shape or context only; cannot read the same word in a new font or setting",
+        "teach": "Phonological awareness, letter-sounds and the alphabetic principle; do not count this as reading"
+      },
+      {
+        "stage": "Alphabetic (phonological)",
+        "looksLike": "Sounds out words letter by letter or syllable by syllable; slow but can read new regular words",
+        "teach": "Systematic phonics, daily blending and segmenting, decodable texts, then repeated reading"
+      },
+      {
+        "stage": "Orthographic",
+        "looksLike": "Recognises many words instantly and reads with growing speed and expression",
+        "teach": "Wide reading, fluency with expression, vocabulary and comprehension strategies"
+      }
+    ],
+    "simpleView": {
+      "idea": "Reading comprehension depends on both decoding and language comprehension; weakness in either limits reading",
+      "profiles": [
+        {
+          "profile": "Weak decoding, good listening comprehension",
+          "teach": "Targeted phonics, blending and decodable texts; read aloud to keep comprehension growing"
+        },
+        {
+          "profile": "Good decoding, weak language comprehension",
+          "teach": "Oral language, vocabulary, listening comprehension and comprehension strategies"
+        },
+        {
+          "profile": "Weak in both",
+          "teach": "Work on both strands; if progress stalls, refer for further assessment (SIAS)"
+        }
+      ]
+    }
+  },
+  "diagnosticRules": [
+    {
+      "domains": [
+        "letterKnowledge",
+        "alphabetic"
+      ],
+      "if": "A Grade 1 learner sounds fewer than 40 letters correctly in a minute (random order)",
+      "means": "Letter-sound knowledge is not yet strong enough to read words",
+      "do": "Reteach the missed sounds with shuffled-card practice and feedback, then retest"
+    },
+    {
+      "domains": [
+        "letterKnowledge",
+        "alphabetic"
+      ],
+      "if": "A learner can recite letters or sounds in order but not when they are mixed up",
+      "means": "The sequence was memorised as a chant; the code itself is not secure",
+      "do": "Replace chanting with random-order card practice to individuals; return to missed cards after two or three others"
+    },
+    {
+      "domains": [
+        "alphabetic",
+        "blending"
+      ],
+      "if": "A learner reads a two-letter sound (sh, ch, th) as two separate sounds",
+      "means": "Digraphs are not yet known as single units",
+      "do": "Teach each digraph explicitly as one sound, after its single letters, with plenty of word practice"
+    },
+    {
+      "domains": [
+        "blending"
+      ],
+      "if": "A learner gives each sound correctly but cannot join them into the word",
+      "means": "Blending is the weak link",
+      "do": "Blend daily straight after teaching each sound: build words with letter cards, then read whole words with finger-pointing"
+    },
+    {
+      "domains": [
+        "blending"
+      ],
+      "if": "A learner stalls on consonant blends (st, bl, fr) while knowing each letter",
+      "means": "The blend is being treated as a new, unknown sound",
+      "do": "Show the blend as two known sounds said quickly together, then practise in words"
+    },
+    {
+      "domains": [
+        "alphabetic",
+        "blending"
+      ],
+      "if": "A learner reads familiar real words but fails on made-up (nonsense) words",
+      "means": "Words are being memorised rather than decoded",
+      "do": "More sound–letter and blending practice with decodable lists; real-or-nonsense word games"
+    },
+    {
+      "domains": [
+        "blending",
+        "comprehension"
+      ],
+      "if": "A learner reads a picture book well but cannot read the same sentences without pictures",
+      "means": "Reading from picture cues (pictorial stage), not decoding",
+      "do": "Use decodable texts matched to taught sounds instead of predictable picture books"
+    },
+    {
+      "domains": [
+        "blending"
+      ],
+      "if": "A learner guesses words from the first letter or the context",
+      "means": "Untaught sounds or weak decoding; guessing quickly becomes a habit",
+      "do": "Give texts that use only taught sounds and prompt the learner to sound out and blend the whole word"
+    },
+    {
+      "domains": [
+        "fluency"
+      ],
+      "if": "Reading is slow and fewer than about 95% of words are correct",
+      "means": "The problem is decoding accuracy, not speed",
+      "do": "Go back to targeted phonics and word reading before fluency practice"
+    },
+    {
+      "domains": [
+        "fluency"
+      ],
+      "if": "Reading is about 95% accurate or better but slow",
+      "means": "Decoding is accurate but not yet automatic",
+      "do": "Repeated reading (up to about four times) of slightly easy texts, plus wide reading; do not push for speed"
+    },
+    {
+      "domains": [
+        "fluency"
+      ],
+      "if": "Words are read fluently but in a flat, unphrased way",
+      "means": "Prosody (expression and phrasing) is weak",
+      "do": "Model expressive reading in read-alouds and shared reading; teach phrasing and punctuation cues"
+    },
+    {
+      "domains": [
+        "comprehension"
+      ],
+      "if": "A learner reads accurately at a good pace but cannot answer questions",
+      "means": "The gap is in language comprehension (Simple View of Reading)",
+      "do": "Vocabulary, oral language and listening comprehension work; explicit comprehension strategies"
+    },
+    {
+      "domains": [
+        "comprehension",
+        "blending"
+      ],
+      "if": "A learner is weak in both decoding and listening comprehension",
+      "means": "Both strands need support; a wider learning difficulty is possible",
+      "do": "Support both strands; if there is no progress, begin the SIAS process for further assessment"
+    },
+    {
+      "domains": [
+        "oral",
+        "comprehension"
+      ],
+      "if": "A learner decodes English words but understands little of the text, while understanding more in the home language",
+      "means": "English vocabulary and grammar are the gap, not decoding",
+      "do": "Add English oral language and vocabulary teaching alongside decoding; bridge from the home language"
+    },
+    {
+      "domains": [
+        "alphabetic",
+        "letterKnowledge",
+        "blending"
+      ],
+      "if": "Most of the class is slow to master letter-sounds",
+      "means": "The phonics pace may be too slow or the teaching too implicit",
+      "do": "Teach explicitly (I do, we do, you do), blend daily and keep a brisk pace: weaker learners benefit most"
+    },
+    {
+      "domains": [
+        "phonemic",
+        "alphabetic"
+      ],
+      "if": "A learner cannot say the separate sounds in a short spoken word",
+      "means": "Phonemic awareness (oral) is not yet in place, so letters cannot be linked to sounds",
+      "do": "Oral segmenting and blending games without print (sound buttons, arm tapping), then link each sound to its letter"
+    }
+  ],
+  "africanLanguages": {
+    "note": "For future African home-language versions (MTbBE). Paraphrased from Module 3.",
+    "points": [
+      "Spelling is transparent: letters map consistently to sounds, so decoding can be taught quickly",
+      "Most syllables end in a vowel (consonant + vowel); syllables are a natural unit, but learners must still hear the separate sounds inside them",
+      "Rhyme does not work well; use repetition, alliteration and reduplication in songs and rhymes instead",
+      "Tone and vowel length are not marked in spelling; context decides meaning, so expressive model reading matters",
+      "Nguni languages such as isiZulu join morphemes into long words (conjunctive); Sotho languages such as Sesotho write them separately (disjunctive). Long words slow reading, so fluency benchmarks differ by language",
+      "Teach two- and three-letter sounds (e.g. hl, kh, tsh) as single units; teach consonant clusters early as sequences of sounds already learned",
+      "Morphological awareness (noun prefixes, subject and object morphemes) supports reading long words, incidentally in Grades 1–2 and deliberately in Grade 3"
     ]
   }
 }

@@ -668,7 +668,7 @@ function renderRemediation(){
   $('remOn').onchange=e=>{V.remed.on=e.target.checked;$('remDom').style.display=V.remed.on?'block':'none';};
   pills('remPills',REMED_DOMAINS.map(d=>d.l),REMED_DOMAINS.find(d=>d.k===V.remed.domain).l,l=>{V.remed.domain=REMED_DOMAINS.find(d=>d.l===l).k;});
 }
-function remedPrompt(){
+function remedPrompt(lv){
   if(!V.remed.on||!remedCount())return '';
   const d=REMED_DOMAINS.find(x=>x.k===V.remed.domain)||REMED_DOMAINS[0];
   const path=PED&&PED.pathways[d.path];
@@ -676,7 +676,7 @@ function remedPrompt(){
   return ['REMEDIATION (the teacher asked for a remediation plan)',
   remedCount()+' learners are on Ratings 1–'+RULES.remediationMaxRating+' (below 40%). Target skill: '+d.l+'.',
   path?'Teaching pathway for this skill: '+path.steps.join(' → '):'',
-  errs?'Common errors in this skill and the response:\n'+errs:'',
+  errs&&!lv?'Common errors in this skill and the response:\n'+errs:'',
   'Design a 2-week remediation of 6 sessions of 15 minutes (3 a week), run during group time or another agreed time. Start from what these learners CAN already do, teach one small step per session, use the letters, sounds and words of this CAPS term, keep it multisensory and use plenty of practice. Include a 2-minute entry check, a progress check after session 3, the exit criteria for rejoining the Foundational group, and what to do if there is no progress after 6 sessions (begin the SIAS process: the teacher completes the SNA 1 and discusses the learner with the School-Based Support Team).'].filter(Boolean).join('\n');
 }
 function lessonDesign(){
@@ -727,7 +727,31 @@ function designPrompt(d){
   d.mode==='reteach'?'Because most learners are below Rating 4, the whole-class part must reteach the prerequisite skill from the earlier CAPS content before returning to the outcome.':d.mode==='extend'?'Because most learners have secured the outcome, the whole-class part moves on to the next step in CAPS, and the Foundational learners get an intensive small group.':'',
   d.large?'This is a large class: include a classroom-management routine for switching groups (a signal, fixed group seating) and whole-class response techniques that check every learner at once (choral response, slates or paper held up).':''].filter(Boolean).join('\n');
 }
+// Research-based rules (paraphrased from South African reading research in pedagogy.json).
+function researchPrompt(lv){
+  if(!PED||!PED.diagnosticRules)return '';
+  const map={phonics:['alphabetic','blending'],phonemic:['phonemic'],phonological:['phonemic'],letterKnowledge:['letterKnowledge'],segmenting:['phonemic','alphabetic'],fluency:['fluency'],comprehension:['comprehension'],oral:['oral']};
+  // Most relevant first: domains of the observed errors, then the remediation target, then the teaching pathway.
+  const first=new Set(),doms=new Set();
+  PED.misconceptions.filter(m=>V.errors.includes(m.id)).forEach(m=>{const d=REMED_DOMAINS.find(x=>x.areas.includes(m.area));if(d)first.add(d.k);});
+  if(V.remed.on&&remedCount()){const d=REMED_DOMAINS.find(x=>x.k===V.remed.domain);if(d)first.add(d.k);}
+  first.forEach(d=>doms.add(d));pickPathways().forEach(k=>(map[k]||[]).forEach(d=>doms.add(d)));
+  const score=r=>r.domains.some(d=>first.has(d))?0:1;
+  const rules=PED.diagnosticRules.filter(r=>r.domains.some(d=>doms.has(d))).sort((x,y)=>score(x)-score(y)).slice(0,lv?3:5);
+  const out=[];
+  if(rules.length)out.push('Research-based diagnostic rules (South African reading research) — use them to interpret the evidence:\n'+rules.map(r=>'- If '+r.if.charAt(0).toLowerCase()+r.if.slice(1)+' → '+r.means+' → '+r.do).join('\n'));
+  const reading=V.skill==='Reading and Phonics';
+  if(lv<2&&reading&&PED.phonicsLesson&&[...doms].some(d=>['alphabetic','blending','letterKnowledge','phonemic'].includes(d)))out.push('Phonics lesson structure to follow: '+PED.phonicsLesson.steps.join(' → ')+'. Avoid: '+PED.phonicsLesson.avoid.join('; ')+'.');
+  const b=PED.benchmarks||{};
+  if(reading&&V.grade==='Grade 1'&&b.letterSounds)out.push('Benchmark: '+b.letterSounds.target+' ('+b.letterSounds.what+'). '+b.letterSounds.when+'.');
+  if(reading&&(V.grade==='Grade 2'||V.grade==='Grade 3')&&b.accuracyBeforeSpeed&&doms.has('fluency'))out.push('Fluency principle: '+b.accuracyBeforeSpeed.target+'. Do not invent words-per-minute targets for English.');
+  return out.join('\n');
+}
+// The plan service accepts prompts up to 20,000 characters, so long inputs are compacted step by step.
 function buildPrompt(){
+  for(let lv=0;lv<3;lv++){const out=buildPromptAt(lv);if(out.length<=19000||lv===2)return out.slice(0,19500);}
+}
+function buildPromptAt(lv){
   const passages=needPassages();
   const ot=currentOutcome();
   const total=V.levels.reduce((a,b)=>a+b,0);
@@ -735,12 +759,13 @@ function buildPrompt(){
   const levelLines=LEVELS.map(l=>'Rating '+l.n+' ('+l.name+', '+l.range+'): '+V.levels[l.n-1]).join('; ');
   const tierLines=TIERS.map((t,i)=>t.name+' tier (CAPS '+t.desc.split(' · ')[0]+'): '+c[i]+' learners').join('; ');
   const b=block();
-  const capsItems=b?formalItems(b).map(f=>'- '+f.text).slice(0,12).join('\n'):'';
+  const capsItems=b?formalItems(b).map(f=>'- '+f.text).slice(0,lv?6:12).join('\n'):'';
   const src=SOURCES.find(s=>s.k===V.source).l;
-  const tn=$('tn').value.trim(), an=$('assessNote').value.trim();
+  const cut=(t,n)=>t.length>n?t.slice(0,n)+'…':t;
+  const tn=cut($('tn').value.trim(),lv?500:1200), an=cut($('assessNote').value.trim(),lv?500:1200);
   const term=PED&&PED.terms[V.term];
   const paths=PED?pickPathways().map(k=>PED.pathways[k]).filter(Boolean):[];
-  const errs=PED?PED.misconceptions.filter(m=>V.errors.includes(m.id)):[];
+  const errs=PED?PED.misconceptions.filter(m=>V.errors.includes(m.id)).slice(0,lv>1?5:20):[];
   const dec=PED&&PED.decoding&&(V.skill==='Reading and Phonics'||/decod|phon|blend|segment|spell|sound/.test(ot.toLowerCase()))?PED.decoding:null;
   const pg=progression();
   const barriers=PED?PED.barriers.map(x=>x.key+'. '+x.name+' — '+x.description).join('\n'):'';
@@ -754,15 +779,16 @@ function buildPrompt(){
 'CAPS outcome for this lesson (the SAME outcome for every learner): '+ot+(V.outcomeFormal?' (assessed in Formal Assessment Activity '+V.outcomeFormal.acts.join(' & ')+' this term)':''),
 capsItems?'CAPS formal assessment items for this term and skill:\n'+capsItems:'',
 pg&&pg.prev&&pg.prev.items.length?'CAPS progression — what learners should already have covered ('+pg.prev.label+'):\n'+pg.prev.items.map(x=>'- '+x).join('\n')+'\nBase the prerequisites on these CAPS items; Foundational-tier learners may still need them re-taught.':(V.grade==='Grade R'&&V.term==='Term 1'?'This is the start of Grade R: there is no earlier CAPS content; build on home language and everyday experience.':''),
-pg&&pg.next&&pg.next.items.length?'CAPS progression — where this leads next ('+pg.next.label+'):\n'+pg.next.items.map(x=>'- '+x).join('\n')+'\nUse these to shape the Advanced tier\'s challenge without leaving this term\'s outcome.':'',
+lv<2&&pg&&pg.next&&pg.next.items.length?'CAPS progression — where this leads next ('+pg.next.label+'):\n'+pg.next.items.map(x=>'- '+x).join('\n')+'\nUse these to shape the Advanced tier\'s challenge without leaving this term\'s outcome.':'',
 term?'Term focus — '+term.theme+'. Guiding question: '+term.question+' Pedagogical sequence: '+term.sequence+'. Look for: '+term.look_for+'.':'',
 dec?'Decoding model: '+dec.note+'\n'+dec.components.map(x=>'- '+x.name+': '+x.what).join('\n')+'\nIn the diagnosis, say which component is breaking down (blending is for reading, segmenting is for spelling — a learner can manage one but not the other). Teach phonemic awareness orally (no letters) before linking sounds to print.':'',
 paths.length?'Evidence-informed teaching pathway(s) to follow:\n'+paths.map(p=>'- '+p.name+': '+p.steps.join(' → ')).join('\n'):'',
+researchPrompt(lv),
 '',
 'CLASS EVIDENCE (source: '+src+'; '+total+' learners)',
 levelLines,
 tierLines,
-V.struggles.length?'CAPS items learners found hard: '+V.struggles.join(' | '):'',
+V.struggles.length?'CAPS items learners found hard: '+V.struggles.slice(0,lv>1?5:20).join(' | '):'',
 errs.length?'Observed error patterns (with the knowledge-base response):\n'+errs.map(m=>'- '+m.misconception+' — evidence: '+m.evidence+' — likely barrier '+m.barrier+' — response: '+m.response).join('\n'):'',
 an?'Teacher\'s description of what she saw: '+an:'',
 'Home languages in class: '+(V.languages.length?V.languages.join(', '):'not specified'),
@@ -774,13 +800,13 @@ tn?'Class notes: '+tn:'',
 barriers,
 '',
 designPrompt(lessonDesign()),
-remedPrompt(),
+remedPrompt(lv),
 '',
 'FIVE DIMENSIONS OF DIFFERENTIATION (same outcome; change only these)',
 dims,
 '',
 'RULES',
-'1. Diagnosis: from the evidence above, name 1–3 likely barriers (using the letters A–H), what evidence points to each, the likely misconception or cause, and the instructional response. Only name a barrier the class evidence actually supports — a learner\'s home language or a listed learner need is not, on its own, evidence of a barrier; handle those through home-language bridging and individual supports instead. If evidence is thin, say what the teacher should check.',
+'1. Diagnosis: use the Simple View of Reading first (is the difficulty in decoding, in language comprehension, or both?), then from the evidence above name 1–3 likely barriers (using the letters A–H), what evidence points to each, the likely misconception or cause, and the instructional response. Only name a barrier the class evidence actually supports — a learner\'s home language or a listed learner need is not, on its own, evidence of a barrier; handle those through home-language bridging and individual supports instead. If evidence is thin, say what the teacher should check.',
 '1b. Content fit: use only letters, sounds, words and text demands that fit the CAPS content for this grade and term (e.g. if CAPS names specific letters for this term, build examples from those letters).',
 '2. Task tiering: all three tiers work on the same CAPS outcome; they differ in complexity and support. Foundational = essential skill with most structure; Intermediate = applies the skill with some independence; Advanced = extension and higher-order thinking. Pitch each to its learners and their barriers.',
 '3. Teaching sequence: teacher modelling (I do), guided practice (we do), independent practice (you do). Prompt-fading steps for each tier, from most support to independence.',
