@@ -431,7 +431,7 @@ const DOMAINS=[
 
 let CAPS=null,PED=null;
 const LANGS=['English','isiZulu','isiXhosa','Afrikaans','Sepedi','Setswana','Sesotho','Xitsonga','siSwati','Tshivenda','isiNdebele','Other'];
-function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],resources:[],remed:{on:false,domain:null},rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
+function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],resources:[],remed:{on:false,domains:[]},rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
 let V=freshState();
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -585,7 +585,7 @@ function loadExample(){
   pills('src',SOURCES.map(s=>s.l),SOURCES.find(s=>s.k===V.source).l,l=>{V.source=SOURCES.find(s=>s.l===l).k;});
   V.errors=['ph-familiar-only','ph-name-sound','bl-sounds-no-word'];
   $('assessNote').value='8 learners read familiar words like cat and mat but cannot read unfamiliar CVC words such as hop or bun. Several say letter names instead of sounds.';
-  V.remed={on:true,domain:null};
+  V.remed={on:true,domains:[]};
   go3();
   const b=document.createElement('div');b.className='data-banner';b.id='exBanner';b.style.background='#eff6ff';b.style.borderColor='#bfdbfe';b.style.color='#1e3a8a';
   b.innerHTML='<i class="ti ti-info-circle" style="font-size:16px;flex-shrink:0"></i><span>Example class loaded: 35 Grade 1 learners after the Term 1 phonics assessment. A <strong>remediation plan</strong> is switched on for the 10 learners on Ratings 1–2 (scroll down to see it). Change anything you like, then press <strong>Generate my plan</strong>.</span>';
@@ -677,16 +677,17 @@ const RULES={
   splits:{similar:[25,20,10,5],mixed:[15,30,10,5],wide:[10,35,10,5]} // whole class, groups, individual, exit task
 };
 // Remediation domains: what a remediation plan can target.
+// Ordered roughly by how the skills develop, so multi-skill remediation starts with the earliest.
 const REMED_DOMAINS=[
-  {k:'letterKnowledge',l:'Letter knowledge',areas:['Letter knowledge'],path:'letterKnowledge'},
-  {k:'phonemic',l:'Phonemic awareness',areas:['Phonemic awareness'],path:'phonemic'},
   {k:'phonological',l:'Phonological awareness (rhyme, syllables)',areas:[],path:'phonological'},
+  {k:'phonemic',l:'Phonemic awareness',areas:['Phonemic awareness'],path:'phonemic'},
+  {k:'letterKnowledge',l:'Letter knowledge',areas:['Letter knowledge'],path:'letterKnowledge'},
   {k:'alphabetic',l:'Alphabetic principle (letter–sound link)',areas:['Alphabetic principle'],path:'phonics'},
   {k:'blending',l:'Blending (reading words)',areas:['Blending','Reading'],path:'phonics'},
   {k:'segmenting',l:'Segmenting (spelling words)',areas:['Segmenting','Spelling'],path:'segmenting'},
   {k:'fluency',l:'Fluency',areas:['Fluency'],path:'fluency'},
-  {k:'comprehension',l:'Comprehension',areas:['Comprehension','Inference'],path:'comprehension'},
   {k:'oral',l:'Oral language and vocabulary',areas:['Oral language','Listening','Vocabulary'],path:'oral'},
+  {k:'comprehension',l:'Comprehension',areas:['Comprehension','Inference'],path:'comprehension'},
   {k:'handwriting',l:'Handwriting',areas:['Handwriting'],path:'handwriting'},
   {k:'writing',l:'Writing',areas:['Writing','Grammar'],path:'writing'}];
 let VIDEOS=null;
@@ -704,6 +705,9 @@ function scaffoldSection(k,title){
     sc.ladder.map(x=>'<li><b>'+esc(x.level)+'</b><span>'+esc(x.do)+'</span></li>').join('')+'</ol>'+
     '<p class="vlbl">Low-cost resources</p><div class="res">'+sc.resources.map(r=>'<div><b>'+esc(r.name)+'</b><span><i>Make:</i> '+esc(r.make)+'</span><span><i>Use:</i> '+esc(r.use)+'</span></div>').join('')+'</div></div>';
 }
+const REMED_MAX=3;
+// Chosen remediation skills in developmental order (falls back to the suggested skill).
+function remedDomains(){const ks=(V.remed.domains&&V.remed.domains.length?V.remed.domains:[suggestDomain()]);return REMED_DOMAINS.filter(d=>ks.includes(d.k));}
 function remedCount(){return V.levels.slice(0,RULES.remediationMaxRating).reduce((a,b)=>a+b,0);}
 function suggestDomain(){
   const tally={};
@@ -716,24 +720,29 @@ function renderRemediation(){
   const box=$('remBox');if(!box)return;
   const n=remedCount();
   if(!n){box.style.display='none';V.remed.on=false;return;}
-  const sug=suggestDomain();if(!V.remed.domain)V.remed.domain=sug;
+  const sug=suggestDomain();if(!V.remed.domains||!V.remed.domains.length)V.remed.domains=[sug];
   box.style.display='block';
   box.innerHTML='<p><i class="ti ti-lifebuoy"></i> <b>'+n+' learner'+(n>1?'s are':' is')+' on Ratings 1–'+RULES.remediationMaxRating+'</b> (below 40%). Learners this far below the outcome need <b>remediation</b>: short, targeted sessions on the skill underneath, alongside today\'s lesson.</p>'+
     '<label class="rchk"><input type="checkbox" id="remOn"'+(V.remed.on?' checked':'')+'> Add a remediation plan for these learners</label>'+
-    '<div id="remDom" style="display:'+(V.remed.on?'block':'none')+'"><p class="hint" style="margin-top:8px">Which skill should remediation target? <b>Suggested from the errors you ticked:</b> '+esc(REMED_DOMAINS.find(d=>d.k===sug).l)+'.</p><div class="pr" id="remPills"></div></div>';
+    '<div id="remDom" style="display:'+(V.remed.on?'block':'none')+'"><p class="hint" style="margin-top:8px">Which skills should remediation target? Choose up to '+REMED_MAX+'; the sessions follow the order in which the skills develop. <b>Suggested from the errors you ticked:</b> '+esc(REMED_DOMAINS.find(d=>d.k===sug).l)+'.</p><div class="pr" id="remPills"></div><p class="hint" id="remMsg" style="color:#b45309"></p></div>';
   $('remOn').onchange=e=>{V.remed.on=e.target.checked;$('remDom').style.display=V.remed.on?'block':'none';};
-  pills('remPills',REMED_DOMAINS.map(d=>d.l),REMED_DOMAINS.find(d=>d.k===V.remed.domain).l,l=>{V.remed.domain=REMED_DOMAINS.find(d=>d.l===l).k;});
+  const box2=$('remPills');
+  box2.innerHTML=REMED_DOMAINS.map(d=>'<button class="p'+(V.remed.domains.includes(d.k)?' s':'')+'">'+esc(d.l)+'</button>').join('');
+  [...box2.children].forEach((b,i)=>b.onclick=()=>{const k=REMED_DOMAINS[i].k,ds=V.remed.domains;$('remMsg').textContent='';
+    if(ds.includes(k)){if(ds.length>1){V.remed.domains=ds.filter(x=>x!==k);b.classList.remove('s');}else $('remMsg').textContent='Keep at least one skill selected.';}
+    else if(ds.length>=REMED_MAX){$('remMsg').textContent='Up to '+REMED_MAX+' skills: remove one first so the sessions stay focused.';}
+    else{V.remed.domains=[...ds,k];b.classList.add('s');}});
 }
 function remedPrompt(lv){
   if(!V.remed.on||!remedCount())return '';
-  const d=REMED_DOMAINS.find(x=>x.k===V.remed.domain)||REMED_DOMAINS[0];
-  const path=PED&&PED.pathways[d.path];
-  const errs=PED?PED.misconceptions.filter(m=>d.areas.includes(m.area)).map(m=>'- '+m.misconception+': '+m.response).join('\n'):'';
+  const ds=remedDomains(),n=ds.length,sessions=n===1?6:9;
+  const paths=ds.map(d=>{const pth=PED&&PED.pathways[d.path];return pth?d.l+': '+pth.steps.join(' → '):'';}).filter(Boolean);
+  const errs=PED?PED.misconceptions.filter(m=>ds.some(d=>d.areas.includes(m.area))).slice(0,lv?0:6).map(m=>'- '+m.misconception+': '+m.response).join('\n'):'';
   return ['REMEDIATION (the teacher asked for a remediation plan)',
-  remedCount()+' learners are on Ratings 1–'+RULES.remediationMaxRating+' (below 40%). Target skill: '+d.l+'.',
-  path?'Teaching pathway for this skill: '+path.steps.join(' → '):'',
-  errs&&!lv?'Common errors in this skill and the response:\n'+errs:'',
-  'Design a 2-week remediation of 6 sessions of 15 minutes (3 a week), run during group time or another agreed time. Start from what these learners CAN already do, teach one small step per session, use the letters, sounds and words of this CAPS term, keep it multisensory and use plenty of practice. Include a 2-minute entry check, a progress check after session 3, the exit criteria for rejoining the Foundational group, and what to do if there is no progress after 6 sessions (begin the SIAS process: the teacher completes the SNA 1 and discusses the learner with the School-Based Support Team).'].filter(Boolean).join('\n');
+  remedCount()+' learners are on Ratings 1–'+RULES.remediationMaxRating+' (below 40%). Target skill'+(n>1?'s, in this developmental order: ':': ')+ds.map(d=>d.l).join(' → ')+'.',
+  paths.length?'Teaching pathway'+(n>1?'s':'')+': '+paths.join(' | '):'',
+  errs?'Common errors in these skills and the response:\n'+errs:'',
+  (n>1?'Cover the skills in the order given, about three sessions each, and name the skill in each session focus. ':'')+'Design a remediation of '+sessions+' sessions of 15 minutes (3 a week), run during group time or another agreed time. Start from what these learners CAN already do, teach one small step per session, use the letters, sounds and words of this CAPS term, keep it multisensory and use plenty of practice. Include a 2-minute entry check, a progress check after session 3, the exit criteria for rejoining the Foundational group, and what to do if there is no progress by the end (begin the SIAS process: the teacher completes the SNA 1 and discusses the learner with the School-Based Support Team).'].filter(Boolean).join('\n');
 }
 function lessonDesign(){
   const L=V.levels,total=L.reduce((a,b)=>a+b,0);if(!total)return null;
@@ -790,7 +799,7 @@ function researchPrompt(lv){
   // Most relevant first: domains of the observed errors, then the remediation target, then the teaching pathway.
   const first=new Set(),doms=new Set();
   PED.misconceptions.filter(m=>V.errors.includes(m.id)).forEach(m=>{const d=REMED_DOMAINS.find(x=>x.areas.includes(m.area));if(d)first.add(d.k);});
-  if(V.remed.on&&remedCount()){const d=REMED_DOMAINS.find(x=>x.k===V.remed.domain);if(d)first.add(d.k);}
+  if(V.remed.on&&remedCount())remedDomains().forEach(d=>first.add(d.k));
   first.forEach(d=>doms.add(d));pickPathways().forEach(k=>(map[k]||[]).forEach(d=>doms.add(d)));
   const score=r=>r.domains.some(d=>first.has(d))?0:1;
   const rules=PED.diagnosticRules.filter(r=>r.domains.some(d=>doms.has(d))).sort((x,y)=>score(x)-score(y)).slice(0,lv?3:5);
@@ -917,7 +926,7 @@ function planIssues(p){
   if(!Array.isArray(p.misconceptionsToWatch)||!p.misconceptionsToWatch.some(m=>m&&s(m.ifYouSee)&&s(m.sayOrDo)))issues.push('misconceptionsToWatch');
   if(!p.exitTask||!s(p.exitTask.task))issues.push('exitTask.task');
   if(!p.exitTask||!Array.isArray(p.exitTask.scoring)||p.exitTask.scoring.length<3)issues.push('exitTask.scoring for 3 level bands');
-  if(V.remed.on&&remedCount()&&(!p.remediation||!Array.isArray(p.remediation.sessions)||p.remediation.sessions.length<3))issues.push('remediation.sessions (6 sessions)');
+  if(V.remed.on&&remedCount()&&(!p.remediation||!Array.isArray(p.remediation.sessions)||p.remediation.sessions.length<3))issues.push('remediation.sessions');
   if(needPassages())TIERS.forEach(t=>{const x=p.passages&&p.passages[t.k];if(!x||!s(x.text)||!Array.isArray(x.questions)||!x.questions.length)issues.push('passages.'+t.k+' (text + questions)');});
   return issues;
 }
@@ -942,7 +951,7 @@ async function go4(){
       const issues2=planIssues(plan2);
       if(issues2.length<issues.length){plan=plan2;issues=issues2;}
     }
-    plan._issues=issues;plan._design=lessonDesign();plan._teachDomain=teachDomain();if(V.remed.on&&remedCount())plan._remed={n:remedCount(),k:V.remed.domain};
+    plan._issues=issues;plan._design=lessonDesign();plan._teachDomain=teachDomain();if(V.remed.on&&remedCount()){const ks=remedDomains().map(d=>d.k);plan._remed={n:remedCount(),k:ks[0],ks};}
     V.planData=plan;V.checks={};
     renderPlan(plan);
     savePlan();
@@ -989,13 +998,13 @@ function offlinePlan(){
     exitTask:{question:'Can the learner independently '+low+'?',task:'Ask each learner to show the skill once on their own (5 minutes). Record who could do it alone, with help, or not yet.',alignedTo:ot,
       scoring:[{levels:'Ratings 1–3',evidence:'Not yet, even with help'},{levels:'Ratings 4–5',evidence:'Can do it with some help or errors'},{levels:'Ratings 6–7',evidence:'Does it alone, accurately, and can explain it'}]}};
   if(V.remed.on&&remedCount()){
-    const rd=REMED_DOMAINS.find(x=>x.k===V.remed.domain)||REMED_DOMAINS[0];
-    const rp=PED&&PED.pathways[rd.path],rs=rp?rp.steps:[];
-    const lk=['letterKnowledge','alphabetic'].includes(rd.k)&&V.grade==='Grade 1';
-    p._remed={n:remedCount(),k:rd.k};
-    p.remediation={focus:rd.l,why:remedCount()+' learners are on Ratings 1–'+RULES.remediationMaxRating+' for this outcome.',
-      entryCheck:'A 2-minute one-to-one check of '+rd.l.toLowerCase()+' using this term\'s letters, sounds or words.',
-      sessions:[0,1,2,3,4,5].map(i=>({n:i+1,focus:rs.length?rs[i%rs.length]:rd.l,activity:i<3?'Teach and practise this step with the group; use concrete materials and plenty of repetition.':'Revise the earlier steps, then practise this one until learners can do it alone.',minutes:15})),
+    const rds=remedDomains(),rd=rds[0],per=rds.length===1?6:3,steps=[];
+    rds.forEach(d=>{const rp=PED&&PED.pathways[d.path],rs=rp?rp.steps:[];for(let i=0;i<per;i++)steps.push({d,step:rs.length?rs[i%rs.length]:d.l,i});});
+    const lk=rds.some(d=>['letterKnowledge','alphabetic'].includes(d.k))&&V.grade==='Grade 1';
+    p._remed={n:remedCount(),k:rd.k,ks:rds.map(d=>d.k)};
+    p.remediation={focus:rds.map(d=>d.l).join(' → '),why:remedCount()+' learners are on Ratings 1–'+RULES.remediationMaxRating+' for this outcome.',
+      entryCheck:'A 2-minute one-to-one check of '+rds.map(d=>d.l.toLowerCase()).join(' and ')+' using this term\'s letters, sounds or words.',
+      sessions:steps.map((x,j)=>({n:j+1,focus:(rds.length>1?x.d.l+': ':'')+x.step,activity:x.i===0?'Teach and practise this step with the group; use concrete materials and plenty of repetition.':'Revise the earlier steps, then practise this one until learners can do it alone.',minutes:15})),
       progressCheck:'After session 3, repeat the entry check and compare.',
       exitCriteria:lk?'Rejoins the Foundational group when the learner sounds about 40 letters correctly in one minute (Grade 1 benchmark), or gets 4 of 5 items right on two different days.':'Rejoins the Foundational group after getting 4 of 5 items right on two different days.',
       ifNoProgress:'Begin the SIAS process: complete the SNA 1 and discuss the learner with the School-Based Support Team.'};
@@ -1092,17 +1101,17 @@ function renderPlan(p){
     '<div class="mis"><p><strong>If you see:</strong> '+esc(m.ifYouSee)+'</p>'+(m.itMayMean?'<p><strong>It may mean:</strong> '+esc(m.itMayMean)+'</p>':'')+(m.sayOrDo?'<p class="say"><strong>Say or do:</strong> '+esc(m.sayOrDo)+'</p>':'')+'</div>').join('')+'</div>';}
   const r=p.remediation;
   if(r&&Array.isArray(r.sessions)&&r.sessions.length){
-    const dk=p._remed&&REMED_DOMAINS.find(x=>x.k===p._remed.k);
+    const dks=p._remed?REMED_DOMAINS.filter(x=>(p._remed.ks||[p._remed.k]).includes(x.k)):[];
     h+='<div class="sec remplan"><h3><i class="ti ti-lifebuoy"></i> Remediation plan'+(p._remed?' <span class="who">· '+p._remed.n+' learners on Ratings 1–'+RULES.remediationMaxRating+'</span>':'')+'</h3>'+
-      '<p><b>Target skill:</b> '+esc(r.focus||(dk?dk.l:''))+'</p>'+(r.why?'<p class="who" style="margin-bottom:6px">'+esc(r.why)+'</p>':'')+
+      '<p><b>Target skill'+(dks.length>1?'s':'')+':</b> '+esc(r.focus||dks.map(d=>d.l).join(' → '))+'</p>'+(r.why?'<p class="who" style="margin-bottom:6px">'+esc(r.why)+'</p>':'')+
       (r.entryCheck?'<div class="kv"><strong>Start with this check (2 min):</strong> '+esc(r.entryCheck)+'</div>':'')+
       '<table class="rsess">'+r.sessions.map((x,i)=>'<tr><td><b>Session '+esc(x&&x.n||i+1)+'</b><br><span>'+esc(x&&x.minutes||15)+' min</span></td><td><b>'+esc(x&&x.focus)+'</b><br>'+esc(x&&x.activity)+'</td></tr>').join('')+'</table>'+
       (r.progressCheck?'<div class="kv"><strong>Progress check:</strong> '+esc(r.progressCheck)+'</div>':'')+
       (r.exitCriteria?'<div class="kv"><strong>Rejoins the Foundational group when:</strong> '+esc(r.exitCriteria)+'</div>':'')+
-      (r.ifNoProgress?'<div class="kv"><strong>If there is no progress after 6 sessions:</strong> '+esc(r.ifNoProgress)+'</div>':'');
-    if(dk&&dk.k!==p._teachDomain&&scaffoldOf(dk.k)){const sc=scaffoldOf(dk.k);h+='<p class="vlbl" style="margin-top:10px">Scaffold ladder for '+esc(dk.l.toLowerCase())+'</p><ol class="ladder">'+sc.ladder.map(x=>'<li><b>'+esc(x.level)+'</b><span>'+esc(x.do)+'</span></li>').join('')+'</ol><p class="vlbl">Resources</p><ul>'+sc.resources.map(r=>'<li><b>'+esc(r.name)+':</b> '+esc(r.use)+' <span class="who">(make: '+esc(r.make)+')</span></li>').join('')+'</ul>';}
-    const vids=dk&&VIDEOS&&VIDEOS[dk.k];
-    h+=vids&&vids.length?'<p class="dlbl" style="margin-top:10px">Watch how to teach it</p><ul class="vids">'+vids.map(v=>'<li><a href="'+esc(v.url)+'" target="_blank" rel="noopener"><i class="ti ti-player-play"></i> '+esc(v.title)+'</a> <span class="who">· '+esc(v.source)+'</span></li>').join('')+'</ul>':'<p class="who" style="margin-top:8px">Teaching videos for this skill are being added.</p>';
+      (r.ifNoProgress?'<div class="kv"><strong>If there is no progress by the end:</strong> '+esc(r.ifNoProgress)+'</div>':'');
+    dks.forEach(dk=>{if(dk.k!==p._teachDomain&&scaffoldOf(dk.k)){const sc=scaffoldOf(dk.k);h+='<p class="vlbl" style="margin-top:10px">Scaffold ladder for '+esc(dk.l.toLowerCase())+'</p><ol class="ladder">'+sc.ladder.map(x=>'<li><b>'+esc(x.level)+'</b><span>'+esc(x.do)+'</span></li>').join('')+'</ol><p class="vlbl">Resources</p><ul>'+sc.resources.map(r=>'<li><b>'+esc(r.name)+':</b> '+esc(r.use)+' <span class="who">(make: '+esc(r.make)+')</span></li>').join('')+'</ul>';}});
+    const vk=dks.filter(d=>VIDEOS&&VIDEOS[d.k]&&VIDEOS[d.k].length);
+    h+=vk.length?'<p class="dlbl" style="margin-top:10px">Watch how to teach it</p>'+vk.map(d=>(dks.length>1?'<p class="who" style="margin:4px 0 0">'+esc(d.l)+'</p>':'')+videoList(d.k,3)).join(''):'<p class="who" style="margin-top:8px">Teaching videos for these skills are being added.</p>';
     h+='</div>';}
   const is=list(p.individualSupports);
   if(is.length)h+='<div class="sec"><h3><i class="ti ti-heart-handshake"></i> Individual supports</h3><ul>'+is.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>';

@@ -567,6 +567,26 @@
       "barrier": "F",
       "response": "3–5 minute segments, movement breaks, active response (cards, gestures)",
       "origin": "added"
+    },
+    {
+      "id": "gen-slow-work",
+      "skill": "*",
+      "area": "Work completion",
+      "misconception": "Takes very long to complete tasks",
+      "evidence": "Works accurately but is still busy long after others finish; often runs out of time",
+      "barrier": "D",
+      "response": "Keep the same outcome but reduce the quantity (fewer items, not easier ones); break the task into chunks with a tick-off checklist; give the instructions in steps and check they are understood; allow extra time for written work; if slowness is mainly in writing, let the learner answer orally or with less copying (check handwriting and fine motor skills)",
+      "origin": "author"
+    },
+    {
+      "id": "gen-incomplete",
+      "skill": "*",
+      "area": "Work completion",
+      "misconception": "Does not complete tasks",
+      "evidence": "Starts but stops partway, leaves work unfinished or does not start at all",
+      "barrier": "F",
+      "response": "First check the task is at the right level and the instructions were understood (ask the learner to say what to do); break it into small steps with a visual checklist; set a short first goal (\"do the first two, then show me\"); use a first-then routine and a timer; seat near the teacher or a supportive peer; praise effort on each finished step; if it persists across subjects, discuss with the School-Based Support Team",
+      "origin": "author"
     }
   ],
   "decoding": {
