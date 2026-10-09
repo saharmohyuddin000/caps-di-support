@@ -277,7 +277,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
       <span>Enter how many learners achieved each CAPS rating on this outcome. The plan's three task levels are sized from these numbers.</span>
     </div>
     <span class="lbl">Which assessment are these results from?</span>
-    <p class="hint">No upload or recording needed. Tick where your marks come from, then type the numbers below.</p>
+    <p class="hint">No upload or recording needed. Tick where your marks come from, then type the numbers below. At the start of the year you can use last year's Term 4 results, then confirm the groups with a quick baseline check.</p>
     <div class="pr" id="src"></div>
     <div class="div"></div>
     <span class="lbl">Learners at each CAPS rating</span>
@@ -419,7 +419,7 @@ const PROFILES=[
   {i:'ti-package',t:'Low-resource',u:'Zero-cost materials only',v:'a low-resource classroom — every activity must use zero-cost or locally available materials only'}];
 const SOURCES=[
   {k:'formal',l:'Formal Assessment Activity'},{k:'informal',l:'Informal assessment (class work, observation)'},
-  {k:'baseline',l:'Baseline assessment'},{k:'exit',l:'Previous lesson exit task'}];
+  {k:'prevyear',l:"Last year's Term 4 results"},{k:'baseline',l:'Baseline assessment'},{k:'exit',l:'Previous lesson exit task'}];
 // Implementation checklist — six domains of the inclusive scaffolding framework.
 const DOMAINS=[
   {t:'Attention regulation & movement-based learning',items:['Short instruction segments of about 3–5 minutes were used','Movement or rhythm-based attention activation was used','Regulated movement or sensory breaks were allowed when needed','Learners were permitted flexible positioning (standing, gentle movement or alternative seating)']},
@@ -860,6 +860,7 @@ tierLines,
 V.struggles.length?'CAPS items learners found hard: '+V.struggles.slice(0,lv>1?5:20).join(' | '):'',
 errs.length?'Observed error patterns (with the knowledge-base response):\n'+errs.map(m=>'- '+m.misconception+' — evidence: '+m.evidence+' — likely barrier '+m.barrier+' — response: '+m.response).join('\n'):'',
 an?'Teacher\'s description of what she saw: '+an:'',
+V.source==='prevyear'?'Note: these are last year\'s end-of-year results, recorded before the long holiday and often as one rating per subject. Treat the groups as provisional, and make nextSteps a 2-minute one-to-one baseline check on this outcome within the first two weeks to confirm or change the groups.':'',
 'Home languages in class: '+(V.languages.length?V.languages.join(', '):'not specified'),
 'Reading materials available: '+(V.resources.length?V.resources.join(', '):'not specified')+(passages?' — no big books or graded readers, so you must write the graded passages described in rule 9.':''),
 'Learner needs: '+(V.profiles.length?V.profiles.join('; '):'general mixed-ability class'),
@@ -994,7 +995,7 @@ function offlinePlan(){
       advanced:{duration:d.split[1]+' min (groups)',task:'Apply the outcome in a new or harder example and explain the thinking to a partner.',
         scaffolding:'Challenge card; minimal support.',promptFading:['Brief check-in','Independent'],checkForUnderstanding:'Learner explains how they did it in one or two sentences.'}},
     misconceptionsToWatch:errs.map(m=>({ifYouSee:m.evidence,itMayMean:m.misconception,sayOrDo:m.response})),
-    individualSupports:d.watch.map(w=>w.replace(/<[^>]+>/g,'')),
+    individualSupports:(V.source==='prevyear'?['These groups come from last year\'s Term 4 results. Run a 2-minute baseline check on this outcome in the first two weeks to confirm or change them.']:[]).concat(d.watch.map(w=>w.replace(/<[^>]+>/g,''))),
     exitTask:{question:'Can the learner independently '+low+'?',task:'Ask each learner to show the skill once on their own (5 minutes). Record who could do it alone, with help, or not yet.',alignedTo:ot,
       scoring:[{levels:'Ratings 1–3',evidence:'Not yet, even with help'},{levels:'Ratings 4–5',evidence:'Can do it with some help or errors'},{levels:'Ratings 6–7',evidence:'Does it alone, accurately, and can explain it'}]}};
   if(V.remed.on&&remedCount()){
