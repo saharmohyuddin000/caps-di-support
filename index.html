@@ -72,6 +72,13 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .lvtable tr.tf td.lv{color:#dc2626}.lvtable tr.tmid td.lv{color:#b45309}.lvtable tr.ta td.lv{color:#16a34a}
 .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .tbox{border-radius:8px;padding:10px;font-size:12px;line-height:1.4}
+.warnline{color:#b45309;font-size:12px;margin-top:4px}
+.progv{border:1px solid #c7d2fe;background:#eef2ff;border-radius:10px;padding:12px;margin:12px 0;font-size:13px;line-height:1.5}
+.progv h4{margin:0 0 8px;font-size:14px;color:#3730a3}
+.progv table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px}
+.progv td,.progv th{padding:5px 6px;border-bottom:1px solid #c7d2fe;text-align:left}
+.progv .up{color:#15803d;font-weight:600}.progv .dn{color:#b91c1c;font-weight:600}
+.langtag{display:inline-block;background:#ecfdf5;color:#065f46;border-radius:6px;padding:1px 7px;font-size:11px;margin-top:4px}
 .tbox b{display:block;font-size:20px;margin-bottom:2px}
 .tf-bg{background:#fef2f2;color:#991b1b}.ti-bg{background:#fffbeb;color:#92400e}.ta-bg{background:#f0fdf4;color:#166534}
 .passage{font-size:16px;line-height:1.8;background:#fffdf5;border:1px solid #f3e8c8;border-radius:8px;padding:10px 12px;white-space:pre-wrap;margin:6px 0}
@@ -226,6 +233,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
       </ul>
       <p><b>Without internet.</b> With no signal, CAPS DI still makes a basic plan on the phone from its own rules and knowledge base, and makes the full plan automatically once the phone is back online.</p>
       <p><b>On WhatsApp.</b> Any plan can be sent to WhatsApp as a short, low-data summary with <b>Send to WhatsApp</b>, for the teacher's own phone or a colleague. A full WhatsApp companion, where teachers make plans and send exit-task results by chat, is the next build.</p>
+      <p><b>Research data.</b> To learn whether CAPS DI helps, the app sends RADAF's research team anonymous counts (plans made, rating counts, exit results) and any feedback you submit. It never sends learner names or your class notes.</p>
       <p class="who">This prototype covers English Home Language, Grades R–3. African home-language and English First Additional Language versions are planned.</p>
     </details>
   </div>
@@ -279,6 +287,10 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <span class="lbl">Which assessment are these results from?</span>
     <p class="hint">No upload or recording needed. Tick where your marks come from, then type the numbers below. At the start of the year you can use last year's Term 4 results, then confirm the groups with a quick baseline check.</p>
     <div class="pr" id="src"></div>
+    <div class="div"></div>
+    <span class="lbl">How many learners are in your class?</span>
+    <p class="hint">Optional. CAPS DI checks that the numbers below add up.</p>
+    <input id="classSize" type="number" min="0" max="120" inputmode="numeric" placeholder="e.g. 38" style="width:110px;padding:8px;border:1px solid #d1d5db;border-radius:8px;font-size:14px">
     <div class="div"></div>
     <span class="lbl">Learners at each CAPS rating</span>
     <p class="hint">Type how many of your learners scored at each level on this outcome. Leave 0 where there are none.</p>
@@ -337,6 +349,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <p class="hint">After the lesson, enter how many learners reached each level on the exit task. Use these to plan the next lesson with regrouped learners.</p>
     <table class="lvtable" id="lvt2"></table>
     <p id="lvTotal2" style="font-size:12px;color:#374151;margin-top:8px"></p>
+    <div id="progBox"></div>
     <button class="btn2" style="margin-top:10px" id="nextLesson" onclick="planNext()"><i class="ti ti-refresh"></i> Plan the next lesson with these results</button>
     <div class="div"></div>
     <span class="sublbl">Teacher name</span>
@@ -371,8 +384,11 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
       <button class="p" onclick="pick(this,'yn2')">Maybe with improvements</button>
       <button class="p" onclick="pick(this,'yn2')">Not sure yet</button>
     </div>
+    <span class="sublbl">Did anything go wrong? Tick any that apply.</span>
+    <div class="pr" style="margin-bottom:12px" id="flags"></div>
     <span class="sublbl">Comments for the research team</span>
-    <textarea id="tc" placeholder="What would make this more useful in your classroom?"></textarea>
+    <textarea id="tc" placeholder="What was wrong, or what would make this more useful in your classroom? Please do not write learners' names."></textarea>
+    <p style="margin-top:6px;font-size:11px;color:#6b7280;line-height:1.4">Your rating, ticks and comments go to RADAF's research team to improve CAPS DI. No learner names are collected.</p>
   </div>
   <button class="btn" id="sb6" onclick="sub()">Submit feedback</button>
   <div id="ty" style="display:none" class="ok">
@@ -431,7 +447,7 @@ const DOMAINS=[
 
 let CAPS=null,PED=null;
 const LANGS=['English','isiZulu','isiXhosa','Afrikaans','Sepedi','Setswana','Sesotho','Xitsonga','siSwati','Tshivenda','isiNdebele','Other'];
-function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],resources:[],remed:{on:false,domains:[]},rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
+function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],resources:[],remed:{on:false,domains:[]},classSize:0,prevLevels:null,flags:[],rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
 let V=freshState();
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -457,9 +473,11 @@ async function init(){
   multiPills('res',RESOURCES,'resources');
   pills('src',SOURCES.map(s=>s.l),SOURCES.find(s=>s.k===V.source).l,l=>{V.source=SOURCES.find(s=>s.l===l).k;});
   levelTable('lvt','levels','lvTotal',true);
+  $('classSize').value=V.classSize||'';
+  if(!$('classSize').dataset.bound){$('classSize').dataset.bound='1';$('classSize').addEventListener('input',function(){V.classSize=Math.max(0,parseInt(this.value,10)||0);updateTotals('levels','lvTotal',true);});}
   levelTable('lvt2','exitLevels','lvTotal2',false);
   if(!$('co').dataset.bound)$('co').dataset.bound='1',$('co').addEventListener('input',function(){if(this.value.trim()){V.outcome=null;document.querySelectorAll('#og .ch').forEach(c=>c.classList.remove('s'));}cb();});
-  renderSaved();setTimeout(processQueue,1500);
+  renderSaved();setTimeout(processQueue,1500);setTimeout(flushEvents,2500);
   if(CAPS){renderOutcomes();return;}
   try{const rv=await fetch('data/videos.json');if(rv.ok)VIDEOS=await rv.json();}catch(_){VIDEOS=null;}
   try{const r2=await fetch('data/pedagogy.json');if(r2.ok)PED=await r2.json();}catch(_){PED=null;}
@@ -532,14 +550,20 @@ function levelTable(tableId,key,totalId,withPreview){
 }
 function refreshLevelInputs(tableId,key){$(tableId).querySelectorAll('input').forEach(inp=>inp.value=V[key][+inp.dataset.lv]||'');}
 function tierCounts(levels){return TIERS.map(t=>t.levels.reduce((s,l)=>s+(levels[l-1]||0),0));}
+// Gentle check against the class size: never blocks, only points out a likely typing slip.
+function sizeCheck(total,baseline){
+  const n=V.classSize;if(!n||!total||total===n)return '';
+  if(total>n)return '<div class="warnline"><i class="ti ti-alert-triangle"></i> That is '+(total-n)+' more than the '+n+' learners in your class. Check for a learner counted twice.</div>';
+  return '<div class="warnline"><i class="ti ti-alert-triangle"></i> '+(n-total)+' of your '+n+' learners '+(n-total===1?'is':'are')+' not counted'+(baseline?'. Add them if they were assessed, or plan a quick check for them.':' (absent for the exit task?). Check them next lesson.')+'</div>';
+}
 function updateTotals(key,totalId,withPreview){
   const total=V[key].reduce((a,b)=>a+b,0);
-  $(totalId).innerHTML=total?'<strong>'+total+'</strong> learners in total':'<span style="color:#9ca3af">Enter at least one learner</span>';
+  $(totalId).innerHTML=(total?'<strong>'+total+'</strong> learners in total':'<span style="color:#9ca3af">Enter at least one learner</span>')+sizeCheck(total,withPreview);
   if(withPreview){
     const c=tierCounts(V[key]);
     $('tierPreview').innerHTML=TIERS.map((t,i)=>'<div class="tbox '+t.bg+'"><b>'+c[i]+'</b>'+t.name+(total?' · '+Math.round(c[i]/total*100)+'%':'')+'<br><span style="opacity:.8">'+t.desc+'</span></div>').join('');
     $('b3').disabled=total===0;renderRemediation();
-  }else{$('nextLesson').disabled=total===0;}
+  }else{$('nextLesson').disabled=total===0;$('progBox').innerHTML=total?progressPanel(V.levels,V[key],'This lesson: before and after'):'';}
 }
 function renderStruggles(){
   const b=block();const box=$('struggleList');box.innerHTML='';
@@ -581,7 +605,7 @@ function loadExample(){
   V.languages=['English','isiZulu','Sepedi'];multiPills('hl',LANGS,'languages');
   V.resources=['DBE workbooks'];multiPills('res',RESOURCES,'resources');
   $('tn').value='Class of 35. Many learners are still settling into English as the language of learning.';
-  V.levels=[4,6,8,7,5,3,2];V.source='formal';
+  V.levels=[4,6,8,7,5,3,2];V.source='formal';V.classSize=35;$('classSize').value=35;
   pills('src',SOURCES.map(s=>s.l),SOURCES.find(s=>s.k===V.source).l,l=>{V.source=SOURCES.find(s=>s.l===l).k;});
   V.errors=['ph-familiar-only','ph-name-sound','bl-sounds-no-word'];
   $('assessNote').value='8 learners read familiar words like cat and mat but cannot read unfamiliar CVC words such as hop or bun. Several say letter names instead of sounds.';
@@ -600,14 +624,36 @@ function setStep(n){
 }
 function go1(){setStep(1);}
 function go2(){setStep(2);}
-function go3(){renderStruggles();renderErrors();refreshLevelInputs('lvt','levels');updateTotals('levels','lvTotal',true);setStep(3);}
+function go3(){const eh=$('errHint');if(eh)eh.remove();renderStruggles();renderErrors();refreshLevelInputs('lvt','levels');updateTotals('levels','lvTotal',true);setStep(3);}
 function go5(){buildChecklist();refreshLevelInputs('lvt2','exitLevels');updateTotals('exitLevels','lvTotal2',false);setStep(5);}
-function go6(){setStep(6);}
+function go6(){renderFlags();setStep(6);}
 function backToPlan(){if(V.planData)setStep(4);else go4();}
+// Compare two sets of rating counts (group counts, not individual learners).
+function progressPanel(before,after,title){
+  const b=tierCounts(before),a=tierCounts(after),tb=before.reduce((x,y)=>x+y,0),ta=after.reduce((x,y)=>x+y,0);
+  if(!tb||!ta)return '';
+  const pc=(n,t)=>Math.round(n/t*100),secB=b[1]+b[2],secA=a[1]+a[2];
+  // Fewer learners in the Foundational group is good news, so its colours are reversed.
+  const delta=(x,y,i)=>{const d=y-x;if(!d)return '0';const good=i===0?d<0:d>0;return '<span class="'+(good?'up':'dn')+'">'+(d>0?'+':'')+d+'</span>';};
+  const rows=TIERS.map((t,i)=>'<tr><td>'+esc(t.name)+'</td><td>'+b[i]+'</td><td>'+a[i]+'</td><td>'+delta(b[i],a[i],i)+'</td></tr>').join('');
+  const r67=l=>l[5]+l[6];
+  let msg;
+  const moved=pc(secA,ta)-pc(secB,tb);
+  if(moved>=10)msg='More of the class is now on Rating 4 or above: <b>'+pc(secB,tb)+'% → '+pc(secA,ta)+'%</b>.';
+  else if(moved<=-10)msg='Fewer learners reached Rating 4 on the exit task than before (<b>'+pc(secB,tb)+'% → '+pc(secA,ta)+'%</b>). The exit task may have been harder, or the gap needs reteaching: tick the errors you still see on the next screen.';
+  else msg='About the same share of the class is on Rating 4 or above (<b>'+pc(secB,tb)+'% → '+pc(secA,ta)+'%</b>). Look at which errors persist and change the approach for the Foundational group.';
+  return '<div class="progv"><h4><i class="ti ti-trending-up"></i> '+esc(title)+'</h4>'+
+    '<table><tr><th>Group</th><th>Before</th><th>After</th><th>Change</th></tr>'+rows+'</table>'+
+    '<p style="margin:0 0 6px">'+msg+(r67(after)>r67(before)?' Learners on Ratings 6–7 rose from '+r67(before)+' to '+r67(after)+'.':'')+'</p>'+
+    (tb!==ta?'<p class="who" style="margin:0 0 6px">'+tb+' learners before, '+ta+' after, so compare percentages rather than numbers.</p>':'')+
+    '<p class="who" style="margin:0">These are counts for the class, not individual learners. An exit task shows progress on one task: count a skill as <b>secured</b> only when learners show it again on another day, for example in next week\'s warm-up.</p></div>';
+}
 function planNext(){
+  V.prevLevels=V.levels.slice();logEvent('results',{before:V.levels.slice(),after:V.exitLevels.slice(),impl:V.impl});
   V.levels=V.exitLevels.slice();V.exitLevels=[0,0,0,0,0,0,0];V.source='exit';V.planData=null;
   pills('src',SOURCES.map(s=>s.l),SOURCES.find(s=>s.k==='exit').l,l=>{V.source=SOURCES.find(s=>s.l===l).k;});
   go3();
+  $('errList').insertAdjacentHTML('beforebegin','<p class="warnline" id="errHint" style="color:#3730a3">Planning the next lesson: untick errors you no longer see, and tick any new ones.</p>');
 }
 
 // ---------- CAPS progression: CAPS is the bridge from Grade R to Grade 3 ----------
@@ -860,6 +906,7 @@ tierLines,
 V.struggles.length?'CAPS items learners found hard: '+V.struggles.slice(0,lv>1?5:20).join(' | '):'',
 errs.length?'Observed error patterns (with the knowledge-base response):\n'+errs.map(m=>'- '+m.misconception+' — evidence: '+m.evidence+' — likely barrier '+m.barrier+' — response: '+m.response).join('\n'):'',
 an?'Teacher\'s description of what she saw: '+an:'',
+V.source==='exit'&&V.prevLevels&&lv<2?'Previous lesson: tier counts before '+tierCounts(V.prevLevels).join('/')+', after the exit task '+tierCounts(V.levels).join('/')+' (Foundational/Intermediate/Advanced). In dataInsight, say in one sentence what changed, and regroup accordingly.':'',
 V.source==='prevyear'?'Note: these are last year\'s end-of-year results, recorded before the long holiday and often as one rating per subject. Treat the groups as provisional, and make nextSteps a 2-minute one-to-one baseline check on this outcome within the first two weeks to confirm or change the groups.':'',
 'Home languages in class: '+(V.languages.length?V.languages.join(', '):'not specified'),
 'Reading materials available: '+(V.resources.length?V.resources.join(', '):'not specified')+(passages?' — no big books or graded readers, so you must write the graded passages described in rule 9.':''),
@@ -941,7 +988,7 @@ async function go4(){
   setStep(4);
   $('ld').style.display='block';$('pc').style.display='none';$('ldmsg').textContent='Diagnosing barriers and building your lesson…';
   const c=tierCounts(V.levels);
-  $('mt').innerHTML='<strong>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</strong><br>Outcome: '+esc(currentOutcome())+'<br><span style="color:#6b7280">'+TIERS.map((t,i)=>t.name+': '+c[i]).join(' · ')+' learners</span>';
+  $('mt').innerHTML='<strong>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</strong><br>Outcome: '+esc(currentOutcome())+'<br><span style="color:#6b7280">'+TIERS.map((t,i)=>t.name+': '+c[i]).join(' · ')+' learners</span>'+'<br><span class="langtag"><i class="ti ti-language"></i> Lesson language: English Home Language</span>';
   try{
     const prompt=buildPrompt();
     let plan=await requestPlan(prompt);
@@ -952,7 +999,7 @@ async function go4(){
       const issues2=planIssues(plan2);
       if(issues2.length<issues.length){plan=plan2;issues=issues2;}
     }
-    plan._issues=issues;plan._design=lessonDesign();plan._teachDomain=teachDomain();if(V.remed.on&&remedCount()){const ks=remedDomains().map(d=>d.k);plan._remed={n:remedCount(),k:ks[0],ks};}
+    plan._issues=issues;if(V.prevLevels)plan._progress={before:V.prevLevels.slice(),after:V.levels.slice()};plan._design=lessonDesign();plan._teachDomain=teachDomain();if(V.remed.on&&remedCount()){const ks=remedDomains().map(d=>d.k);plan._remed={n:remedCount(),k:ks[0],ks};}
     V.planData=plan;V.checks={};
     renderPlan(plan);
     savePlan();
@@ -978,7 +1025,7 @@ function offlinePlan(){
   const bar=k=>{const b=PED&&PED.barriers.find(x=>x.key===k);return b?k+'. '+b.name:k;};
   const pk=pickPathways(),path=PED&&PED.pathways[pk[0]],steps=path?path.steps:[];
   const pg=progression();
-  const p={_offline:true,_design:d,_teachDomain:teachDomain(),
+  const p={_offline:true,_design:d,_teachDomain:teachDomain(),_progress:V.prevLevels?{before:V.prevLevels.slice(),after:V.levels.slice()}:null,
     diagnosis:errs.length?errs.slice(0,3).map(m=>({barrier:bar(m.barrier),evidence:m.evidence,likelyCause:m.misconception,response:m.response})):
       [{barrier:d.mode==='reteach'?'A. Prerequisite gap':'Check the evidence',evidence:d.why.replace(/<[^>]+>/g,''),likelyCause:'Tick the error patterns you observed for a more precise diagnosis.',response:d.focus}],
     coreStrategy:path?path.name+': '+steps.join(' → '):'',
@@ -1020,12 +1067,12 @@ function showOfflinePlan(){
     q.push({at:new Date().toISOString(),prompt:buildPrompt(),
       state:JSON.parse(JSON.stringify(Object.assign({},V,{planData:null}))),
       meta:{grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome(),levels:V.levels.slice()},
-      extras:{_design:plan._design,_teachDomain:plan._teachDomain,_remed:plan._remed||null}});
+      extras:{_design:plan._design,_teachDomain:plan._teachDomain,_remed:plan._remed||null,_progress:plan._progress||null}});
     writeQueue(q);
   }catch(_){}
   setStep(4);
   const c=tierCounts(V.levels);
-  $('mt').innerHTML='<strong>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</strong><br>Outcome: '+esc(currentOutcome())+'<br><span style="color:#6b7280">'+TIERS.map((t,i)=>t.name+': '+c[i]).join(' · ')+' learners</span>';
+  $('mt').innerHTML='<strong>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</strong><br>Outcome: '+esc(currentOutcome())+'<br><span style="color:#6b7280">'+TIERS.map((t,i)=>t.name+': '+c[i]).join(' · ')+' learners</span>'+'<br><span class="langtag"><i class="ti ti-language"></i> Lesson language: English Home Language</span>';
   V.planData=plan;V.checks={};renderPlan(plan);savePlan();
   $('ld').style.display='none';$('pc').style.display='block';
 }
@@ -1043,6 +1090,7 @@ async function processQueue(){
       try{plan._issues=planIssues(plan);}finally{V=saved;}
       Object.assign(plan,item.extras||{});
       saveEntry(Object.assign({at:new Date().toISOString()},item.meta,{plan}));
+      logEvent('plan',{grade:item.meta.grade,term:item.meta.term,skill:item.meta.skill,outcome:item.meta.outcome,levels:item.meta.levels,offline:false,fromQueue:true});
       writeQueue(readQueue().slice(1));
       notify('Your full plan for '+item.meta.grade+' · '+item.meta.term+' is ready.');
     }
@@ -1061,6 +1109,7 @@ function renderPlan(p){
   let h='';
   if(p._issues&&p._issues.length)h+='<div class="qnote"><i class="ti ti-alert-triangle"></i> Quality check: this plan is missing '+esc(p._issues.join(', '))+'. You can generate again from the previous screen.</div>';
   if(p._offline)h+='<div class="offnote"><i class="ti ti-wifi-off"></i><span><b>Basic plan, made without internet.</b> Built on your phone from CAPS DI\'s teaching rules and knowledge base; the full plan adds tailored activities, reading passages and a word wall. '+(readQueue().length?'Your full plan will be made automatically as soon as you are back online, and saved under Your saved plans.':'Generate again when you are online for the full plan.')+'</span></div>';
+  if(p._progress)h+=progressPanel(p._progress.before,p._progress.after,'Progress since the last lesson');
   if(p._design)h+=designPanel(p._design);
   if(p.dataInsight)h+='<div class="insight"><i class="ti ti-chart-bar"></i> <strong>Data insight:</strong> '+esc(p.dataInsight)+'</div>';
   const dg=Array.isArray(p.diagnosis)?p.diagnosis.filter(d=>d&&d.barrier):[];
@@ -1137,7 +1186,7 @@ function renderPlan(p){
 // Short, low-data version of the plan for WhatsApp (opens WhatsApp with the text ready to send).
 function planSummaryText(p){
   const d=p._design,c=tierCounts(V.levels),L=[];
-  L.push('*CAPS DI lesson plan*');L.push(V.grade+' · '+V.term+' · '+V.skill);L.push('Outcome: '+currentOutcome());
+  L.push('*CAPS DI lesson plan*');L.push(V.grade+' · '+V.term+' · '+V.skill+' · English Home Language');L.push('Outcome: '+currentOutcome());
   if(p.learningIntention)L.push('','*Learning intention:* '+p.learningIntention);
   if(d)L.push('*Focus:* '+d.focus,'*Time:* whole class '+d.split[0]+' min · groups '+d.split[1]+' · individual '+d.split[2]+' · exit task '+d.split[3]);
   TIERS.forEach((t,i)=>{const x=(p.tiers||{})[t.k];if(x&&x.task)L.push('','*'+t.name+'* ('+c[i]+' learners): '+x.task);});
@@ -1213,7 +1262,7 @@ async function requestPlan(prompt){
 // ---------- Saved plans (this phone only; class-level data, no learner names) ----------
 const SAVE_KEY='capsdi.savedPlans.v1';
 function readSaved(){try{return JSON.parse(localStorage.getItem(SAVE_KEY)||'[]');}catch(_){return[];}}
-function savePlan(){saveEntry({at:new Date().toISOString(),grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome(),levels:V.levels.slice(),plan:V.planData});}
+function savePlan(){logEvent('plan',{levels:V.levels.slice(),offline:!!(V.planData&&V.planData._offline),remediation:!!(V.planData&&V.planData._remed),classSize:V.classSize||null});saveEntry({at:new Date().toISOString(),grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome(),levels:V.levels.slice(),plan:V.planData});}
 function saveEntry(entry){
   try{const list=readSaved();list.unshift(entry);localStorage.setItem(SAVE_KEY,JSON.stringify(list.slice(0,20)));}catch(_){}
   renderSaved();
@@ -1229,7 +1278,7 @@ function openSaved(i){
   const s=readSaved()[i];if(!s)return;
   Object.assign(V,{grade:s.grade,term:s.term,skill:s.skill,outcome:s.outcome,outcomeFormal:null,levels:s.levels.slice(),planData:s.plan,checks:{}});
   const c=tierCounts(V.levels);
-  $('mt').innerHTML='<strong>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</strong><br>Outcome: '+esc(V.outcome)+'<br><span style="color:#6b7280">'+TIERS.map((t,j)=>t.name+': '+c[j]).join(' · ')+' learners · saved '+esc(new Date(s.at).toLocaleDateString())+'</span>';
+  $('mt').innerHTML='<strong>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</strong><br>Outcome: '+esc(V.outcome)+'<br><span style="color:#6b7280">'+TIERS.map((t,j)=>t.name+': '+c[j]).join(' · ')+' learners · saved '+esc(new Date(s.at).toLocaleDateString())+'</span>'+'<br><span class="langtag"><i class="ti ti-language"></i> Lesson language: English Home Language</span>';
   renderPlan(s.plan);$('ld').style.display='none';$('pc').style.display='block';setStep(4);
 }
 
@@ -1260,7 +1309,47 @@ function sImpl(el,v){V.impl=v;document.querySelectorAll('#impl .p').forEach(p=>p
 // ---------- Screen 6: feedback ----------
 function sr(n){V.rating=n;document.querySelectorAll('#stars .star').forEach((s,i)=>s.classList.toggle('lit',i<n));$('rl').textContent=['','Not useful','Slightly useful','Moderately useful','Very useful','Extremely useful'][n];}
 function pick(el,key){V[key]=el.textContent;el.parentElement.querySelectorAll('.p').forEach(p=>p.classList.remove('s'));el.classList.add('s');}
-function sub(){$('fc').style.display='none';$('sb6').style.display='none';$('ty').style.display='block';}
+const FLAGS=['A recommendation was wrong for my learners','An activity was not usable in my class','Did not match the CAPS outcome or term','Too much to teach in the time','Needs materials I don\'t have','The reading passages were the wrong level','Technical problem (saving, offline, WhatsApp, printing)','Nothing went wrong'];
+function renderFlags(){
+  const box=$('flags');if(!box)return;
+  box.innerHTML=FLAGS.map((f,i)=>'<button class="p'+(V.flags.includes(f)?' s':'')+'" data-i="'+i+'">'+esc(f)+'</button>').join('');
+  [...box.children].forEach(b=>b.onclick=()=>{const f=FLAGS[+b.dataset.i],none=FLAGS[FLAGS.length-1];
+    if(V.flags.includes(f))V.flags=V.flags.filter(x=>x!==f);
+    else V.flags=f===none?[none]:[...V.flags.filter(x=>x!==none),f];
+    renderFlags();});
+}
+
+// ---------- Research data: anonymous usage and feedback, queued so nothing is lost offline ----------
+const FEEDBACK_URL='https://caps-di-feedback.sahar-mohyuddin000.workers.dev';
+const EVQ_KEY='capsdi.events.v1',DEV_KEY='capsdi.device.v1';
+function deviceId(){try{let d=localStorage.getItem(DEV_KEY);if(!d){d='d'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);localStorage.setItem(DEV_KEY,d);}return d;}catch(_){return 'unknown';}}
+function readEvq(){try{return JSON.parse(localStorage.getItem(EVQ_KEY)||'[]');}catch(_){return[];}}
+function writeEvq(q){try{localStorage.setItem(EVQ_KEY,JSON.stringify(q.slice(-200)));}catch(_){}}
+function logEvent(type,data){
+  const ev=Object.assign({type,at:new Date().toISOString(),device:deviceId(),grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome?String(currentOutcome()||'').slice(0,300):'',source:V.source},data||{});
+  const q=readEvq();q.push(ev);writeEvq(q);flushEvents();
+}
+let flushing=false;
+async function flushEvents(){
+  if(flushing||!navigator.onLine)return;flushing=true;
+  try{
+    let q=readEvq();
+    while(q.length){
+      const batch=q.slice(0,20);
+      const r=await fetch(FEEDBACK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({events:batch})});
+      if(!r.ok)break;
+      q=readEvq().slice(batch.length);writeEvq(q);
+    }
+  }catch(_){/* not reachable yet: keep the queue and try later */}
+  finally{flushing=false;}
+}
+window.addEventListener('online',()=>{flushEvents();});
+
+function sub(){
+  logEvent('feedback',{rating:V.rating,dataHelped:V.yn,useAgain:V.yn2,flags:V.flags.slice(),comment:String($('tc').value||'').slice(0,1500),
+    impl:V.impl,checksTicked:Object.keys(V.checks).filter(k=>!k.startsWith('ev')&&V.checks[k]).length,
+    teacher:String($('tname').value||'').slice(0,80),levels:V.levels.slice(),exitLevels:V.exitLevels.slice(),offlinePlan:!!(V.planData&&V.planData._offline)});
+  $('fc').style.display='none';$('sb6').style.display='none';$('ty').style.display='block';}
 function rst(){
   V=freshState();
   $('ty').style.display='none';$('fc').style.display='block';$('sb6').style.display='block';
