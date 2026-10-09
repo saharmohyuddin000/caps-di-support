@@ -92,6 +92,21 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .exit table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}
 .exit td{padding:5px 6px;border-top:1px solid #fde68a;vertical-align:top}
 .exit td:first-child{font-weight:600;white-space:nowrap;width:90px}
+.design{border:1px solid #c7d2fe;background:#f8faff;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13px}
+.design h3{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.design .dfocus{font-weight:600;color:#1e3a8a;margin-bottom:2px}.design .dwhy{font-size:12px;color:#374151;margin-bottom:10px}
+.design .dsplit{display:flex;gap:4px;margin-bottom:10px}.design .dsplit div{background:#e0e7ff;border-radius:6px;padding:6px;font-size:11px;color:#3730a3;min-width:0}
+.design .dsplit b{display:block;font-size:13px}.design .dsplit span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.design .dlbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:#6b7280;margin:10px 0 4px}
+.design ul{padding-left:18px}.design li{font-size:12px;margin:3px 0;line-height:1.45}.design ul.dgroups{list-style:none;padding-left:0}
+.design .drot td{font-size:12px;padding:2px 6px 2px 0}.design .drot span{display:inline-block;width:34px;text-align:center;font-size:11px;border-radius:4px;margin-right:2px;color:#9ca3af;background:#f3f4f6}
+.design .drot span.on{background:#2563eb;color:#fff}
+.remed{border:1px solid #fecaca;background:#fff7f7;border-radius:8px;padding:10px 12px;margin-top:12px;font-size:13px;line-height:1.5}
+.remed .rchk{display:flex;align-items:center;gap:8px;margin-top:8px;font-weight:600;cursor:pointer}.remed .rchk input{width:18px;height:18px}
+.remplan .dlbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:#6b7280;margin:10px 0 4px}
+.remplan{border:1px solid #fecaca;background:#fffafa;border-radius:10px;padding:12px 14px}
+.rsess{width:100%;border-collapse:collapse;margin:8px 0}.rsess td{border-top:1px solid #fde2e2;padding:6px 4px;font-size:12px;vertical-align:top}.rsess td:first-child{width:78px;white-space:nowrap}.rsess span{color:#6b7280}
+.vids{list-style:none;padding-left:0}.vids li{font-size:12px;margin:4px 0}.vids a{color:#1d4ed8;text-decoration:none;font-weight:600}
 .insight{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#166534;line-height:1.5}
 .qnote{font-size:11px;color:#92400e;background:#fffbeb;border-radius:8px;padding:8px 10px;margin-bottom:12px}
 .dom{border:1px solid #e0e3e8;border-radius:10px;padding:12px;margin-bottom:10px}
@@ -230,6 +245,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <table class="lvtable" id="lvt"></table>
     <p id="lvTotal" style="font-size:12px;color:#374151;margin-top:8px"></p>
     <div class="tiers" id="tierPreview"></div>
+    <div class="remed" id="remBox" style="display:none"></div>
     <div class="div"></div>
     <span class="lbl">Which parts did learners find hard?</span>
     <p class="hint">From the CAPS assessment items for this term. Select any that apply.</p>
@@ -374,7 +390,7 @@ const DOMAINS=[
 
 let CAPS=null,PED=null;
 const LANGS=['English','isiZulu','isiXhosa','Afrikaans','Sepedi','Setswana','Sesotho','Xitsonga','siSwati','Tshivenda','isiNdebele','Other'];
-function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],resources:[],rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
+function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],resources:[],remed:{on:false,domain:null},rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
 let V=freshState();
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -404,6 +420,7 @@ async function init(){
   if(!$('co').dataset.bound)$('co').dataset.bound='1',$('co').addEventListener('input',function(){if(this.value.trim()){V.outcome=null;document.querySelectorAll('#og .ch').forEach(c=>c.classList.remove('s'));}cb();});
   renderSaved();
   if(CAPS){renderOutcomes();return;}
+  try{const rv=await fetch('data/videos.json');if(rv.ok)VIDEOS=await rv.json();}catch(_){VIDEOS=null;}
   try{const r2=await fetch('data/pedagogy.json');if(r2.ok)PED=await r2.json();}catch(_){PED=null;}
   try{const r=await fetch('data/caps-ehl.json');if(!r.ok)throw new Error(r.status);CAPS=await r.json();}
   catch(e){CAPS=null;$('og').innerHTML='<p class="warn">Could not load the CAPS content ('+esc(e.message)+'). You can still describe your own outcome below.</p>';return;}
@@ -480,7 +497,7 @@ function updateTotals(key,totalId,withPreview){
   if(withPreview){
     const c=tierCounts(V[key]);
     $('tierPreview').innerHTML=TIERS.map((t,i)=>'<div class="tbox '+t.bg+'"><b>'+c[i]+'</b>'+t.name+(total?' · '+Math.round(c[i]/total*100)+'%':'')+'<br><span style="opacity:.8">'+t.desc+'</span></div>').join('');
-    $('b3').disabled=total===0;
+    $('b3').disabled=total===0;renderRemediation();
   }else{$('nextLesson').disabled=total===0;}
 }
 function renderStruggles(){
@@ -601,6 +618,115 @@ function needPassages(){
   if(V.grade==='Grade R'||V.skill!=='Reading and Phonics')return false;
   return !V.resources.some(r=>r==='Big books'||r==='Graded readers');
 }
+// ---------- Lesson design: CAPS DI's teaching decisions ----------
+// These rules decide WHAT to teach, HOW the time is split, WHO works with the
+// teacher and WHO needs individual support. The AI only writes the content
+// inside these decisions. All thresholds live here so they can be adjusted.
+const RULES={
+  reteachIfBelow:0.60,      // share below Rating 4 at which the whole class reteaches the prerequisite
+  smallGroupIfBelow:0.20,   // below this share, the class moves on with one intensive group
+  securedAt:0.80,           // share on Rating 4+ that counts as the outcome secured
+  consolidateAt:0.50,       // exit share on Rating 4+ below which tomorrow reteaches differently
+  teacherGroupMax:12,       // largest group the teacher teaches at once
+  minTeacherGroup:4,        // smaller than this, a band gets individual time instead of a group
+  remediationMaxRating:2,   // learners on this rating or below (0–39%) are offered a remediation plan
+  largeClass:40,            // class size that triggers the weekly rotation advice
+  minutes:60,
+  splits:{similar:[25,20,10,5],mixed:[15,30,10,5],wide:[10,35,10,5]} // whole class, groups, individual, exit task
+};
+// Remediation domains: what a remediation plan can target.
+const REMED_DOMAINS=[
+  {k:'letterKnowledge',l:'Letter knowledge',areas:['Letter knowledge'],path:'letterKnowledge'},
+  {k:'phonemic',l:'Phonemic awareness',areas:['Phonemic awareness'],path:'phonemic'},
+  {k:'phonological',l:'Phonological awareness (rhyme, syllables)',areas:[],path:'phonological'},
+  {k:'alphabetic',l:'Alphabetic principle (letter–sound link)',areas:['Alphabetic principle'],path:'phonics'},
+  {k:'blending',l:'Blending (reading words)',areas:['Blending','Reading'],path:'phonics'},
+  {k:'segmenting',l:'Segmenting (spelling words)',areas:['Segmenting','Spelling'],path:'segmenting'},
+  {k:'fluency',l:'Fluency',areas:['Fluency'],path:'fluency'},
+  {k:'comprehension',l:'Comprehension',areas:['Comprehension','Inference'],path:'comprehension'},
+  {k:'oral',l:'Oral language and vocabulary',areas:['Oral language','Listening','Vocabulary'],path:'oral'},
+  {k:'handwriting',l:'Handwriting',areas:['Handwriting'],path:'handwriting'},
+  {k:'writing',l:'Writing',areas:['Writing','Grammar'],path:'writing'}];
+let VIDEOS=null;
+function remedCount(){return V.levels.slice(0,RULES.remediationMaxRating).reduce((a,b)=>a+b,0);}
+function suggestDomain(){
+  const tally={};
+  if(PED)PED.misconceptions.filter(m=>V.errors.includes(m.id)).forEach(m=>{const d=REMED_DOMAINS.find(x=>x.areas.includes(m.area));if(d)tally[d.k]=(tally[d.k]||0)+1;});
+  const best=Object.entries(tally).sort((a,b)=>b[1]-a[1])[0];
+  if(best)return best[0];
+  return V.skill==='Writing'?'handwriting':V.skill==='Listening and Speaking'?'oral':'alphabetic';
+}
+function renderRemediation(){
+  const box=$('remBox');if(!box)return;
+  const n=remedCount();
+  if(!n){box.style.display='none';V.remed.on=false;return;}
+  const sug=suggestDomain();if(!V.remed.domain)V.remed.domain=sug;
+  box.style.display='block';
+  box.innerHTML='<p><i class="ti ti-lifebuoy"></i> <b>'+n+' learner'+(n>1?'s are':' is')+' on Ratings 1–'+RULES.remediationMaxRating+'</b> (below 40%). Learners this far below the outcome need <b>remediation</b>: short, targeted sessions on the skill underneath, alongside today\'s lesson.</p>'+
+    '<label class="rchk"><input type="checkbox" id="remOn"'+(V.remed.on?' checked':'')+'> Add a remediation plan for these learners</label>'+
+    '<div id="remDom" style="display:'+(V.remed.on?'block':'none')+'"><p class="hint" style="margin-top:8px">Which skill should remediation target? <b>Suggested from the errors you ticked:</b> '+esc(REMED_DOMAINS.find(d=>d.k===sug).l)+'.</p><div class="pr" id="remPills"></div></div>';
+  $('remOn').onchange=e=>{V.remed.on=e.target.checked;$('remDom').style.display=V.remed.on?'block':'none';};
+  pills('remPills',REMED_DOMAINS.map(d=>d.l),REMED_DOMAINS.find(d=>d.k===V.remed.domain).l,l=>{V.remed.domain=REMED_DOMAINS.find(d=>d.l===l).k;});
+}
+function remedPrompt(){
+  if(!V.remed.on||!remedCount())return '';
+  const d=REMED_DOMAINS.find(x=>x.k===V.remed.domain)||REMED_DOMAINS[0];
+  const path=PED&&PED.pathways[d.path];
+  const errs=PED?PED.misconceptions.filter(m=>d.areas.includes(m.area)).map(m=>'- '+m.misconception+': '+m.response).join('\n'):'';
+  return ['REMEDIATION (the teacher asked for a remediation plan)',
+  remedCount()+' learners are on Ratings 1–'+RULES.remediationMaxRating+' (below 40%). Target skill: '+d.l+'.',
+  path?'Teaching pathway for this skill: '+path.steps.join(' → '):'',
+  errs?'Common errors in this skill and the response:\n'+errs:'',
+  'Design a 2-week remediation of 6 sessions of 15 minutes (3 a week), run during group time or another agreed time. Start from what these learners CAN already do, teach one small step per session, use the letters, sounds and words of this CAPS term, keep it multisensory and use plenty of practice. Include a 2-minute entry check, a progress check after session 3, the exit criteria for rejoining the Foundational group, and what to do if there is no progress after 6 sessions (begin the SIAS process: the teacher completes the SNA 1 and discusses the learner with the School-Based Support Team).'].filter(Boolean).join('\n');
+}
+function lessonDesign(){
+  const L=V.levels,total=L.reduce((a,b)=>a+b,0);if(!total)return null;
+  const c=tierCounts(L),share=c.map(n=>n/total),below=share[0],pct=x=>Math.round(x*100)+'%';
+  // 1. What to teach
+  let mode,focus,why='<b>'+c[0]+' of '+total+'</b> learners ('+pct(below)+') are below Rating 4 (Adequate achievement) on this outcome.';
+  if(below>=RULES.reteachIfBelow){mode='reteach';focus='Reteach the prerequisite skill to the whole class, then return to the outcome.';}
+  else if(below>=RULES.smallGroupIfBelow){mode='mixed';focus='Teach the outcome to the whole class, with targeted small-group work on the gap.';}
+  else{mode='extend';focus='Move the class on: most learners have secured this outcome. One intensive small group for those still below Rating 4.';}
+  const errs=PED?PED.misconceptions.filter(m=>V.errors.includes(m.id)).map(m=>m.misconception):[];
+  if(errs.length)why+=' Main error pattern: <b>'+esc(errs[0].toLowerCase())+'</b>.';
+  // 2. Time split: the wider the spread, the more group time
+  const big=Math.max(...share),spread=big>=0.7?'similar':share.every(x=>x>=0.2)?'wide':'mixed';
+  const sp=RULES.splits[spread];
+  // 3. Groups (no teacher group larger than teacherGroupMax)
+  const groups=[];TIERS.forEach((t,i)=>{if(!c[i])return;const n=Math.ceil(c[i]/RULES.teacherGroupMax);
+    for(let k=0;k<n;k++){const size=Math.floor(c[i]/n)+(k<c[i]%n?1:0);groups.push({tier:t,label:t.name+(n>1?' '+String.fromCharCode(65+k):''),size});}});
+  // The teacher teaches the Foundational group unless it is very small; then those learners get individual time.
+  const teacherTier=c[0]>=RULES.minTeacherGroup?0:(c[1]?1:2);
+  const tg=groups.filter(g=>g.tier===TIERS[teacherTier]);
+  tg.forEach((g,k)=>{g.withTeacher=true;g.slot=tg.length>1?'rotation '+(k+1)+' of '+tg.length:'';});
+  groups.forEach(g=>{if(g.withTeacher)return;if(g.tier===TIERS[0]&&teacherTier!==0)g.coach=true;else if(g.size<3)g.solo=true;});
+  // 4. Weekly rotation of teacher time (large classes especially)
+  const days=['Mon','Tue','Wed','Thu','Fri'];
+  // Teacher group every day; of the others, the larger gets three days, the smaller two.
+  const others=[0,1,2].filter(i=>i!==teacherTier&&c[i]>=RULES.minTeacherGroup).sort((a,b)=>c[b]-c[a]);
+  const rotation=[{tier:TIERS[teacherTier],days:days.slice()}];
+  if(others[0]!==undefined)rotation.push({tier:TIERS[others[0]],days:['Mon','Wed','Fri']});
+  if(others[1]!==undefined)rotation.push({tier:TIERS[others[1]],days:['Tue','Thu']});
+  // 5. Individual support
+  const watch=[];
+  if(c[0]&&teacherTier!==0)watch.push('<b>'+c[0]+'</b> learner'+(c[0]>1?'s':'')+' below Rating 4: too few for a group, so give each a short individual session (5–10 minutes) during group time.');
+  if(V.remed.on&&remedCount())watch.push('<b>Remediation plan</b> for the '+remedCount()+' learners on Ratings 1–'+RULES.remediationMaxRating+' (see below the lesson).');
+  if(L[0])watch.push('<b>'+L[0]+'</b> learner'+(L[0]>1?'s':'')+' on Rating 1 (Not achieved): a 5-minute daily touchpoint with you and a peer buddy. If there is no movement after 3 exit tasks, start the SIAS support process.');
+  const otherLang=V.languages.some(l=>l!=='English');
+  V.profiles.forEach(v=>{const pr=PROFILES.find(x=>x.v===v);if(pr&&!/Large|Low-resource|Prompt fading/.test(pr.t)&&!(otherLang&&pr.t==='EAL learners'))watch.push('<b>'+esc(pr.t)+'</b>: '+esc(pr.u)+'.');});
+  if(otherLang)watch.push('<b>Home language not English</b>: picture cues and home-language bridging for new words.');
+  return {total,c,mode,focus,why,spread,split:sp,groups,teacherTier,large:total>=RULES.largeClass,rotation,watch};
+}
+function designPrompt(d){
+  if(!d)return '';
+  const g=d.groups.map(x=>x.label+' ('+x.size+' learner'+(x.size>1?'s':'')+(x.withTeacher?', with the teacher'+(x.slot?' ('+x.slot+' during group time)':''):x.coach?', short individual sessions with the teacher':x.solo?', individual task':', independent or peer task')+')').join('; ');
+  return ['LESSON DESIGN (decided by CAPS DI rules from the class data; follow it exactly)',
+  'Focus: '+d.focus+' Reason: '+d.why.replace(/<[^>]+>/g,''),
+  'Time ('+RULES.minutes+' min): whole class '+d.split[0]+' min; small groups '+d.split[1]+' min; individual practice '+d.split[2]+' min; exit task '+d.split[3]+' min. Use these durations in wholeClass.duration and the tier durations.',
+  'Groups: '+g+'. The teacher teaches the '+TIERS[d.teacherTier].name+' group directly; every other group needs a task it can complete WITHOUT the teacher (a practised routine, self-checking task or the graded passage).',
+  d.mode==='reteach'?'Because most learners are below Rating 4, the whole-class part must reteach the prerequisite skill from the earlier CAPS content before returning to the outcome.':d.mode==='extend'?'Because most learners have secured the outcome, the whole-class part moves on to the next step in CAPS, and the Foundational learners get an intensive small group.':'',
+  d.large?'This is a large class: include a classroom-management routine for switching groups (a signal, fixed group seating) and whole-class response techniques that check every learner at once (choral response, slates or paper held up).':''].filter(Boolean).join('\n');
+}
 function buildPrompt(){
   const passages=needPassages();
   const ot=currentOutcome();
@@ -647,6 +773,9 @@ tn?'Class notes: '+tn:'',
 'BARRIER TYPES (use these labels in the diagnosis)',
 barriers,
 '',
+designPrompt(lessonDesign()),
+remedPrompt(),
+'',
 'FIVE DIMENSIONS OF DIFFERENTIATION (same outcome; change only these)',
 dims,
 '',
@@ -675,6 +804,7 @@ passages?'9. Graded passages: the teacher has no big books or graded readers. Wr
 '"individualSupports":["..."],'+
 '"exitTask":{"question":"Can the learner independently ...?","task":"...","alignedTo":"which CAPS item it checks","scoring":[{"levels":"Ratings 1–3","evidence":"..."},{"levels":"Ratings 4–5","evidence":"..."},{"levels":"Ratings 6–7","evidence":"..."}]},'+
 '"dataInsight":"One sentence on how the class evidence shaped this plan","nextSteps":"One sentence on how to adjust the next lesson using the exit task results"'+
+(V.remed.on&&remedCount()?',"remediation":{"focus":"skill targeted","why":"one sentence from the evidence","entryCheck":"2-minute check","sessions":[{"n":1,"focus":"...","activity":"exact words, letters and steps","minutes":15}],"progressCheck":"after session 3","exitCriteria":"when a learner rejoins the Foundational group","ifNoProgress":"SIAS steps"}':'')+
 (passages?',"passages":{"foundational":{"title":"...","text":"...","features":"what makes it right for this group","questions":["..."],"accessNotes":"..."},"intermediate":{...same keys},"advanced":{...same keys}}':'')+'}'
   ].filter(x=>x!=='').join('\n');
 }
@@ -700,6 +830,7 @@ function planIssues(p){
   if(!Array.isArray(p.misconceptionsToWatch)||!p.misconceptionsToWatch.some(m=>m&&s(m.ifYouSee)&&s(m.sayOrDo)))issues.push('misconceptionsToWatch');
   if(!p.exitTask||!s(p.exitTask.task))issues.push('exitTask.task');
   if(!p.exitTask||!Array.isArray(p.exitTask.scoring)||p.exitTask.scoring.length<3)issues.push('exitTask.scoring for 3 level bands');
+  if(V.remed.on&&remedCount()&&(!p.remediation||!Array.isArray(p.remediation.sessions)||p.remediation.sessions.length<3))issues.push('remediation.sessions (6 sessions)');
   if(needPassages())TIERS.forEach(t=>{const x=p.passages&&p.passages[t.k];if(!x||!s(x.text)||!Array.isArray(x.questions)||!x.questions.length)issues.push('passages.'+t.k+' (text + questions)');});
   return issues;
 }
@@ -724,7 +855,7 @@ async function go4(){
       const issues2=planIssues(plan2);
       if(issues2.length<issues.length){plan=plan2;issues=issues2;}
     }
-    plan._issues=issues;
+    plan._issues=issues;plan._design=lessonDesign();if(V.remed.on&&remedCount())plan._remed={n:remedCount(),k:V.remed.domain};
     V.planData=plan;V.checks={};
     renderPlan(plan);
     savePlan();
@@ -743,6 +874,7 @@ function renderPlan(p){
   const c=tierCounts(V.levels);
   let h='';
   if(p._issues&&p._issues.length)h+='<div class="qnote"><i class="ti ti-alert-triangle"></i> Quality check: this plan is missing '+esc(p._issues.join(', '))+'. You can generate again from the previous screen.</div>';
+  if(p._design)h+=designPanel(p._design);
   if(p.dataInsight)h+='<div class="insight"><i class="ti ti-chart-bar"></i> <strong>Data insight:</strong> '+esc(p.dataInsight)+'</div>';
   const dg=Array.isArray(p.diagnosis)?p.diagnosis.filter(d=>d&&d.barrier):[];
   if(dg.length){h+='<div class="sec"><h3><i class="ti ti-stethoscope"></i> What the evidence suggests</h3>'+dg.map(d=>
@@ -779,6 +911,19 @@ function renderPlan(p){
   const mw=Array.isArray(p.misconceptionsToWatch)?p.misconceptionsToWatch.filter(m=>m&&m.ifYouSee):[];
   if(mw.length){h+='<div class="sec"><h3><i class="ti ti-eye"></i> Misconceptions to watch</h3>'+mw.map(m=>
     '<div class="mis"><p><strong>If you see:</strong> '+esc(m.ifYouSee)+'</p>'+(m.itMayMean?'<p><strong>It may mean:</strong> '+esc(m.itMayMean)+'</p>':'')+(m.sayOrDo?'<p class="say"><strong>Say or do:</strong> '+esc(m.sayOrDo)+'</p>':'')+'</div>').join('')+'</div>';}
+  const r=p.remediation;
+  if(r&&Array.isArray(r.sessions)&&r.sessions.length){
+    const dk=p._remed&&REMED_DOMAINS.find(x=>x.k===p._remed.k);
+    h+='<div class="sec remplan"><h3><i class="ti ti-lifebuoy"></i> Remediation plan'+(p._remed?' <span class="who">· '+p._remed.n+' learners on Ratings 1–'+RULES.remediationMaxRating+'</span>':'')+'</h3>'+
+      '<p><b>Target skill:</b> '+esc(r.focus||(dk?dk.l:''))+'</p>'+(r.why?'<p class="who" style="margin-bottom:6px">'+esc(r.why)+'</p>':'')+
+      (r.entryCheck?'<div class="kv"><strong>Start with this check (2 min):</strong> '+esc(r.entryCheck)+'</div>':'')+
+      '<table class="rsess">'+r.sessions.map((x,i)=>'<tr><td><b>Session '+esc(x&&x.n||i+1)+'</b><br><span>'+esc(x&&x.minutes||15)+' min</span></td><td><b>'+esc(x&&x.focus)+'</b><br>'+esc(x&&x.activity)+'</td></tr>').join('')+'</table>'+
+      (r.progressCheck?'<div class="kv"><strong>Progress check:</strong> '+esc(r.progressCheck)+'</div>':'')+
+      (r.exitCriteria?'<div class="kv"><strong>Rejoins the Foundational group when:</strong> '+esc(r.exitCriteria)+'</div>':'')+
+      (r.ifNoProgress?'<div class="kv"><strong>If there is no progress after 6 sessions:</strong> '+esc(r.ifNoProgress)+'</div>':'');
+    const vids=dk&&VIDEOS&&VIDEOS[dk.k];
+    h+=vids&&vids.length?'<p class="dlbl" style="margin-top:10px">Watch how to teach it</p><ul class="vids">'+vids.map(v=>'<li><a href="'+esc(v.url)+'" target="_blank" rel="noopener"><i class="ti ti-player-play"></i> '+esc(v.title)+'</a> <span class="who">· '+esc(v.source)+'</span></li>').join('')+'</ul>':'<p class="who" style="margin-top:8px">Teaching videos for this skill are being added.</p>';
+    h+='</div>';}
   const is=list(p.individualSupports);
   if(is.length)h+='<div class="sec"><h3><i class="ti ti-heart-handshake"></i> Individual supports</h3><ul>'+is.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>';
   const ps=p.passages&&typeof p.passages==='object'?TIERS.map((t,i)=>[t,i,p.passages[t.k]]).filter(([,,x])=>x&&x.text):[];
@@ -803,6 +948,17 @@ function printPassages(){
   const w=window.open('','_blank');if(!w){alert('Allow pop-ups to print the passages.');return;}
   w.document.write('<!doctype html><meta charset="utf-8"><title>Reading passages</title><style>body{font-family:Arial,sans-serif;margin:24px}section{page-break-after:always}p.g{color:#666;font-size:14px}h2{font-size:28px}p.t{font-size:26px;line-height:1.8;white-space:pre-wrap}li{font-size:20px;margin:8px 0}</style>'+body);
   w.document.close();w.focus();w.print();
+}
+function designPanel(d){
+  const tl=['Whole class','Small groups','Individual','Exit task'];
+  let h='<div class="design"><h3><i class="ti ti-layout-grid"></i> Lesson design <span class="who">· decided from your class data</span></h3>';
+  h+='<p class="dfocus">'+esc(d.focus)+'</p><p class="dwhy">'+d.why+'</p>';
+  h+='<div class="dsplit">'+d.split.map((m,i)=>'<div style="flex:'+m+'"><b>'+m+' min</b><span>'+tl[i]+'</span></div>').join('')+'</div>';
+  h+='<p class="dlbl">Groups today</p><ul class="dgroups">'+d.groups.map(g=>'<li><span class="tbadge '+g.tier.bg+'">'+esc(g.label)+'</span> '+g.size+' learners · '+(g.withTeacher?'<b>with you</b>'+(g.slot?' ('+g.slot+')':''):g.coach?'<b>short individual sessions with you</b>':g.solo?'individual task':'independent or peer task')+'</li>').join('')+'</ul>';
+  if(d.rotation&&d.rotation.length>1)h+='<p class="dlbl">Your teacher time this week'+(d.large?' (large class)':'')+'</p><table class="drot">'+d.rotation.map(r=>'<tr><td>'+esc(r.tier.name)+'</td><td>'+['Mon','Tue','Wed','Thu','Fri'].map(x=>'<span class="'+(r.days.includes(x)?'on':'')+'">'+x+'</span>').join('')+'</td></tr>').join('')+'</table>';
+  if(d.watch&&d.watch.length)h+='<p class="dlbl">Individual support</p><ul>'+d.watch.map(w=>'<li>'+w+'</li>').join('')+'</ul>';
+  h+='<p class="dlbl">What the exit task decides for tomorrow</p><ul><li><b>'+Math.round(RULES.securedAt*100)+'% or more</b> on Rating 4+: outcome secured, move to the next CAPS step.</li><li><b>'+Math.round(RULES.consolidateAt*100)+'–'+(Math.round(RULES.securedAt*100)-1)+'%</b>: consolidate the same outcome and regroup.</li><li><b>Below '+Math.round(RULES.consolidateAt*100)+'%</b>: reteach with a different approach (more concrete, more multisensory).</li></ul>';
+  return h+'</div>';
 }
 function extractJson(raw){
   const cleaned=String(raw||'').replace(/```json|```/g,'').trim();

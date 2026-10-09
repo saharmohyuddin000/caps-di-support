@@ -1,0 +1,22 @@
+{
+  "note": "Teaching videos per decoding and literacy domain, shown with remediation plans. Curated list; add vetted videos here (title, source, url).",
+  "letterKnowledge": [
+    {"title": "Introduce new sounds and words (video 3)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"}
+  ],
+  "phonemic": [
+    {"title": "Phonemic awareness and phonics activities: introduction (video 1)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"},
+    {"title": "Differentiate new sounds (video 4)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"}
+  ],
+  "alphabetic": [
+    {"title": "Introduce new sounds and words (video 3)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"},
+    {"title": "Letter swap (video 6)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"}
+  ],
+  "blending": [
+    {"title": "Segment and blend (video 5)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"},
+    {"title": "Review and build (video 2)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"}
+  ],
+  "segmenting": [
+    {"title": "Segment and blend (video 5)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"},
+    {"title": "Word find (video 7)", "source": "NECT Foundation Phase training", "url": "https://nect.org.za/materials/videos/foundation-phase/teacher-day-1-training-videos/fp-phonemic-awareness-and-phonics-activities"}
+  ]
+}

@@ -1,13 +1,14 @@
 // CAPS DI service worker: lets the app install and open offline.
 // Pages and CAPS data: network first (so updates arrive), cached copy when offline.
 // Plan generation (the Cloudflare Worker) is never cached.
-const CACHE = 'capsdi-v13';
+const CACHE = 'capsdi-v15';
 const SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
   './data/caps-ehl.json',
   './data/pedagogy.json',
+  './data/videos.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/apple-touch-icon.png'
