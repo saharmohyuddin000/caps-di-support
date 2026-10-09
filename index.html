@@ -112,6 +112,10 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .remplan .dlbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:#6b7280;margin:10px 0 4px}
 .remplan{border:1px solid #fecaca;background:#fffafa;border-radius:10px;padding:12px 14px}
 .rsess{width:100%;border-collapse:collapse;margin:8px 0}.rsess td{border-top:1px solid #fde2e2;padding:6px 4px;font-size:12px;vertical-align:top}.rsess td:first-child{width:78px;white-space:nowrap}.rsess span{color:#6b7280}
+.scaf{border:1px solid #bbf7d0;background:#f7fef9;border-radius:10px;padding:12px 14px}
+.ladder{list-style:none;padding:0;counter-reset:st}.ladder li{display:flex;gap:8px;font-size:12px;margin:5px 0;line-height:1.45;padding-left:10px;border-left:3px solid #86efac}
+.ladder li b{min-width:92px;color:#166534;flex-shrink:0}.res{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.res div{border:1px solid #d1fae5;background:#fff;border-radius:8px;padding:8px;font-size:12px;line-height:1.4}.res b{display:block;color:#065f46;margin-bottom:2px}.res span{display:block;color:#374151}.res i{color:#6b7280;font-style:normal;font-weight:600}
 .vids{list-style:none;padding-left:0}.vlbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:#6b7280;margin:10px 0 2px}
 .wwall{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.wwall div{border:2px solid #fde68a;background:#fffbeb;border-radius:8px;padding:8px;text-align:center}
 .wwall b{display:block;font-size:18px;color:#92400e}.wwall span{display:block;font-size:11px;color:#374151;margin-top:2px}.wwall i{display:block;font-size:10px;color:#9ca3af;margin-top:2px}.vids li{font-size:12px;margin:4px 0}.vids a{color:#1d4ed8;text-decoration:none;font-weight:600}
@@ -216,6 +220,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
         <li><b>Lesson design</b> (top): today's focus and why, time split, groups, weekly rotation, reading benchmark.</li>
         <li><b>What the evidence suggests:</b> whether the difficulty is decoding, comprehension or both, and why.</li>
         <li><b>Watch how to teach it:</b> short teaching videos for the main skill.</li>
+        <li><b>Scaffolds and resources:</b> a ladder from most support to independence, and low-cost resources a teacher can make.</li>
         <li><b>Reading passages</b> at three levels and a printable <b>word wall</b>.</li>
         <li><b>Remediation plan</b> for learners on Ratings 1–2, with an exit check and SIAS steps.</li>
       </ul>
@@ -689,6 +694,16 @@ let VIDEOS=null;
 function teachDomain(){const m={phonics:'blending',phonemic:'phonemic',phonological:'phonological',letterKnowledge:'letterKnowledge',segmenting:'segmenting',fluency:'fluency',comprehension:'comprehension',oral:'oral',handwriting:'handwriting',writing:'writing'};return m[pickPathways()[0]]||null;}
 function videoList(k,max){const vids=k&&VIDEOS&&VIDEOS[k];if(!vids||!vids.length)return '';
   return '<ul class="vids">'+vids.slice(0,max||9).map(v=>'<li><a href="'+esc(v.url)+'" target="_blank" rel="noopener"><i class="ti ti-player-play"></i> '+esc(v.title)+'</a> <span class="who">· '+esc(v.source)+'</span></li>').join('')+'</ul>';}
+// Scaffold ladder and low-cost resources for a skill (from the knowledge base; works offline).
+function scaffoldOf(k){return k&&PED&&PED.scaffolds&&PED.scaffolds[k]?PED.scaffolds[k]:null;}
+function scaffoldSection(k,title){
+  const sc=scaffoldOf(k);if(!sc)return '';
+  const d=REMED_DOMAINS.find(x=>x.k===k);
+  return '<div class="sec scaf"><h3><i class="ti ti-stairs-up"></i> '+esc(title||'Scaffolds and resources')+(d?' <span class="who">· '+esc(d.l)+'</span>':'')+'</h3>'+
+    '<p class="vlbl" style="margin-top:2px">Scaffold ladder: start where the learner is, then step down the support</p><ol class="ladder">'+
+    sc.ladder.map(x=>'<li><b>'+esc(x.level)+'</b><span>'+esc(x.do)+'</span></li>').join('')+'</ol>'+
+    '<p class="vlbl">Low-cost resources</p><div class="res">'+sc.resources.map(r=>'<div><b>'+esc(r.name)+'</b><span><i>Make:</i> '+esc(r.make)+'</span><span><i>Use:</i> '+esc(r.use)+'</span></div>').join('')+'</div></div>';
+}
 function remedCount(){return V.levels.slice(0,RULES.remediationMaxRating).reduce((a,b)=>a+b,0);}
 function suggestDomain(){
   const tally={};
@@ -782,6 +797,8 @@ function researchPrompt(lv){
   const out=[];
   if(rules.length)out.push('Research-based diagnostic rules (South African reading research) — use them to interpret the evidence:\n'+rules.map(r=>'- If '+r.if.charAt(0).toLowerCase()+r.if.slice(1)+' → '+r.means+' → '+r.do).join('\n'));
   const reading=V.skill==='Reading and Phonics';
+  const sc=scaffoldOf(teachDomain());
+  if(sc&&lv<2)out.push('Scaffold ladder for this skill (base each tier\'s promptFading on it, starting at the right step for that group): '+sc.ladder.map(x=>x.level+': '+x.do).join(' | ')+'\nLow-cost resources to use where they fit: '+sc.resources.map(r=>r.name+' ('+r.use+')').join('; ')+'.');
   if(lv<2&&reading&&PED.phonicsLesson&&[...doms].some(d=>['alphabetic','blending','letterKnowledge','phonemic'].includes(d)))out.push('Phonics lesson structure to follow: '+PED.phonicsLesson.steps.join(' → ')+'. Avoid: '+PED.phonicsLesson.avoid.join('; ')+'.');
   const b=PED.benchmarks||{};
   if(reading&&V.grade==='Grade 1'&&b.letterSounds)out.push('Benchmark: '+b.letterSounds.target+' ('+b.letterSounds.what+'). '+b.letterSounds.when+'.');
@@ -962,7 +979,7 @@ function offlinePlan(){
       movementBreak:V.profiles.some(v=>/attention|movement/.test(v))?'After each 3–5 minute input, a 1-minute movement or stretching break.':''},
     tiers:{
       foundational:{duration:d.split[1]+' min (groups)',task:(d.mode==='reteach'?'Reteach the prerequisite, then the outcome, ':'Work on the outcome ')+'in small steps with the teacher: '+(errs[0]?errs[0].response:(steps[0]||'model, practise together, then try alone'))+'.',
-        scaffolding:'Concrete materials, modelling for every step, one new thing at a time.',promptFading:['Full model','Partial prompt','Independent attempt'],checkForUnderstanding:'Each learner shows the skill once on their own while you watch.'},
+        scaffolding:'Concrete materials, modelling for every step, one new thing at a time.',promptFading:scaffoldOf(teachDomain())?scaffoldOf(teachDomain()).ladder.map(x=>x.level+': '+x.do):['Full model','Partial prompt','Independent attempt'],resources:scaffoldOf(teachDomain())?scaffoldOf(teachDomain()).resources.map(r=>r.name):[],checkForUnderstanding:'Each learner shows the skill once on their own while you watch.'},
       intermediate:{duration:d.split[1]+' min (groups)',task:'Practise the outcome with a partner using a routine the class already knows, then a short independent task.',
         scaffolding:'Worked example on the board; partner checks.',promptFading:['Partner support','Independent'],checkForUnderstanding:'Learners complete two items alone; check one per learner.'},
       advanced:{duration:d.split[1]+' min (groups)',task:'Apply the outcome in a new or harder example and explain the thinking to a partner.',
@@ -1051,6 +1068,7 @@ function renderPlan(p){
     h+='<div class="sec"><h3><i class="ti ti-route"></i> Core teaching strategy</h3>'+(p.coreStrategy?'<p>'+esc(p.coreStrategy)+'</p>':'')+
       (list(p.prerequisites).length?'<div class="kv"><strong>Learners need to know first:</strong> '+list(p.prerequisites).map(esc).join(' · ')+'</div>':'')+
       (videoList(p._teachDomain,3)?'<p class="vlbl">Watch how to teach it</p>'+videoList(p._teachDomain,3):'')+'</div>';}
+  if(p._teachDomain)h+=scaffoldSection(p._teachDomain);
   h+='<div class="sec li-box"><h3><i class="ti ti-target"></i> Learning intention</h3><p>'+esc(p.learningIntention)+'</p>';
   const sc=list(p.successCriteria);if(sc.length)h+='<p style="margin-top:8px;font-weight:600;font-size:12px">Success criteria</p><ul>'+sc.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
   h+='</div><div class="div"></div>';
@@ -1082,6 +1100,7 @@ function renderPlan(p){
       (r.progressCheck?'<div class="kv"><strong>Progress check:</strong> '+esc(r.progressCheck)+'</div>':'')+
       (r.exitCriteria?'<div class="kv"><strong>Rejoins the Foundational group when:</strong> '+esc(r.exitCriteria)+'</div>':'')+
       (r.ifNoProgress?'<div class="kv"><strong>If there is no progress after 6 sessions:</strong> '+esc(r.ifNoProgress)+'</div>':'');
+    if(dk&&dk.k!==p._teachDomain&&scaffoldOf(dk.k)){const sc=scaffoldOf(dk.k);h+='<p class="vlbl" style="margin-top:10px">Scaffold ladder for '+esc(dk.l.toLowerCase())+'</p><ol class="ladder">'+sc.ladder.map(x=>'<li><b>'+esc(x.level)+'</b><span>'+esc(x.do)+'</span></li>').join('')+'</ol><p class="vlbl">Resources</p><ul>'+sc.resources.map(r=>'<li><b>'+esc(r.name)+':</b> '+esc(r.use)+' <span class="who">(make: '+esc(r.make)+')</span></li>').join('')+'</ul>';}
     const vids=dk&&VIDEOS&&VIDEOS[dk.k];
     h+=vids&&vids.length?'<p class="dlbl" style="margin-top:10px">Watch how to teach it</p><ul class="vids">'+vids.map(v=>'<li><a href="'+esc(v.url)+'" target="_blank" rel="noopener"><i class="ti ti-player-play"></i> '+esc(v.title)+'</a> <span class="who">· '+esc(v.source)+'</span></li>').join('')+'</ul>':'<p class="who" style="margin-top:8px">Teaching videos for this skill are being added.</p>';
     h+='</div>';}

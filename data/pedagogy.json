@@ -883,5 +883,465 @@
       "Learners who finish early choose a book for independent reading"
     ],
     "capsDiAdds": "CAPS DI regroups learners after every exit task, from the CAPS ratings and error patterns, and tells the teacher which group needs the extra guided-reading slots this week."
+  },
+  "scaffolds": {
+    "note": "Scaffold ladders (from most support to independence) and low-cost resources per skill. Draft by CAPS DI for review by a Foundation Phase specialist; informed by the sources listed above.",
+    "letterKnowledge": {
+      "ladder": [
+        {
+          "level": "Most support",
+          "do": "Teacher shows the letter card, says the sound and does its action; learners trace the letter in sand while saying the sound"
+        },
+        {
+          "level": "Guided",
+          "do": "Teacher says the sound; learners find the card among two or three and repeat the sound and action"
+        },
+        {
+          "level": "Light prompt",
+          "do": "Teacher shows the card only; learners say the sound, with the picture cue covered after a few seconds"
+        },
+        {
+          "level": "Independent",
+          "do": "Learners sound shuffled cards in random order with no cues; missed cards return after two or three others"
+        }
+      ],
+      "resources": [
+        {
+          "name": "Letter-sound cards",
+          "make": "Cardboard squares or cereal-box card with one letter each; a key picture on the back",
+          "use": "Daily random-order flash practice, 1–2 minutes"
+        },
+        {
+          "name": "Sand or salt tray",
+          "make": "A tray, lid or box with a thin layer of sand or salt",
+          "use": "Trace the letter while saying its sound"
+        },
+        {
+          "name": "Action-sound chart",
+          "make": "Chart paper with each taught letter, a picture and a drawn action",
+          "use": "Point and do the action for each sound during review"
+        },
+        {
+          "name": "Letter bag",
+          "make": "Small objects whose names start with the taught sounds",
+          "use": "Learners pull an object, say its first sound and find the letter"
+        }
+      ]
+    },
+    "phonemic": {
+      "ladder": [
+        {
+          "level": "Most support",
+          "do": "Teacher says a word slowly, taps each sound on her arm; learners copy word and taps"
+        },
+        {
+          "level": "Guided",
+          "do": "Teacher says the word; learners push a counter into a box for each sound together with her"
+        },
+        {
+          "level": "Light prompt",
+          "do": "Teacher says the word; learners say the sounds alone, teacher only holds up fingers for the number of sounds"
+        },
+        {
+          "level": "Independent",
+          "do": "Learners say and count the sounds in new words with no prompts (oral only, no letters)"
+        }
+      ],
+      "resources": [
+        {
+          "name": "Sound boxes (Elkonin boxes)",
+          "make": "Two to four squares drawn on paper or a slate",
+          "use": "Push one counter (bottle top, bean, stone) into a box per sound"
+        },
+        {
+          "name": "Counters",
+          "make": "Bottle tops, beans or small stones",
+          "use": "Move one per sound while saying it"
+        },
+        {
+          "name": "Picture cards",
+          "make": "Drawings or cut-outs of simple objects (cat, sun, pen)",
+          "use": "Say the word, then break it into sounds without seeing the letters"
+        },
+        {
+          "name": "Robot talk",
+          "make": "None: the teacher speaks like a robot, one sound at a time",
+          "use": "Learners blend the robot sounds back into the word"
+        }
+      ]
+    },
+    "phonological": {
+      "ladder": [
+        {
+          "level": "Most support",
+          "do": "Teacher claps the syllables of a learner's name with the class"
+        },
+        {
+          "level": "Guided",
+          "do": "Learners clap syllables with the teacher, then say how many"
+        },
+        {
+          "level": "Light prompt",
+          "do": "Teacher says the word; learners clap and count alone"
+        },
+        {
+          "level": "Independent",
+          "do": "Learners sort spoken words by number of syllables or first sound with no help"
+        }
+      ],
+      "resources": [
+        {
+          "name": "Name chant",
+          "make": "Learners' names",
+          "use": "Clap, stamp or jump the syllables"
+        },
+        {
+          "name": "Rhymes and songs",
+          "make": "Known class songs; in African languages use repetition and alliteration rather than rhyme",
+          "use": "Pause before a word for learners to supply it"
+        },
+        {
+          "name": "Picture sorting mats",
+          "make": "Paper with two or three columns and picture cards",
+          "use": "Sort by first sound or by number of syllables"
+        }
+      ]
+    },
+    "alphabetic": {
+      "ladder": [
+        {
+          "level": "Most support",
+          "do": "Teacher says the sound, shows the letter, models writing it and says a word that starts with it; learners echo"
+        },
+        {
+          "level": "Guided",
+          "do": "Teacher says a sound; learners point to or hold up the matching letter card with a partner"
+        },
+        {
+          "level": "Light prompt",
+          "do": "Teacher shows a letter; learners say the sound and a word; picture cue only if stuck"
+        },
+        {
+          "level": "Independent",
+          "do": "Learners match sounds to letters and letters to sounds in random order, and use them to spell short words"
+        }
+      ],
+      "resources": [
+        {
+          "name": "Letter-sound cards",
+          "make": "As for letter knowledge",
+          "use": "Two-way practice: see the letter, say the sound; hear the sound, find the letter"
+        },
+        {
+          "name": "Mini slates",
+          "make": "Cardboard covered in clear plastic, or a plastic plate, with a marker or chalk",
+          "use": "Learners write the letter for the sound and hold it up so the teacher sees every learner"
+        },
+        {
+          "name": "Alphabet frieze",
+          "make": "A strip along the wall with letters and key pictures",
+          "use": "Point to the key picture when a learner is stuck"
+        },
+        {
+          "name": "Sound-to-letter bingo",
+          "make": "Grids drawn on paper with taught letters",
+          "use": "Teacher calls sounds; learners cover the matching letter"
+        }
+      ]
+    },
+    "blending": {
+      "ladder": [
+        {
+          "level": "Most support",
+          "do": "Teacher sounds each letter while sliding a finger under it, then blends fast; learners echo the whole routine"
+        },
+        {
+          "level": "Guided",
+          "do": "Learners sound and blend with the teacher (choral), then repeat in pairs"
+        },
+        {
+          "level": "Light prompt",
+          "do": "Teacher points under the word; learners sound and blend alone; teacher prompts only with \"sound it out, say it fast\""
+        },
+        {
+          "level": "Independent",
+          "do": "Learners read new decodable words and short sentences alone, then read them again faster"
+        }
+      ],
+      "resources": [
+        {
+          "name": "Word-building cards",
+          "make": "Letter cards for the taught sounds",
+          "use": "Build a word, sound each card, slide them together and blend"
+        },
+        {
+          "name": "Sound line or arm blending",
+          "make": "None: touch shoulder, elbow and wrist for each sound, then slide down the arm",
+          "use": "Physical routine for blending the sounds into a word"
+        },
+        {
+          "name": "Decodable word lists",
+          "make": "Lists using only taught sounds (from the plan's passages or the DBE workbook)",
+          "use": "Daily one-minute practice, rereading for speed"
+        },
+        {
+          "name": "Real or nonsense game",
+          "make": "Cards with real and made-up decodable words",
+          "use": "Learners blend each word and decide if it is real; this checks true decoding"
+        }
+      ]
+    },
+    "segmenting": {
+      "ladder": [
+        {
+          "level": "Most support",
+          "do": "Teacher says the word, segments it slowly using sound boxes, then writes a letter in each box"
+        },
+        {
+          "level": "Guided",
+          "do": "Learners segment with the teacher, pushing counters, then choose the letter cards together"
+        },
+        {
+          "level": "Light prompt",
+          "do": "Teacher says the word; learners segment and write it on slates; teacher repeats the word slowly if needed"
+        },
+        {
+          "level": "Independent",
+          "do": "Learners spell new words from dictation and check them by blending what they wrote"
+        }
+      ],
+      "resources": [
+        {
+          "name": "Sound boxes with letters",
+          "make": "Squares on paper or slates",
+          "use": "Say, push a counter per sound, then write the letter in each box"
+        },
+        {
+          "name": "Mini slates",
+          "make": "As above",
+          "use": "Quick spelling with every learner showing the answer"
+        },
+        {
+          "name": "Magnetic or card letters",
+          "make": "Letter cards",
+          "use": "Build the word before writing it"
+        },
+        {
+          "name": "Dictation sentences",
+          "make": "Short sentences from taught sounds and sight words",
+          "use": "Two or three sentences a day, checked by rereading"
+        }
+      ]
+    },
+    "fluency": {
+      "ladder": [
+        {
+          "level": "Most support",
+          "do": "Teacher reads the text aloud with expression while learners follow her finger"
+        },
+        {
+          "level": "Guided",
+          "do": "Echo reading: teacher reads a sentence, learners read it back; then choral reading"
+        },
+        {
+          "level": "Light prompt",
+          "do": "Paired reading: partners take turns, the teacher listens to some pairs"
+        },
+        {
+          "level": "Independent",
+          "do": "Learners reread the text alone up to four times and read new texts at their level"
+        }
+      ],
+      "resources": [
+        {
+          "name": "Short repeated-reading texts",
+          "make": "The plan's graded passages or DBE workbook texts at the learner's level",
+          "use": "Read the same text up to four times in a week"
+        },
+        {
+          "name": "Reading ruler or card",
+          "make": "A strip of cardboard",
+          "use": "Keeps the place for learners who lose their line"
+        },
+        {
+          "name": "One-minute reading check",
+          "make": "A timer (phone) and a copy of the text",
+          "use": "Count words read correctly; English as an additional language: aim for the grade benchmark"
+        },
+        {
+          "name": "Phrase-cut sentences",
+          "make": "Sentences with a slash between phrases",
+          "use": "Practise reading in phrases rather than word by word"
+        }
+      ]
+    },
+    "comprehension": {
+      "ladder": [
+        {
+          "level": "Most support",
+          "do": "Teacher thinks aloud while reading (Name, Explain, Model the strategy)"
+        },
+        {
+          "level": "Guided",
+          "do": "Teacher and learners use the strategy together on the same text, with a question frame"
+        },
+        {
+          "level": "Light prompt",
+          "do": "Learners use the strategy in pairs; teacher asks literal, then inferential questions"
+        },
+        {
+          "level": "Independent",
+          "do": "Learners use the strategy alone and back up answers with words from the text"
+        }
+      ],
+      "resources": [
+        {
+          "name": "Strategy cards",
+          "make": "Card with an icon for each strategy: predict (crystal ball), visualise (eye), infer (detective), monitor (stop sign), summarise (hand)",
+          "use": "Show the card when modelling and when learners use the strategy"
+        },
+        {
+          "name": "Question fans",
+          "make": "Cards with question starters: Who, What, Where (literal); Why, How do you know (inferential); What do you think (evaluative)",
+          "use": "Learners pick a starter to ask or answer"
+        },
+        {
+          "name": "Story map",
+          "make": "A drawn template: characters, setting, problem, events, ending",
+          "use": "Retell and summarise the story in order"
+        },
+        {
+          "name": "Read-aloud books",
+          "make": "Big books, library or the plan's passages",
+          "use": "Daily read-aloud to build comprehension beyond learners' own reading level"
+        }
+      ]
+    },
+    "oral": {
+      "ladder": [
+        {
+          "level": "Most support",
+          "do": "Teacher models the sentence with a picture and action; learners repeat the whole sentence"
+        },
+        {
+          "level": "Guided",
+          "do": "Learners complete a sentence frame with the teacher (I can see a ...)"
+        },
+        {
+          "level": "Light prompt",
+          "do": "Learners use the frame in pairs; teacher extends their answers with a new word"
+        },
+        {
+          "level": "Independent",
+          "do": "Learners answer in full sentences and use the words of the week in new contexts"
+        }
+      ],
+      "resources": [
+        {
+          "name": "Words of the week and word wall",
+          "make": "Flash cards from the plan, stuck on the wall",
+          "use": "Revisit the words daily across subjects"
+        },
+        {
+          "name": "Picture cards and posters",
+          "make": "Magazine pictures, drawings, theme posters",
+          "use": "Describe, compare and ask questions about the picture"
+        },
+        {
+          "name": "Sentence frames",
+          "make": "Frames written on a chart (I like ... because ...)",
+          "use": "Support full-sentence answers, then remove the frame"
+        },
+        {
+          "name": "Talking objects",
+          "make": "Real objects from home or the classroom",
+          "use": "Feely bag: describe the object before showing it"
+        }
+      ]
+    },
+    "handwriting": {
+      "ladder": [
+        {
+          "level": "Most support",
+          "do": "Teacher models the letter large on the board saying the movement words (start at the top, down, round); learners trace in the air"
+        },
+        {
+          "level": "Guided",
+          "do": "Learners trace over dotted letters and in sand, saying the movement words"
+        },
+        {
+          "level": "Light prompt",
+          "do": "Learners copy the letter on lined paper from a card on their desk, starting at the dot"
+        },
+        {
+          "level": "Independent",
+          "do": "Learners write the letter and words from memory with correct start and size"
+        }
+      ],
+      "resources": [
+        {
+          "name": "Sand or salt tray",
+          "make": "As above",
+          "use": "Large movements before small ones"
+        },
+        {
+          "name": "Tracing sheets",
+          "make": "Dotted letters on paper with a green start dot",
+          "use": "Trace, then write alone beside each traced letter"
+        },
+        {
+          "name": "Desk copy card",
+          "make": "The letter on a card on the learner's desk",
+          "use": "Copy from close up instead of from the board"
+        },
+        {
+          "name": "Pencil grip support",
+          "make": "A rubber band or small clothes peg around the pencil",
+          "use": "Helps a learner who grips too low or too tightly"
+        }
+      ]
+    },
+    "writing": {
+      "ladder": [
+        {
+          "level": "Most support",
+          "do": "Teacher plans and writes a shared sentence with the class, thinking aloud"
+        },
+        {
+          "level": "Guided",
+          "do": "Learners say their sentence to a partner, then write it using a writing frame"
+        },
+        {
+          "level": "Light prompt",
+          "do": "Learners write independently with the word wall and frame on display; teacher conferences with some"
+        },
+        {
+          "level": "Independent",
+          "do": "Learners plan, write, reread and correct a short text alone"
+        }
+      ],
+      "resources": [
+        {
+          "name": "Writing frames",
+          "make": "A chart with sentence starters (First ..., Then ..., At the end ...)",
+          "use": "Scaffold the structure, then remove it"
+        },
+        {
+          "name": "Word wall and personal word book",
+          "make": "The class word wall and a small exercise book per learner",
+          "use": "Spell high-frequency and theme words"
+        },
+        {
+          "name": "Picture prompts",
+          "make": "A picture or the shared-reading story",
+          "use": "Something concrete to write about"
+        },
+        {
+          "name": "Editing checklist",
+          "make": "Capital letter, full stop, finger spaces, reread",
+          "use": "Learners check their own writing before handing it in"
+        }
+      ]
+    }
   }
 }
