@@ -617,6 +617,46 @@
       "barrier": "G",
       "response": "Let the learner show the same outcome another way: say it, point to it or build it with letter tiles. Use thick pencils or crayons and less copying. If it continues, discuss with the School-Based Support Team (an occupational therapy referral may be needed).",
       "origin": "author"
+    },
+    {
+      "id": "cm-vocab",
+      "skill": "Reading and Phonics",
+      "area": "Comprehension",
+      "misconception": "Reads the words but does not know what key words mean",
+      "evidence": "Reads a sentence accurately but cannot say what an important word means or use it in a sentence",
+      "barrier": "E",
+      "response": "Teach 3–5 key words before reading: say the word, give a child-friendly meaning, show a picture or action, use it in a sentence, link it to the home-language word, then revisit the words during and after reading (add them to the word wall)",
+      "origin": "author"
+    },
+    {
+      "id": "cm-main-idea",
+      "skill": "Reading and Phonics",
+      "area": "Comprehension",
+      "misconception": "Cannot say what the text is mostly about",
+      "evidence": "Recalls small details but cannot say the main idea in one sentence",
+      "barrier": "A",
+      "response": "Model with a think-aloud: \"Who is it about? What happened? Why?\" Then sort detail cards into \"big idea\" and \"small detail\"; learners say the main idea to a partner using the frame \"This story is mostly about … who …\"",
+      "origin": "author"
+    },
+    {
+      "id": "cm-oral-not-written",
+      "skill": "*",
+      "area": "Comprehension",
+      "misconception": "Understands but cannot yet write the answer",
+      "evidence": "Answers well when asked aloud, but the written answer is missing, very short or unclear",
+      "barrier": "G",
+      "response": "Separate understanding from writing: let the learner say the answer to a partner first (oral rehearsal), give a sentence frame (\"I think … because …\"), scribe or share the pen for part of it, then fade the frame",
+      "origin": "author"
+    },
+    {
+      "id": "gen-prompt-dependent",
+      "skill": "*",
+      "area": "Work completion",
+      "misconception": "Succeeds with prompts but not alone",
+      "evidence": "Gets it right while you prompt or a partner helps, but makes errors on the same kind of task alone",
+      "barrier": "D",
+      "response": "The skill is not secure yet: fade prompts one step at a time (full model → partial prompt → wait and point → alone), give more short independent practice, and check again on another day before moving on",
+      "origin": "author"
     }
   ],
   "decoding": {
@@ -650,7 +690,8 @@
     "Sesotho and isiZulu Reading Project (2023), Module 3: Decoding (Centre for African Language Teaching, University of Johannesburg; JET Education Services), CC BY-NC-SA. Ideas paraphrased, not copied.",
     "Funda Wande Reading Academy (2020), Booklet 2: Comprehension (vocabulary, comprehension strategies, questioning). Ideas paraphrased; videos linked, not copied.",
     "NECT / DBE Primary School Reading Improvement Programme (PSRIP), Grade 3 EFAL Term 3 Lesson Plan (2023): weekly routine and group guided reading. Used as a structural reference only.",
-    "Wills, G., Ardington, C., Pretorius, E. & Sebaeng, L. (2022). Benchmarking Early Grade Reading Skills: English First Additional Language. Summary Report. Khulisa Management Services, with the DBE (USAID-funded)."
+    "Wills, G., Ardington, C., Pretorius, E. & Sebaeng, L. (2022). Benchmarking Early Grade Reading Skills: English First Additional Language. Summary Report. Khulisa Management Services, with the DBE (USAID-funded).",
+    "Kittle, Amendum & Budde (2024); Education Endowment Foundation Teaching and Learning Toolkit; See & Gorard (2020)"
   ],
   "benchmarks": {
     "letterSounds": {
@@ -844,7 +885,7 @@
       ],
       "if": "A learner reads accurately at a good pace but cannot answer questions",
       "means": "The gap is in language comprehension (Simple View of Reading)",
-      "do": "Vocabulary, oral language and listening comprehension work; explicit comprehension strategies"
+      "do": "Find what fails first, in this order: (1) decoding accuracy on the passage, (2) the meaning of key words, (3) the main idea, (4) writing the answer (check by asking aloud). Teach the first gap: decoding practice, explicit vocabulary, a main-idea think-aloud, or oral rehearsal with a sentence frame. Then explicit comprehension strategies (predict, question, clarify, summarise) with modelling and guided practice."
     },
     {
       "domains": [
@@ -1499,5 +1540,14 @@
       "Point to it or show it with objects",
       "Write or draw it"
     ]
-  }
+  },
+  "scaffoldTypes": [
+    "linguistic (sentence starters, word banks, model sentences, word wall)",
+    "visual (pictures, story maps, graphic organisers)",
+    "cognitive (think-alouds, worked examples, breaking the task down)",
+    "instructional (step-by-step demonstration, checklists)",
+    "social (structured pairs, talk partners)",
+    "home-language (explain or link words in the learners' home language)",
+    "feedback (specific prompts that help the learner fix an error)"
+  ]
 }
