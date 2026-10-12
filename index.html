@@ -106,10 +106,15 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .exit td{padding:5px 6px;border-top:1px solid #fde68a;vertical-align:top}
 .exit td:first-child{font-weight:600;white-space:nowrap;width:90px}
 .design{border:1px solid #c7d2fe;background:#f8faff;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13px}
-.design h3{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.design h3{font-size:14px;font-weight:600;display:flex;align-items:center;flex-wrap:wrap;gap:4px 6px;margin-bottom:6px}
+.udl{font-size:12px;color:#3730a3;background:#eef2ff;border-radius:6px;padding:6px 8px;margin-top:8px}
+.sense{border:1px solid #fbcfe8;background:#fdf2f8;border-radius:10px;padding:10px 12px;margin:12px 0;font-size:13px;line-height:1.5}
+.sense summary{cursor:pointer;font-weight:600;color:#9d174d}
+.sense h4{font-size:12px;margin:8px 0 2px;color:#9d174d}.sense ul{margin:0 0 0 18px;padding:0}
+.ways{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.ways span{background:#ecfdf5;color:#065f46;border-radius:999px;padding:3px 10px;font-size:12px}
 .design .dfocus{font-weight:600;color:#1e3a8a;margin-bottom:2px}.design .dwhy{font-size:12px;color:#374151;margin-bottom:10px}
-.design .dsplit{display:flex;gap:4px;margin-bottom:10px}.design .dsplit div{background:#e0e7ff;border-radius:6px;padding:6px;font-size:11px;color:#3730a3;min-width:0}
-.design .dsplit b{display:block;font-size:13px}.design .dsplit span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.design .dsplit{display:flex;gap:4px;margin-bottom:10px}.design .dsplit div{background:#e0e7ff;border-radius:6px;padding:6px;font-size:11px;color:#3730a3;min-width:58px}
+.design .dsplit b{display:block;font-size:13px}.design .dsplit span{display:block;line-height:1.25}
 .design .dlbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:#6b7280;margin:10px 0 4px}
 .design ul{padding-left:18px}.design li{font-size:12px;margin:3px 0;line-height:1.45}.design ul.dgroups{list-style:none;padding-left:0}
 .design .drot td{font-size:12px;padding:2px 6px 2px 0}.design .drot span{display:inline-block;width:34px;text-align:center;font-size:11px;border-radius:4px;margin-right:2px;color:#9ca3af;background:#f3f4f6}
@@ -149,7 +154,20 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .dims td:first-child{width:34%;color:#1f2937}.dims td:first-child span{color:#9ca3af;font-size:11px}
 .mis{border-left:3px solid #f59e0b;background:#fffbeb;border-radius:0 8px 8px 0;padding:8px 10px;margin-bottom:8px}
 .mis p{font-size:12px;line-height:1.5;margin-top:2px}.mis .say{color:#166534}
-@media print{body{background:#fff;padding:0}.steps,.hdr,.noprint,button{display:none!important}.card{border:none;padding:0}}
+@media print{body{background:#fff;padding:0}.steps,.hdr,.noprint,button,.vids,.vlbl.vw,#toast,.offnote{display:none!important}.card{border:none;padding:0}
+  .sec,.diag,.design,.sense,.progv,table,tr{break-inside:avoid}
+  body.copy>*{display:none!important}body.copy>#printCopy{display:block!important}}
+#printCopy{display:none}
+#printCopy{font-family:Arial,Helvetica,sans-serif;color:#111;font-size:11.5pt;line-height:1.35}
+#printCopy h1{font-size:16pt;margin:0 0 2px}#printCopy h2{font-size:12.5pt;margin:12px 0 4px;border-bottom:1.5px solid #333;padding-bottom:2px}
+#printCopy .meta{font-size:10.5pt;margin-bottom:6px}#printCopy .line{display:flex;gap:18px;font-size:10.5pt;margin:4px 0 8px}
+#printCopy .line span{flex:1;border-bottom:1px solid #777;padding-bottom:2px}
+#printCopy table{width:100%;border-collapse:collapse;margin:4px 0;font-size:10.5pt}#printCopy td,#printCopy th{border:1px solid #888;padding:4px 5px;vertical-align:top;text-align:left}
+#printCopy th{background:#eee}#printCopy .box{border:1.5px solid #333;border-radius:6px;padding:6px 8px;margin:6px 0}
+#printCopy ul,#printCopy ol{margin:2px 0 2px 18px;padding:0}#printCopy .time{display:flex;gap:4px;margin:4px 0}#printCopy .time div{border:1px solid #333;padding:3px 6px;text-align:center;font-size:10pt}
+#printCopy .tally td{height:20px}#printCopy .pb{break-before:page}#printCopy .small{font-size:9pt;color:#444}
+#printCopy section,#printCopy .box{break-inside:avoid}
+@page{size:A4;margin:12mm}
 </style>
 </head>
 <body>
@@ -233,6 +251,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
       </ul>
       <p><b>Without internet.</b> With no signal, CAPS DI still makes a basic plan on the phone from its own rules and knowledge base, and makes the full plan automatically once the phone is back online.</p>
       <p><b>On WhatsApp.</b> Any plan can be sent to WhatsApp as a short, low-data summary with <b>Send to WhatsApp</b>, for the teacher's own phone or a colleague. A full WhatsApp companion, where teachers make plans and send exit-task results by chat, is the next build.</p>
+      <p><b>Inclusive by design.</b> Every learner works towards the same CAPS outcome, with different ways to take in the lesson and to show what they know (Universal Design for Learning), and groups change after every exit task. Where a learner shows signs of a hearing, vision or fine-motor difficulty, CAPS DI gives classroom support and points to screening through the school health service and the SIAS process. It never labels or diagnoses a learner.</p>
       <p><b>Research data.</b> To learn whether CAPS DI helps, the app sends RADAF's research team anonymous counts (plans made, rating counts, exit results) and any feedback you submit. It never sends learner names or your class notes.</p>
       <p class="who">This prototype covers English Home Language, Grades R–3. African home-language and English First Additional Language versions are planned.</p>
     </details>
@@ -324,7 +343,8 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <div class="card" id="pl"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap" class="noprint">
       <button class="btn2" onclick="go3()">← Back</button>
-      <button class="btn2" onclick="window.print()"><i class="ti ti-printer"></i> Print</button>
+      <button class="btn2" onclick="printClassroom()"><i class="ti ti-printer"></i> Classroom copy (PDF)</button>
+      <button class="btn2" onclick="printFull()"><i class="ti ti-file-text"></i> Full plan (PDF)</button>
       <button class="btn2 wa" onclick="shareWhatsApp()"><i class="ti ti-brand-whatsapp"></i> Send to WhatsApp</button>
       <button class="btn" style="flex:1;margin-top:0" onclick="go5()">Checklist &amp; results →</button>
     </div>
@@ -424,15 +444,18 @@ const TIERS=[
   {k:'advanced',name:'Advanced',levels:[6,7],cls:'ta',bg:'ta-bg',desc:'Ratings 6–7 · extension and higher-order thinking'}];
 const PROFILES=[
   {i:'ti-brain',t:'Attention regulation',u:'Short bursts + movement breaks',v:'attention regulation needs — 3–5 minute instruction segments followed by short regulated movement or sensory breaks'},
-  {i:'ti-run',t:'Movement-based',u:'Flexible positioning, rhythm',v:'movement-based and kinaesthetic learners — standing, pointers, rhythm tapping, body movement'},
-  {i:'ti-hand-finger',t:'Multi-sensory',u:'Touch, sound, visual input',v:'multi-sensory learners — sand trays, magnetic or tactile letters, letter tiles, music and rhythm'},
+  {i:'ti-run',t:'Needs to move to focus',u:'Flexible positioning, rhythm',v:'learners who focus better when they can move — standing, pointers, rhythm tapping, action games'},
+  {i:'ti-hand-finger',t:'Needs hands-on practice',u:'Touch, sound and sight together',v:'learners who need concrete, hands-on practice — sand trays, tactile or magnetic letters, letter tiles, songs and rhythm'},
   {i:'ti-letter-case',t:'Phonics struggles',u:'Decoding and letter-sound gaps',v:'phonics and decoding difficulties — echo reading, choral reading, finger tracking, letter tiles'},
   {i:'ti-world',t:'EAL learners',u:'English not home language',v:'learners for whom English is an additional language — bridge to home language, visual word cards, repetition'},
   {i:'ti-arrows-minimize',t:'Prompt fading',u:'Building towards independence',v:'learners who need full modelling first, then step-by-step reduction of adult prompts'},
   {i:'ti-ripple',t:'Sensory regulation',u:'Fidget tools, tactile support',v:'sensory and fidget regulation needs — fidget tools, holding a tactile object while listening, subtle movement'},
   {i:'ti-messages',t:'Turn-taking support',u:'Discussion and listening',v:'learners who need turn-taking cues, modelled responses and rephrased questions'},
   {i:'ti-users',t:'Large / mixed-ability class',u:'Wide learning gaps',v:'a large mixed-ability class with wide learning gaps'},
-  {i:'ti-package',t:'Low-resource',u:'Zero-cost materials only',v:'a low-resource classroom — every activity must use zero-cost or locally available materials only'}];
+  {i:'ti-package',t:'Low-resource',u:'Zero-cost materials only',v:'a low-resource classroom — every activity must use zero-cost or locally available materials only'},
+  {i:'ti-eye',t:'Low vision',u:'Large print, front seat',v:'learners with low vision or suspected vision difficulty — large high-contrast print, front-centre seat away from glare, read aloud what is on the board, a card to track the line',sense:'vision'},
+  {i:'ti-ear',t:'Hearing difficulty',u:'Face the class, clear sounds',v:'learners with hearing loss or suspected hearing difficulty — seat near the teacher, face the class when speaking, clear mouth shapes and gestures for sounds, ask the learner to repeat instructions',sense:'hearing'},
+  {i:'ti-hand-grab',t:'Physical / fine-motor',u:'Other ways to show work',v:'learners with physical or fine-motor difficulty — thick pencils or crayons, letter tiles, answering orally or by pointing instead of writing, extra time',sense:'motor'}];
 const SOURCES=[
   {k:'formal',l:'Formal Assessment Activity'},{k:'informal',l:'Informal assessment (class work, observation)'},
   {k:'prevyear',l:"Last year's Term 4 results"},{k:'baseline',l:'Baseline assessment'},{k:'exit',l:'Previous lesson exit task'}];
@@ -617,7 +640,7 @@ function loadExample(){
 }
 
 // ---------- Navigation ----------
-function setStep(n){
+function setStep(n){document.body.classList.remove('copy');
   [1,2,3,4,5,6].forEach(i=>{const e=$('s'+i);e.className='stp'+(i===n?' on':i<n?' dn':'');e.querySelector('.dot').textContent=i<n?'✓':i;});
   ['sc1','sc2','sc3','sc4','sc5','sc6'].forEach((id,i)=>{$(id).style.display=i+1===n?'block':'none';});
   window.scrollTo({top:0,behavior:'smooth'});
@@ -738,6 +761,25 @@ const REMED_DOMAINS=[
   {k:'writing',l:'Writing',areas:['Writing','Grammar'],path:'writing'}];
 let VIDEOS=null;
 // Skill whose teaching videos to show under the core strategy.
+// ---------- Inclusive design: possible sensory barriers (flag for screening, never diagnose) and ways to show learning ----------
+function senses(){
+  const out=new Set();
+  ['hearing','vision','motor'].forEach(k=>{if(V.errors.includes('sn-'+k))out.add(k);});
+  PROFILES.forEach(p=>{if(p.sense&&V.profiles.includes(p.v))out.add(p.sense);});
+  return [...out];
+}
+// Sound or letter confusion in early reading: worth ruling out hearing and vision before reteaching.
+function senseWorth(){return ['Reading and Phonics','Listening and Speaking'].includes(V.skill)&&tierCounts(V.levels)[0]>0;}
+function waysToShow(){const w=PED&&PED.waysToShow;if(!w)return [];return w[teachDomain()]||w.default||[];}
+function senseSection(flags,open){
+  const sc=PED&&PED.sensoryCheck;if(!sc)return '';
+  const names={hearing:'Hearing',vision:'Vision',motor:'Fine motor'};
+  const ks=flags.length?flags:['hearing','vision'];
+  return '<details class="sense"'+(open?' open':'')+'><summary><i class="ti ti-ear"></i> '+(flags.length?'Possible '+flags.map(k=>names[k].toLowerCase()).join(' and ')+' difficulty: check and support':'Before you reteach: rule out hearing and vision')+'</summary>'+
+    '<p style="margin:6px 0 0">'+esc(sc.intro)+'</p>'+
+    ks.map(k=>'<h4>'+names[k]+': signs to watch for</h4><ul>'+sc[k].signs.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><h4>'+names[k]+': support in class now</h4><ul>'+sc[k].support.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>').join('')+
+    '<h4>Referral</h4><p style="margin:0">'+esc(sc.referral)+'</p></details>';
+}
 function teachDomain(){const m={phonics:'blending',phonemic:'phonemic',phonological:'phonological',letterKnowledge:'letterKnowledge',segmenting:'segmenting',fluency:'fluency',comprehension:'comprehension',oral:'oral',handwriting:'handwriting',writing:'writing'};return m[pickPathways()[0]]||null;}
 function videoList(k,max){const vids=k&&VIDEOS&&VIDEOS[k];if(!vids||!vids.length)return '';
   return '<ul class="vids">'+vids.slice(0,max||9).map(v=>'<li><a href="'+esc(v.url)+'" target="_blank" rel="noopener"><i class="ti ti-player-play"></i> '+esc(v.title)+'</a> <span class="who">· '+esc(v.source)+'</span></li>').join('')+'</ul>';}
@@ -928,6 +970,7 @@ dims,
 '2. Task tiering: all three tiers work on the same CAPS outcome; they differ in complexity and support. Foundational = essential skill with most structure; Intermediate = applies the skill with some independence; Advanced = extension and higher-order thinking. Pitch each to its learners and their barriers.',
 '3. Teaching sequence: teacher modelling (I do), guided practice (we do), independent practice (you do). Prompt-fading steps for each tier, from most support to independence.',
 '4. Inclusive delivery: one concept at a time; 3–5 minute input segments then a short movement or sensory break; concrete → pictorial → abstract; multisensory input; turn-taking cues; rephrase unclear questions; home-language bridging where relevant.',
+'4b. Inclusive design (UDL): in exitTask.waysToShow give 2–3 ways a learner can show the SAME outcome (e.g. say it, point to it, build it with tiles, write it); score the skill, not the mode.'+(senses().length?' Possible '+senses().join(' and ')+' difficulty flagged: in individualSupports give classroom accommodations and suggest screening through the school health service and the SNA 1 form. Never label or diagnose a learner, and do not treat it as a phonics gap until hearing and vision are ruled out.':''),
 '5. Assessment for Learning: learning intention; 2–3 "I can" success criteria; a check for understanding per tier; an exit task phrased as a precise question ("Can the learner independently ...?") and scored against the 7-point CAPS rating scale (1 Not achieved to 7 Outstanding achievement).',
 '6. Misconceptions to watch: likely wrong responses, what each means, and exactly what the teacher can say or do.',
 '7. Resources zero-cost or locally available unless class notes say otherwise. Use real words, letters, sentences and examples a '+V.grade+' teacher can use tomorrow. About 45–60 minutes in total.',
@@ -946,7 +989,7 @@ passages?'9. Graded passages: the teacher has no big books or graded readers. Wr
 '"differentiation":{"access":"...","process":"...","support":"...","response":"...","challenge":"..."},'+
 '"misconceptionsToWatch":[{"ifYouSee":"...","itMayMean":"...","sayOrDo":"..."}],'+
 '"individualSupports":["..."],'+
-'"exitTask":{"question":"Can the learner independently ...?","task":"...","alignedTo":"which CAPS item it checks","scoring":[{"levels":"Ratings 1–3","evidence":"..."},{"levels":"Ratings 4–5","evidence":"..."},{"levels":"Ratings 6–7","evidence":"..."}]},'+
+'"exitTask":{"question":"Can the learner independently ...?","task":"...","alignedTo":"which CAPS item it checks","waysToShow":["...","..."],"scoring":[{"levels":"Ratings 1–3","evidence":"..."},{"levels":"Ratings 4–5","evidence":"..."},{"levels":"Ratings 6–7","evidence":"..."}]},'+
 '"wordsOfTheWeek":[{"word":"...","meaning":"child-friendly meaning","show":"picture or action"}],"dataInsight":"One sentence on how the class evidence shaped this plan","nextSteps":"One sentence on how to adjust the next lesson using the exit task results"'+
 (V.remed.on&&remedCount()?',"remediation":{"focus":"skill targeted","why":"one sentence from the evidence","entryCheck":"2-minute check","sessions":[{"n":1,"focus":"...","activity":"exact words, letters and steps","minutes":15}],"progressCheck":"after session 3","exitCriteria":"when a learner rejoins the Foundational group","ifNoProgress":"SIAS steps"}':'')+
 (passages?',"passages":{"foundational":{"title":"...","text":"...","features":"what makes it right for this group","questions":["..."],"accessNotes":"..."},"intermediate":{...same keys},"advanced":{...same keys}}':'')+'}'
@@ -999,7 +1042,7 @@ async function go4(){
       const issues2=planIssues(plan2);
       if(issues2.length<issues.length){plan=plan2;issues=issues2;}
     }
-    plan._issues=issues;if(V.prevLevels)plan._progress={before:V.prevLevels.slice(),after:V.levels.slice()};plan._design=lessonDesign();plan._teachDomain=teachDomain();if(V.remed.on&&remedCount()){const ks=remedDomains().map(d=>d.k);plan._remed={n:remedCount(),k:ks[0],ks};}
+    plan._issues=issues;plan._senses=senses();if(V.prevLevels)plan._progress={before:V.prevLevels.slice(),after:V.levels.slice()};plan._design=lessonDesign();plan._teachDomain=teachDomain();if(V.remed.on&&remedCount()){const ks=remedDomains().map(d=>d.k);plan._remed={n:remedCount(),k:ks[0],ks};}
     V.planData=plan;V.checks={};
     renderPlan(plan);
     savePlan();
@@ -1025,7 +1068,8 @@ function offlinePlan(){
   const bar=k=>{const b=PED&&PED.barriers.find(x=>x.key===k);return b?k+'. '+b.name:k;};
   const pk=pickPathways(),path=PED&&PED.pathways[pk[0]],steps=path?path.steps:[];
   const pg=progression();
-  const p={_offline:true,_design:d,_teachDomain:teachDomain(),_progress:V.prevLevels?{before:V.prevLevels.slice(),after:V.levels.slice()}:null,
+  const fl=senses(),sc=PED&&PED.sensoryCheck;
+  const p={_offline:true,_senses:fl,_design:d,_teachDomain:teachDomain(),_progress:V.prevLevels?{before:V.prevLevels.slice(),after:V.levels.slice()}:null,
     diagnosis:errs.length?errs.slice(0,3).map(m=>({barrier:bar(m.barrier),evidence:m.evidence,likelyCause:m.misconception,response:m.response})):
       [{barrier:d.mode==='reteach'?'A. Prerequisite gap':'Check the evidence',evidence:d.why.replace(/<[^>]+>/g,''),likelyCause:'Tick the error patterns you observed for a more precise diagnosis.',response:d.focus}],
     coreStrategy:path?path.name+': '+steps.join(' → '):'',
@@ -1042,8 +1086,8 @@ function offlinePlan(){
       advanced:{duration:d.split[1]+' min (groups)',task:'Apply the outcome in a new or harder example and explain the thinking to a partner.',
         scaffolding:'Challenge card; minimal support.',promptFading:['Brief check-in','Independent'],checkForUnderstanding:'Learner explains how they did it in one or two sentences.'}},
     misconceptionsToWatch:errs.map(m=>({ifYouSee:m.evidence,itMayMean:m.misconception,sayOrDo:m.response})),
-    individualSupports:(V.source==='prevyear'?['These groups come from last year\'s Term 4 results. Run a 2-minute baseline check on this outcome in the first two weeks to confirm or change them.']:[]).concat(d.watch.map(w=>w.replace(/<[^>]+>/g,''))),
-    exitTask:{question:'Can the learner independently '+low+'?',task:'Ask each learner to show the skill once on their own (5 minutes). Record who could do it alone, with help, or not yet.',alignedTo:ot,
+    individualSupports:(V.source==='prevyear'?['These groups come from last year\'s Term 4 results. Run a 2-minute baseline check on this outcome in the first two weeks to confirm or change them.']:[]).concat(d.watch.map(w=>w.replace(/<[^>]+>/g,''))).concat(sc?fl.map(k=>sc[k].support[0]+' ('+k+'); if the signs continue, ask for a screening through the school health service and note it on the SNA 1.'):[]),
+    exitTask:{question:'Can the learner independently '+low+'?',task:'Ask each learner to show the skill once on their own (5 minutes). Record who could do it alone, with help, or not yet.',alignedTo:ot,waysToShow:waysToShow(),
       scoring:[{levels:'Ratings 1–3',evidence:'Not yet, even with help'},{levels:'Ratings 4–5',evidence:'Can do it with some help or errors'},{levels:'Ratings 6–7',evidence:'Does it alone, accurately, and can explain it'}]}};
   if(V.remed.on&&remedCount()){
     const rds=remedDomains(),rd=rds[0],per=rds.length===1?6:3,steps=[];
@@ -1067,7 +1111,7 @@ function showOfflinePlan(){
     q.push({at:new Date().toISOString(),prompt:buildPrompt(),
       state:JSON.parse(JSON.stringify(Object.assign({},V,{planData:null}))),
       meta:{grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome(),levels:V.levels.slice()},
-      extras:{_design:plan._design,_teachDomain:plan._teachDomain,_remed:plan._remed||null,_progress:plan._progress||null}});
+      extras:{_senses:plan._senses||[],_design:plan._design,_teachDomain:plan._teachDomain,_remed:plan._remed||null,_progress:plan._progress||null}});
     writeQueue(q);
   }catch(_){}
   setStep(4);
@@ -1111,6 +1155,7 @@ function renderPlan(p){
   if(p._offline)h+='<div class="offnote"><i class="ti ti-wifi-off"></i><span><b>Basic plan, made without internet.</b> Built on your phone from CAPS DI\'s teaching rules and knowledge base; the full plan adds tailored activities, reading passages and a word wall. '+(readQueue().length?'Your full plan will be made automatically as soon as you are back online, and saved under Your saved plans.':'Generate again when you are online for the full plan.')+'</span></div>';
   if(p._progress)h+=progressPanel(p._progress.before,p._progress.after,'Progress since the last lesson');
   if(p._design)h+=designPanel(p._design);
+  {const fl=p._senses||senses();if(fl.length||senseWorth())h+=senseSection(fl,fl.length>0);}
   if(p.dataInsight)h+='<div class="insight"><i class="ti ti-chart-bar"></i> <strong>Data insight:</strong> '+esc(p.dataInsight)+'</div>';
   const dg=Array.isArray(p.diagnosis)?p.diagnosis.filter(d=>d&&d.barrier):[];
   if(dg.length){h+='<div class="sec"><h3><i class="ti ti-stethoscope"></i> What the evidence suggests</h3>'+dg.map(d=>
@@ -1177,6 +1222,8 @@ function renderPlan(p){
     ww.map(w=>'<div><b>'+esc(w.word)+'</b><span>'+esc(w.meaning||'')+'</span>'+(w.show?'<i>'+esc(w.show)+'</i>':'')+'</div>').join('')+'</div></div>';}
   const e=p.exitTask||{};
   if(e.task){h+='<div class="sec exit"><h3><i class="ti ti-clipboard-check"></i> Exit task</h3>'+(e.question?'<p style="font-weight:600">'+esc(e.question)+'</p>':'')+'<p>'+esc(e.task)+'</p>'+(e.alignedTo?'<p class="who" style="margin-top:4px">Checks: '+esc(e.alignedTo)+'</p>':'');
+    const ws=(Array.isArray(e.waysToShow)&&e.waysToShow.filter(Boolean).length?e.waysToShow.filter(Boolean):waysToShow()).slice(0,4);
+    if(ws.length)h+='<p class="vlbl" style="margin-top:8px">Ways learners can show it (same outcome, any of these)</p><div class="ways">'+ws.map(x=>'<span>'+esc(x)+'</span>').join('')+'</div>';
     if(Array.isArray(e.scoring)&&e.scoring.length)h+='<table>'+e.scoring.map(r=>'<tr><td>'+esc(r&&r.levels)+'</td><td>'+esc(r&&r.evidence)+'</td></tr>').join('')+'</table>';
     h+='</div>';}
   if(p.nextSteps)h+='<div class="kv" style="margin-top:12px"><strong>Next steps:</strong> '+esc(p.nextSteps)+'</div>';
@@ -1193,7 +1240,7 @@ function planSummaryText(p){
   const ww=Array.isArray(p.wordsOfTheWeek)?p.wordsOfTheWeek.filter(w=>w&&w.word).map(w=>w.word):[];
   if(ww.length)L.push('','*Words of the week:* '+ww.join(', '));
   if(p.remediation&&Array.isArray(p.remediation.sessions))L.push('','*Remediation:* '+(p.remediation.focus||'')+' · '+p.remediation.sessions.length+' sessions of 15 min');
-  if(p.exitTask&&p.exitTask.task)L.push('','*Exit task:* '+(p.exitTask.question||p.exitTask.task));
+  if(p.exitTask&&p.exitTask.task){L.push('','*Exit task:* '+(p.exitTask.question||p.exitTask.task));const ws=(p.exitTask.waysToShow&&p.exitTask.waysToShow.length?p.exitTask.waysToShow:waysToShow());if(ws.length)L.push('Learners can show it by: '+ws.slice(0,3).join(' · '));}
   L.push('','After the lesson, enter the exit-task results in CAPS DI to plan the next lesson.');
   return L.join('\n');
 }
@@ -1201,6 +1248,55 @@ function shareWhatsApp(){
   const p=V.planData;if(!p)return;
   let t=planSummaryText(p);if(t.length>3500)t=t.slice(0,3490)+'…';
   window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank','noopener');
+}
+// ---------- Printing: a short classroom copy with a results sheet, or the full plan ----------
+function printFull(){
+  // Open folded sections so they print (some phones fire 'afterprint' early, so they stay open).
+  document.body.classList.remove('copy');document.querySelectorAll('#pl details').forEach(d=>d.open=true);window.print();
+}
+function classroomCopyHtml(p){
+  const d=p._design,c=tierCounts(V.levels),L=x=>Array.isArray(x)?x.filter(Boolean):[];
+  const total=V.levels.reduce((a,b)=>a+b,0),n=Math.max(V.classSize||0,total);
+  let h='<h1>CAPS DI lesson plan</h1><div class="meta"><b>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</b> · English Home Language<br>Outcome: '+esc(currentOutcome())+'</div>';
+  h+='<div class="line"><span>Teacher:</span><span>Date:</span><span>Class: '+n+' learners</span></div>';
+  if(p._offline)h+='<p class="small">Basic plan made without internet from CAPS DI\'s teaching rules.</p>';
+  h+='<div class="box"><b>Learning intention:</b> '+esc(p.learningIntention||'')+(L(p.successCriteria).length?'<br><b>Success criteria:</b> '+L(p.successCriteria).map(esc).join(' · '):'')+'</div>';
+  if(d){h+='<div class="time">'+['Whole class','Groups','Individual','Exit task'].map((t,i)=>'<div style="flex:'+Math.max(d.split[i],6)+'"><b>'+d.split[i]+' min</b><br>'+t+'</div>').join('')+'</div>';
+    h+='<p><b>Focus today:</b> '+esc(d.focus)+'</p>';}
+  const wc=p.wholeClass||{};
+  if(L(wc.steps).length)h+='<h2>Whole class'+(wc.duration?' ('+esc(wc.duration)+')':'')+'</h2><ol>'+L(wc.steps).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>'+(wc.movementBreak?'<p class="small"><b>Movement break:</b> '+esc(wc.movementBreak)+'</p>':'');
+  // Groups: who works with the teacher, the task, the support and the quick check.
+  const rows=TIERS.map((t,i)=>{const x=(p.tiers||{})[t.k];if(!x||!c[i])return '';
+    const gs=d?d.groups.filter(g=>g.tier===t):[];const who=gs.some(g=>g.withTeacher)?'With you'+(gs.length>1?' ('+gs.length+' groups, in turn)':''):gs.some(g=>g.coach)?'Short sessions with you':'Independent / pairs';
+    return '<tr><td><b>'+esc(t.name)+'</b><br>'+c[i]+' learners<br><span class="small">'+who+'</span></td><td>'+esc(x.task||'')+(x.scaffolding?'<br><span class="small"><b>Support:</b> '+esc(x.scaffolding)+'</span>':'')+'</td><td>'+esc(x.checkForUnderstanding||'')+'</td></tr>';}).join('');
+  if(rows)h+='<h2>Groups</h2><table><tr><th style="width:22%">Group</th><th>Task and support</th><th style="width:28%">Quick check</th></tr>'+rows+'</table>';
+  if(d&&d.rotation&&d.rotation.length>1)h+='<p class="small"><b>Your group time this week:</b> '+d.rotation.map(r=>r.tier.name+' '+r.days.join(', ')).join(' · ')+'</p>';
+  const mw=L(p.misconceptionsToWatch).filter(m=>m.ifYouSee).slice(0,4);
+  if(mw.length)h+='<section><h2>Watch for</h2><table><tr><th>If you see</th><th>Say or do</th></tr>'+mw.map(m=>'<tr><td>'+esc(m.ifYouSee)+'</td><td>'+esc(m.sayOrDo||'')+'</td></tr>').join('')+'</table></section>';
+  const is=L(p.individualSupports).slice(0,6);
+  if(is.length)h+='<section><h2>Individual support</h2><ul>'+is.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></section>';
+  const fl=p._senses||[];
+  if(fl.length&&PED&&PED.sensoryCheck)h+='<div class="box small"><b>Possible '+fl.join(' / ')+' difficulty:</b> '+fl.map(k=>PED.sensoryCheck[k].support.slice(0,2).join('; ')).join('; ')+'. If the signs continue, ask for a screening through the school health service and note it on the SNA 1. Do not label the learner.</div>';
+  const r=p.remediation;
+  if(r&&L(r.sessions).length)h+='<section><h2>Remediation: '+esc(r.focus||'')+'</h2><p class="small">'+esc(r.why||'')+'</p><table><tr><th style="width:8%">#</th><th>Focus</th><th>Activity (15 min)</th></tr>'+L(r.sessions).map(x=>'<tr><td>'+esc(x.n)+'</td><td>'+esc(x.focus||'')+'</td><td>'+esc(x.activity||'')+'</td></tr>').join('')+'</table>'+(r.exitCriteria?'<p class="small"><b>Rejoins the group when:</b> '+esc(r.exitCriteria)+'</p>':'')+'</section>';
+  const e=p.exitTask||{},ws=(L(e.waysToShow).length?L(e.waysToShow):waysToShow()).slice(0,4);
+  h+='<section class="pb"><h2>Exit task (5 minutes)</h2><p><b>'+esc(e.question||'')+'</b><br>'+esc(e.task||'')+'</p>'+(ws.length?'<p><b>Learners may show it by:</b> '+ws.map(esc).join(' · ')+'</p>':'')+
+    (L(e.scoring).length?'<table><tr><th style="width:22%">Ratings</th><th>What it looks like</th></tr>'+L(e.scoring).map(x=>'<tr><td>'+esc(x.levels||'')+'</td><td>'+esc(x.evidence||'')+'</td></tr>').join('')+'</table>':'')+'</section>';
+  // Results sheet: one row per learner, then counts per rating to type into CAPS DI.
+  const half=Math.ceil(n/2),row=i=>i<n?'<td>'+(i+1)+'</td><td></td><td></td>':'<td></td><td></td><td></td>';
+  let t='<table class="tally"><tr><th style="width:6%">#</th><th>Learner</th><th style="width:12%">Rating 1–7</th><th style="width:6%">#</th><th>Learner</th><th style="width:12%">Rating 1–7</th></tr>';
+  for(let i=0;i<half;i++)t+='<tr>'+row(i)+row(i+half)+'</tr>';
+  t+='</table>';
+  h+='<section><h2>Results sheet</h2><p class="small">Write each learner\'s rating on the exit task. Then count how many got each rating and type the counts into CAPS DI (step 5) to plan the next lesson.</p>'+t+
+    '<table><tr><th>Rating</th>'+[1,2,3,4,5,6,7].map(x=>'<th>'+x+'</th>').join('')+'<th>Total</th></tr><tr><td>Learners</td>'+'<td></td>'.repeat(8)+'</tr></table></section>';
+  h+='<p class="small" style="margin-top:8px">Made with CAPS DI · © 2026 Research and Development Africa (RADAF)</p>';
+  return h;
+}
+function printClassroom(){
+  const p=V.planData;if(!p)return;
+  let box=$('printCopy');if(!box){box=document.createElement('div');box.id='printCopy';document.body.appendChild(box);}
+  // The 'copy' class only matters when printing; it is cleared when the full plan is printed or the screen changes.
+  box.innerHTML=classroomCopyHtml(p);document.body.classList.add('copy');window.print();
 }
 function printWords(){
   const p=V.planData;const ww=p&&Array.isArray(p.wordsOfTheWeek)?p.wordsOfTheWeek.filter(w=>w&&w.word):[];if(!ww.length)return;
@@ -1229,6 +1325,7 @@ function designPanel(d){
   h+='<div class="dsplit">'+d.split.map((m,i)=>'<div style="flex:'+m+'"><b>'+m+' min</b><span>'+tl[i]+'</span></div>').join('')+'</div>';
   h+='<p class="dlbl">Groups today</p><ul class="dgroups">'+d.groups.map(g=>'<li><span class="tbadge '+g.tier.bg+'">'+esc(g.label)+'</span> '+g.size+' learners · '+(g.withTeacher?'<b>with you</b>'+(g.slot?' ('+g.slot+')':''):g.coach?'<b>short individual sessions with you</b>':g.solo?'individual task':'independent or peer task')+'</li>').join('')+'</ul>';
   if(d.rotation&&d.rotation.length>1)h+='<p class="dlbl">Your teacher time this week'+(d.large?' (large class)':'')+'</p><table class="drot">'+d.rotation.map(r=>'<tr><td>'+esc(r.tier.name)+'</td><td>'+['Mon','Tue','Wed','Thu','Fri'].map(x=>'<span class="'+(r.days.includes(x)?'on':'')+'">'+x+'</span>').join('')+'</td></tr>').join('')+'</table>'+'<p class="who" style="margin-top:4px">Following a routine with one guided-reading group a day? Give '+esc(d.rotation[0].tier.name)+' learners the extra slots this week.</p>';
+  h+='<p class="udl"><b>Inclusive by design:</b> the same CAPS outcome for every learner · several ways to take in the lesson and to show learning · groups change after every exit task.</p>';
   if(d.watch&&d.watch.length)h+='<p class="dlbl">Individual support</p><ul>'+d.watch.map(w=>'<li>'+w+'</li>').join('')+'</ul>';
   const bm=benchmarkLine();if(bm)h+='<p class="dlbl">Reading benchmark</p><p style="font-size:12px">'+bm+'</p>';
   h+='<p class="dlbl">What the exit task decides for tomorrow</p><ul><li><b>'+Math.round(RULES.securedAt*100)+'% or more</b> on Rating 4+: outcome secured, move to the next CAPS step.</li><li><b>'+Math.round(RULES.consolidateAt*100)+'–'+(Math.round(RULES.securedAt*100)-1)+'%</b>: consolidate the same outcome and regroup.</li><li><b>Below '+Math.round(RULES.consolidateAt*100)+'%</b>: reteach with a different approach (more concrete, more multisensory).</li></ul>';

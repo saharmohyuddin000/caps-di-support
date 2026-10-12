@@ -587,6 +587,36 @@
       "barrier": "F",
       "response": "First check the task is at the right level and the instructions were understood (ask the learner to say what to do); break it into small steps with a visual checklist; set a short first goal (\"do the first two, then show me\"); use a first-then routine and a timer; seat near the teacher or a supportive peer; praise effort on each finished step; if it persists across subjects, discuss with the School-Based Support Team",
       "origin": "author"
+    },
+    {
+      "id": "sn-hearing",
+      "skill": "*",
+      "area": "Possible hearing or vision difficulty",
+      "misconception": "May not be hearing clearly (check before reteaching sounds)",
+      "evidence": "Often says \"what?\", watches your mouth, turns one ear towards you, mixes up sounds that sound alike (f/th, p/b, m/n), does better near the front",
+      "barrier": "C",
+      "response": "Don't reteach the sounds yet. Seat the learner near you, face the class when you speak, say key sounds clearly so the mouth shape is visible, add a gesture or picture for each sound, and check by asking the learner to repeat. Ask for a hearing screening through the school health service and note the concern on the SNA 1 form; do not label the learner.",
+      "origin": "author"
+    },
+    {
+      "id": "sn-vision",
+      "skill": "*",
+      "area": "Possible hearing or vision difficulty",
+      "misconception": "May not be seeing clearly (check before reteaching letters)",
+      "evidence": "Squints, holds the book very close or far away, rubs eyes, copies wrongly from the board but better from a page on the desk, often loses the place",
+      "barrier": "C",
+      "response": "Don't assume a letter-knowledge gap yet. Seat the learner front-centre away from glare, use large, dark, high-contrast print, read aloud what you write on the board, and give a card or finger to track the line. Ask for a vision screening through the school health service and note the concern on the SNA 1 form; do not label the learner.",
+      "origin": "author"
+    },
+    {
+      "id": "sn-motor",
+      "skill": "*",
+      "area": "Possible hearing or vision difficulty",
+      "misconception": "Fine-motor difficulty hides what the learner knows",
+      "evidence": "Knows the answer orally but writing is very slow, effortful or hard to read; grips the pencil awkwardly; tires quickly when writing",
+      "barrier": "G",
+      "response": "Let the learner show the same outcome another way: say it, point to it or build it with letter tiles. Use thick pencils or crayons and less copying. If it continues, discuss with the School-Based Support Team (an occupational therapy referral may be needed).",
+      "origin": "author"
     }
   ],
   "decoding": {
@@ -1363,5 +1393,111 @@
         }
       ]
     }
+  },
+  "sensoryCheck": {
+    "intro": "Before deciding a learner has a phonics or letter-knowledge gap, rule out hearing and vision. CAPS DI flags signs for screening; it does not diagnose.",
+    "hearing": {
+      "signs": [
+        "Often says \"what?\" or asks you to repeat",
+        "Watches your mouth or turns one ear towards you",
+        "Mixes up sounds that sound alike (f/th, p/b, m/n)",
+        "Does better near the front or in a quiet room",
+        "Frequent ear infections or a runny ear"
+      ],
+      "support": [
+        "Seat the learner near you, away from noise",
+        "Face the class when you speak; don't talk while writing on the board",
+        "Say key sounds clearly so the mouth shape is visible; add a gesture or picture for each sound",
+        "Check understanding by asking the learner to repeat the instruction"
+      ]
+    },
+    "vision": {
+      "signs": [
+        "Squints, frowns or rubs eyes when reading",
+        "Holds the book very close or far away",
+        "Copies wrongly from the board but better from a page on the desk",
+        "Often loses the place or skips lines",
+        "Red or watery eyes, or headaches after reading"
+      ],
+      "support": [
+        "Seat the learner front-centre, away from window glare",
+        "Use large, dark, high-contrast print and clear spacing",
+        "Read aloud what you write on the board",
+        "Give a card or finger to track the line"
+      ]
+    },
+    "motor": {
+      "signs": [
+        "Knows the answer orally but writing is slow or effortful",
+        "Awkward pencil grip; tires quickly when writing"
+      ],
+      "support": [
+        "Let the learner say, point to or build the answer with letter tiles",
+        "Thick pencils or crayons; less copying; extra time"
+      ]
+    },
+    "referral": "If the signs continue, ask for a vision or hearing screening through the school health service (Integrated School Health Programme), note the concern on the SIAS SNA 1 form and discuss it with the School-Based Support Team. Never label or diagnose a learner."
+  },
+  "waysToShow": {
+    "phonological": [
+      "Clap or tap the syllables",
+      "Say the rhyming word",
+      "Point to the picture that rhymes"
+    ],
+    "phonemic": [
+      "Say the sounds aloud",
+      "Push one counter forward for each sound",
+      "Point to the picture that starts with the sound"
+    ],
+    "letterKnowledge": [
+      "Say the sound when you point to a letter",
+      "Point to the letter when you say the sound",
+      "Pick the letter tile or trace it in sand"
+    ],
+    "alphabetic": [
+      "Say the sound for each letter",
+      "Build the word with letter tiles",
+      "Match the word card to its picture"
+    ],
+    "blending": [
+      "Read the word aloud",
+      "Build it with letter tiles and read it",
+      "Point to the picture that matches the word you blend"
+    ],
+    "segmenting": [
+      "Say the sounds aloud",
+      "Push a counter for each sound",
+      "Build the word with letter tiles"
+    ],
+    "fluency": [
+      "Read the passage aloud to you or a partner",
+      "Echo-read a line after you",
+      "Point to each word while reading"
+    ],
+    "comprehension": [
+      "Answer aloud",
+      "Point to the picture that shows the answer",
+      "Draw the answer and tell you about it"
+    ],
+    "oral": [
+      "Tell a partner",
+      "Act it out",
+      "Point to or arrange picture cards"
+    ],
+    "handwriting": [
+      "Write it",
+      "Trace it in sand or air",
+      "Build the letter shape with play dough or string"
+    ],
+    "writing": [
+      "Write it",
+      "Say the sentence while you scribe it",
+      "Build it with word cards"
+    ],
+    "default": [
+      "Say it",
+      "Point to it or show it with objects",
+      "Write or draw it"
+    ]
   }
 }
