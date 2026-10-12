@@ -73,6 +73,11 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .tbox{border-radius:8px;padding:10px;font-size:12px;line-height:1.4}
 .warnline{color:#b45309;font-size:12px;margin-top:4px}
+.consentinfo{font-size:13px;line-height:1.55;color:#374151;max-height:46vh;overflow:auto;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;background:#fafafa}
+.consentinfo p{margin:0 0 8px}
+.cchk{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.45;margin:8px 0;color:#1f2937}.cchk input{margin-top:3px;flex-shrink:0;width:18px;height:18px}
+.cin{width:100%;padding:9px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-family:inherit}
+.viewbadge{display:inline-block;background:#f3f4f6;color:#374151;border-radius:999px;padding:2px 9px;font-size:11px}
 .pilotbadge{display:inline-block;background:#ede9fe;color:#5b21b6;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600}
 .lrgrid{margin-top:8px;border-top:1px solid #e5e7eb}
 .lrrow{display:flex;align-items:center;gap:4px;padding:4px 0;border-bottom:1px solid #f3f4f6}
@@ -202,12 +207,49 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
   </div>
 </div>
 
+
+<div id="consentGate" style="display:none;min-height:100vh;padding:1rem">
+  <div class="card" style="max-width:640px;margin:0 auto">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><i class="ti ti-file-certificate" style="font-size:24px;color:#2563eb"></i><h2 style="font-size:18px;font-weight:600;margin:0">Before you start: information and consent</h2></div>
+    <p class="hint">CAPS DI user testing and pilot · consent form version <span class="cver"></span>. Please read this, then choose below.</p>
+    <div id="consentInfo" class="consentinfo">
+      <p><b>Who we are.</b> CAPS DI is developed by Research and Development Africa (RADAF), the responsible party for your information. Lead researcher: Sahar Iqbal Mohy-ud-Din, <a href="mailto:sahar.mohyuddin000@gmail.com">sahar.mohyuddin000@gmail.com</a>.</p>
+      <p><b>Why we are asking.</b> You are invited to take part in user testing and a pilot of CAPS DI. We want to find out whether it helps Foundation Phase teachers plan differentiated lessons, and to improve it, including its AI instructions and teaching knowledge base.</p>
+      <p><b>What we collect, depending on what you agree to below.</b> Counts of how CAPS DI is used (for example plans made, rating counts, time taken); the feedback you submit; and, only if you agree, copies of your plans and your learners' exit-task ratings by class register number. Your name and school are kept with this consent record.</p>
+      <p><b>What we never collect.</b> Learner names, ID numbers or photographs. Please do not type learners' names anywhere in CAPS DI.</p>
+      <p><b>How the AI is used.</b> To write a plan, the class information you enter (never learner names) is sent through RADAF's secure server to Google's Gemini AI service. These servers may be outside South Africa; they are used only to make your plan.</p>
+      <p><b>Storage and security.</b> Research data is stored in RADAF's secure cloud account and seen only by the RADAF research team and the project's statistician. Plan copies and learner ratings are stored under your pilot code, not your name. The list linking codes to names is kept separately.</p>
+      <p><b>How long we keep it.</b> Research data is kept for up to five years after the study ends and then deleted. Findings may be published or shared with the Department of Basic Education and funders, but no teacher, school or learner will be identified.</p>
+      <p><b>Your choice.</b> Taking part is voluntary and has no effect on your job or any evaluation of your work; your school and department will not see your individual data. You may withdraw at any time in the app (About CAPS DI → Your consent) or by email, without giving a reason. Data already combined into anonymous results cannot be removed.</p>
+      <p><b>Your rights under POPIA.</b> You may ask to see, correct or delete your information, or object to its use, by emailing the lead researcher. You may also complain to the Information Regulator (inforegulator.org.za).</p>
+      <p><b>Ethics.</b> The pilot follows research-ethics principles of informed consent, confidentiality and doing no harm, and is subject to approval by the Gauteng Department of Education and a research ethics committee.</p>
+    </div>
+    <div class="div"></div>
+    <span class="lbl">Your consent</span>
+    <label class="cchk"><input type="checkbox" id="cUse"> <span><b>Required to take part.</b> I have read this information and agree to take part in CAPS DI user testing and the pilot. Anonymous usage counts and the feedback I submit may be used to evaluate and improve CAPS DI.</span></label>
+    <label class="cchk"><input type="checkbox" id="cResearch"> <span><b>Optional: research data.</b> Copies of my plans and my learners' exit-task ratings by register number (no names), linked to my pilot code, may be used for the evaluation.</span></label>
+    <label class="cchk"><input type="checkbox" id="cAI"> <span><b>Optional: improving the AI.</b> My plans and feedback (with no learner names) may be used to improve CAPS DI's AI, including its instructions and knowledge base, and to test new versions. RADAF will ask me again before using my data to train an AI model.</span></label>
+    <label class="cchk"><input type="checkbox" id="cContact"> <span><b>Optional: contact.</b> RADAF may contact me about an interview or a classroom visit.</span></label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <div style="flex:1;min-width:180px"><span class="sublbl">Full name (your signature)</span><input id="cName" maxlength="100" placeholder="Your full name" class="cin"></div>
+      <div style="flex:1;min-width:180px"><span class="sublbl">School (optional)</span><input id="cSchool" maxlength="120" placeholder="School name" class="cin"></div>
+    </div>
+    <p class="hint" style="margin-top:6px">Typing your name and tapping <b>I agree</b> is your electronic signature, dated today. You can print or save a copy.</p>
+    <p class="warnline" id="cMsg"></p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+      <button class="btn" style="flex:1;margin:0;min-width:160px" onclick="giveConsent()">I agree and continue</button>
+      <button class="btn2" style="margin:0" onclick="printConsent()"><i class="ti ti-printer"></i> Print or save</button>
+    </div>
+    <button class="btn2" style="margin-top:10px;width:100%" onclick="viewOnly()">I am only viewing the demo (for example as a reviewer): collect no data</button>
+  </div>
+</div>
 <div id="appWrap" style="display:none">
 <div class="app">
 <div class="hdr">
   <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
     <h1><i class="ti ti-school" style="font-size:20px"></i> CAPS DI Support</h1>
     <div style="display:flex;gap:6px;align-items:center">
+      <span id="viewBadge" class="viewbadge" style="display:none;cursor:pointer" onclick="openConsent()">Viewing only · no data collected</span>
       <span id="offlineBadge" class="badge" style="display:none"><i class="ti ti-wifi-off"></i> Offline</span>
       <button id="installBtn" class="btn2" style="display:none;padding:6px 12px" onclick="installApp()"><i class="ti ti-download"></i> Install app</button>
     </div>
@@ -279,6 +321,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
       <p><b>On WhatsApp.</b> Any plan can be sent to WhatsApp as a short, low-data summary with <b>Send to WhatsApp</b>, for the teacher's own phone or a colleague. A full WhatsApp companion, where teachers make plans and send exit-task results by chat, is the next build.</p>
       <p><b>Inclusive by design.</b> Every learner works towards the same CAPS outcome, with different ways to take in the lesson and to show what they know (Universal Design for Learning), and groups change after every exit task. Where a learner shows signs of a hearing, vision or fine-motor difficulty, CAPS DI gives classroom support and points to screening through the school health service and the SIAS process. It never labels or diagnoses a learner.</p>
       <p><b>Class dashboard.</b> After each exit task the teacher taps each learner's rating by register number. CAPS DI shows each learner's progress over time, flags learners who stay below Rating 4 (for remediation, then SIAS) and learners ready to move up, and lists error patterns that keep coming back. It is kept on the teacher's phone; names are never entered.</p>
+      <div id="consentSummary"></div>
       <p><b>Research data.</b> To learn whether CAPS DI helps, the app sends RADAF's research team anonymous counts (plans made, rating counts, exit results) and any feedback you submit. It never sends learner names or your class notes.</p>
       <p class="who">This prototype covers English Home Language, Grades R–3. African home-language and English First Additional Language versions are planned.</p>
     </details>
@@ -510,11 +553,53 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;',
 function $(id){return document.getElementById(id);}
 
 // ---------- Password gate ----------
+// ---------- Consent (POPIA and research ethics): asked once per phone and again when the form changes ----------
+const CONSENT_KEY='capsdi.consent.v1',CONSENT_VERSION='1.0 (October 2026)';
+function consent(){try{const c=JSON.parse(localStorage.getItem(CONSENT_KEY)||'null');return c&&c.version===CONSENT_VERSION?c:null;}catch(_){return null;}}
+function canCollect(){const c=consent();return !!(c&&!c.visitor&&!c.withdrawn&&c.choices&&c.choices.use);}
+function showApp(){$('consentGate').style.display='none';$('appWrap').style.display='block';const c=consent();$('viewBadge').style.display=c&&(c.visitor||c.withdrawn)?'inline-block':'none';if(!window._inited){window._inited=true;init();}else{renderPilot();renderConsentSummary();}}
+function openConsent(){
+  const c=consent();document.querySelectorAll('.cver').forEach(e=>e.textContent=CONSENT_VERSION);
+  if(c&&c.choices){$('cUse').checked=!!c.choices.use;$('cResearch').checked=!!c.choices.research;$('cAI').checked=!!c.choices.ai;$('cContact').checked=!!c.choices.contact;$('cName').value=c.name||'';$('cSchool').value=c.school||'';}
+  $('cMsg').textContent='';$('gate').style.display='none';$('appWrap').style.display='none';$('consentGate').style.display='block';window.scrollTo(0,0);
+}
+function giveConsent(){
+  const name=$('cName').value.trim(),school=$('cSchool').value.trim();
+  if(!$('cUse').checked){$('cMsg').textContent='To take part, please tick the first box. If you only want to look around, choose "only viewing the demo" below.';return;}
+  if(name.length<3){$('cMsg').textContent='Please type your full name as your signature.';return;}
+  const rec={version:CONSENT_VERSION,at:new Date().toISOString(),name,school,choices:{use:true,research:$('cResearch').checked,ai:$('cAI').checked,contact:$('cContact').checked}};
+  try{localStorage.setItem(CONSENT_KEY,JSON.stringify(rec));}catch(_){}
+  if(!rec.choices.research&&pilotCode()){try{localStorage.removeItem(PILOT_KEY);}catch(_){}}
+  logEvent('consent',{name,school,consentVersion:CONSENT_VERSION,choices:rec.choices});
+  showApp();
+}
+function viewOnly(){try{localStorage.setItem(CONSENT_KEY,JSON.stringify({version:CONSENT_VERSION,at:new Date().toISOString(),visitor:true}));}catch(_){}showApp();}
+function withdrawConsent(){
+  if(!confirm('Withdraw your consent? CAPS DI will stop sending any data from this phone. You can still use it.'))return;
+  const c=consent()||{};logEvent('consent',{name:c.name||'',school:c.school||'',consentVersion:CONSENT_VERSION,choices:{use:false,research:false,ai:false,contact:false},withdrawn:true},true);
+  try{localStorage.setItem(CONSENT_KEY,JSON.stringify(Object.assign({},c,{withdrawn:true,withdrawnAt:new Date().toISOString(),choices:{use:false,research:false,ai:false,contact:false}})));localStorage.removeItem(PILOT_KEY);}catch(_){}
+  showApp();
+}
+function renderConsentSummary(){
+  const b=$('consentSummary');if(!b)return;const c=consent();
+  const yes=x=>x?'yes':'no';
+  b.innerHTML='<p><b>Your consent.</b> '+(!c?'Not given yet.':c.visitor?'You chose to view the demo only, so no data is collected.':c.withdrawn?'You withdrew consent, so no data is collected.':
+    'Given by '+esc(c.name)+' on '+esc(new Date(c.at).toLocaleDateString())+' (form '+esc(c.version)+'). Research data: '+yes(c.choices.research)+' · improving the AI: '+yes(c.choices.ai)+' · contact: '+yes(c.choices.contact)+'.')+
+    ' <a href="#" onclick="openConsent();return false">Change</a>'+(c&&!c.visitor&&!c.withdrawn?' · <a href="#" onclick="withdrawConsent();return false">Withdraw</a>':'')+' · <a href="#" onclick="printConsent();return false">Print a copy</a></p>';
+}
+function printConsent(){
+  const c=consent();let box=$('printCopy');if(!box){box=document.createElement('div');box.id='printCopy';document.body.appendChild(box);}
+  const tick=x=>x?'☑':'☐',ch=(c&&c.choices)||{use:$('cUse').checked,research:$('cResearch').checked,ai:$('cAI').checked,contact:$('cContact').checked};
+  box.innerHTML='<h1>CAPS DI: information and consent</h1><p class="small">Version '+esc(CONSENT_VERSION)+'</p>'+$('consentInfo').innerHTML+
+    '<h2>Consent</h2><p>'+tick(ch.use)+' I agree to take part in CAPS DI user testing and the pilot (required).<br>'+tick(ch.research)+' Research data: plan copies and learner ratings by register number.<br>'+tick(ch.ai)+' Improving the AI: plans and feedback, with no learner names.<br>'+tick(ch.contact)+' RADAF may contact me about an interview or classroom visit.</p>'+
+    '<div class="line"><span>Name: '+esc((c&&c.name)||$('cName').value||'')+'</span><span>School: '+esc((c&&c.school)||$('cSchool').value||'')+'</span><span>Date: '+esc(new Date((c&&c.at)||Date.now()).toLocaleDateString())+'</span></div>';
+  document.body.classList.add('copy');window.print();
+}
 function checkPw(){
   // Not case-sensitive, so phone auto-capitals don't lock teachers out.
   // capsteach2026! = teachers, DBE and DIV reviewers (changed often before user testing).
   if(['teachersupport2026!','capsteach2026!'].includes($('pwInput').value.trim().toLowerCase())){
-    $('gate').style.display='none';$('appWrap').style.display='block';init();
+    $('gate').style.display='none';if(consent())showApp();else openConsent();
   }else{$('pwErr').style.display='block';$('pwInput').value='';}
 }
 document.addEventListener('DOMContentLoaded',()=>{const el=$('pwInput');if(el)el.focus();});
@@ -533,7 +618,7 @@ async function init(){
   if(!$('classSize').dataset.bound){$('classSize').dataset.bound='1';$('classSize').addEventListener('input',function(){V.classSize=Math.max(0,parseInt(this.value,10)||0);updateTotals('levels','lvTotal',true);});}
   levelTable('lvt2','exitLevels','lvTotal2',false);
   if(!$('co').dataset.bound)$('co').dataset.bound='1',$('co').addEventListener('input',function(){if(this.value.trim()){V.outcome=null;document.querySelectorAll('#og .ch').forEach(c=>c.classList.remove('s'));}cb();});
-  renderSaved();renderDashCard();renderPilot();setTimeout(processQueue,1500);setTimeout(flushEvents,2500);
+  renderSaved();renderDashCard();renderPilot();renderConsentSummary();setTimeout(processQueue,1500);setTimeout(flushEvents,2500);
   if(CAPS){renderOutcomes();return;}
   try{const rv=await fetch('data/videos.json');if(rv.ok)VIDEOS=await rv.json();}catch(_){VIDEOS=null;}
   try{const r2=await fetch('data/pedagogy.json');if(r2.ok)PED=await r2.json();}catch(_){PED=null;}
@@ -1543,15 +1628,15 @@ function pilotCode(){const p=pilot();return p&&p.code?p.code:null;}
 function renderPilot(){
   const b=$('pilotBody');if(!b)return;const p=pilot();
   if(p&&p.code){b.innerHTML='<p class="hint" style="margin-top:6px">You are in the pilot as <span class="pilotbadge">'+esc(p.code)+'</span>. Copies of your plans, learner ratings (by register number, never names) and planning time go to RADAF\'s research team, as agreed in your consent form.</p><button class="btn2" style="margin:4px 0 0;padding:6px 12px;font-size:12px" onclick="leavePilot()">Leave the pilot on this phone</button>';return;}
-  b.innerHTML='<p class="hint" style="margin-top:6px">Enter the code RADAF gave you after you signed the consent form. Without a code, CAPS DI only sends anonymous counts.</p>'+
+  b.innerHTML='<p class="hint" style="margin-top:6px">Enter the code RADAF gave you. You need to have agreed to share research data in your consent (About CAPS DI → Your consent).</p>'+
     '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><input id="pilotIn" placeholder="e.g. GP-014" maxlength="12" style="width:120px;padding:8px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;text-transform:uppercase"></div>'+
-    '<label style="display:flex;gap:8px;align-items:flex-start;font-size:12px;margin-top:8px;color:#374151"><input type="checkbox" id="pilotOk" style="margin-top:2px"> I have signed the RADAF pilot consent form and agree that my plans, learner ratings by register number and planning time are shared with the research team.</label>'+
+
     '<button class="btn2" style="margin:8px 0 0;padding:6px 12px" onclick="joinPilot()">Join the pilot</button><p class="warnline" id="pilotMsg"></p>';
 }
 function joinPilot(){
   const code=String($('pilotIn').value||'').trim().toUpperCase();
   if(!/^[A-Z0-9][A-Z0-9-]{2,11}$/.test(code)){$('pilotMsg').textContent='Please type the code exactly as RADAF gave it (letters, numbers and a dash).';return;}
-  if(!$('pilotOk').checked){$('pilotMsg').textContent='Please confirm that you have signed the consent form.';return;}
+  const cs=consent();if(!(cs&&cs.choices&&cs.choices.research&&!cs.withdrawn)){$('pilotMsg').innerHTML='Joining the pilot needs your consent to share research data. <a href="#" onclick="openConsent();return false">Update your consent</a>.';return;}
   try{localStorage.setItem(PILOT_KEY,JSON.stringify({code,joined:new Date().toISOString()}));}catch(_){}
   logEvent('pilot',{joined:true});renderPilot();
 }
@@ -1570,10 +1655,14 @@ const EVQ_KEY='capsdi.events.v1',DEV_KEY='capsdi.device.v1';
 function deviceId(){try{let d=localStorage.getItem(DEV_KEY);if(!d){d='d'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);localStorage.setItem(DEV_KEY,d);}return d;}catch(_){return 'unknown';}}
 function readEvq(){try{return JSON.parse(localStorage.getItem(EVQ_KEY)||'[]');}catch(_){return[];}}
 function writeEvq(q){try{localStorage.setItem(EVQ_KEY,JSON.stringify(q.slice(-200)));}catch(_){}}
-function logEvent(type,data){
+function logEvent(type,data,force){
+  if(!force&&!canCollect())return;
+  const cs=consent()||{},ch=cs.choices||{};
   const ev=Object.assign({type,at:new Date().toISOString(),device:deviceId(),pilot:pilotCode(),kb:PED&&PED.version||null,grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome?String(currentOutcome()||'').slice(0,300):'',source:V.source},data||{});
-  // Plan copies and learner ratings are research data: only sent for consented pilot teachers.
-  if(!ev.pilot){delete ev.plan;delete ev.ratings;}
+  // Plan copies: research or AI-improvement consent. Learner ratings: research consent and a pilot code.
+  ev.consentAI=!!ch.ai;ev.consentResearch=!!ch.research;
+  if(!(ch.research||ch.ai))delete ev.plan;
+  if(!(ch.research&&ev.pilot)){delete ev.ratings;ev.pilot=ch.research?ev.pilot:null;}
   const q=readEvq();q.push(ev);writeEvq(q);flushEvents();
 }
 let flushing=false;
