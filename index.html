@@ -82,6 +82,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .lrgrid{margin-top:8px;border-top:1px solid #e5e7eb}
 .lrrow{display:flex;align-items:center;gap:4px;padding:4px 0;border-bottom:1px solid #f3f4f6}
 .lrrow .no{width:30px;font-size:12px;color:#374151;font-weight:600}
+.lrrow button.gd{flex:0 0 30px;color:#6b7280;font-weight:600}.lrrow button.gd.g{background:#fce7f3;color:#9d174d;border-color:#f9a8d4}.lrrow button.gd.b{background:#dbeafe;color:#1e40af;border-color:#93c5fd}
 .lrrow button{flex:1;min-width:0;padding:6px 0;border:1px solid #d1d5db;background:#fff;border-radius:6px;font-size:12px}
 .lrrow button.ab{flex:1.4;color:#6b7280}
 .lrrow button.on{color:#fff;border-color:transparent}
@@ -215,7 +216,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <div id="consentInfo" class="consentinfo">
       <p><b>Who we are.</b> CAPS DI is developed by Research and Development Africa (RADAF), the responsible party for your information. Lead researcher: Sahar Iqbal Mohy-ud-Din, <a href="mailto:sahar.mohyuddin000@gmail.com">sahar.mohyuddin000@gmail.com</a>.</p>
       <p><b>Why we are asking.</b> You are invited to take part in user testing and a pilot of CAPS DI. We want to find out whether it helps Foundation Phase teachers plan differentiated lessons, and to improve it, including its AI instructions and teaching knowledge base.</p>
-      <p><b>What we collect, depending on what you agree to below.</b> Counts of how CAPS DI is used (for example plans made, rating counts, time taken); the feedback you submit; and, only if you agree, copies of your plans and your learners' exit-task ratings by class register number. Your name and school are kept with this consent record.</p>
+      <p><b>What we collect, depending on what you agree to below.</b> Counts of how CAPS DI is used (for example plans made, rating counts, time taken); the feedback you submit; and, only if you agree, copies of your plans and your learners' exit-task ratings by class register number. Your name and school are kept with this consent record. If you join the pilot, we also record your school's province, district and quintile and, only if you choose to give them, your gender and your learners' gender (girl or boy) by register number, so that results can be compared fairly across schools, areas, girls and boys.</p>
       <p><b>What we never collect.</b> Learner names, ID numbers or photographs. Please do not type learners' names anywhere in CAPS DI.</p>
       <p><b>How the AI is used.</b> To write a plan, the class information you enter (never learner names) is sent through RADAF's secure server to Google's Gemini AI service. These servers may be outside South Africa; they are used only to make your plan.</p>
       <p><b>Storage and security.</b> Research data is stored in RADAF's secure cloud account and seen only by the RADAF research team and the project's statistician. Plan copies and learner ratings are stored under your pilot code, not your name. The list linking codes to names is kept separately.</p>
@@ -227,7 +228,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <div class="div"></div>
     <span class="lbl">Your consent</span>
     <label class="cchk"><input type="checkbox" id="cUse"> <span><b>Required to take part.</b> I have read this information and agree to take part in CAPS DI user testing and the pilot. Anonymous usage counts and the feedback I submit may be used to evaluate and improve CAPS DI.</span></label>
-    <label class="cchk"><input type="checkbox" id="cResearch"> <span><b>Optional: research data.</b> Copies of my plans and my learners' exit-task ratings by register number (no names), linked to my pilot code, may be used for the evaluation.</span></label>
+    <label class="cchk"><input type="checkbox" id="cResearch"> <span><b>Optional: research data.</b> Copies of my plans and my learners' exit-task ratings by register number (no names), with my school details and any gender information I give, linked to my pilot code, may be used for the evaluation.</span></label>
     <label class="cchk"><input type="checkbox" id="cAI"> <span><b>Optional: improving the AI.</b> My plans and feedback (with no learner names) may be used to improve CAPS DI's AI, including its instructions and knowledge base, and to test new versions. RADAF will ask me again before using my data to train an AI model.</span></label>
     <label class="cchk"><input type="checkbox" id="cContact"> <span><b>Optional: contact.</b> RADAF may contact me about an interview or a classroom visit.</span></label>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
@@ -441,7 +442,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
       <button class="p s" onclick="setExitMode('learner')">Rate each learner</button>
       <button class="p" onclick="setExitMode('count')">Type the totals</button>
     </div>
-    <div id="lrBox"><p class="hint">Tap each learner's rating (use the numbers from your class register; no names are needed). Absent learners: tap <b>Abs</b>. The totals fill in by themselves.</p><div class="lrgrid" id="lrGrid"></div></div>
+    <div id="lrBox"><p class="hint">Tap each learner's rating (use the numbers from your class register; no names are needed). Absent learners: tap <b>Abs</b>. The totals fill in by themselves. Optional: tap the dot to mark <b>G</b> (girl) or <b>B</b> (boy); CAPS DI remembers it for your class.</p><div class="lrgrid" id="lrGrid"></div></div>
     <table class="lvtable" id="lvt2" style="display:none"></table>
     <p id="lvTotal2" style="font-size:12px;color:#374151;margin-top:8px"></p>
     <div id="progBox"></div>
@@ -554,7 +555,7 @@ function $(id){return document.getElementById(id);}
 
 // ---------- Password gate ----------
 // ---------- Consent (POPIA and research ethics): asked once per phone and again when the form changes ----------
-const CONSENT_KEY='capsdi.consent.v1',CONSENT_VERSION='1.0 (October 2026)';
+const CONSENT_KEY='capsdi.consent.v1',CONSENT_VERSION='1.1 (October 2026)';
 function consent(){try{const c=JSON.parse(localStorage.getItem(CONSENT_KEY)||'null');return c&&c.version===CONSENT_VERSION?c:null;}catch(_){return null;}}
 function canCollect(){const c=consent();return !!(c&&!c.visitor&&!c.withdrawn&&c.choices&&c.choices.use);}
 function showApp(){$('consentGate').style.display='none';$('appWrap').style.display='block';const c=consent();$('viewBadge').style.display=c&&(c.visitor||c.withdrawn)?'inline-block':'none';if(!window._inited){window._inited=true;init();}else{renderPilot();renderConsentSummary();}}
@@ -778,16 +779,22 @@ function setExitMode(m){exitMode=m;
   $('lrBox').style.display=m==='learner'?'block':'none';$('lvt2').style.display=m==='learner'?'none':'table';
   if(m==='learner')renderLearnerGrid();
 }
+// Learner gender by register number, remembered for the class on this phone (optional).
+function classGenders(){const c=readClasses()[classKey()];return (c&&Array.isArray(c.genders))?c.genders:[];}
+function setGender(i,g){const cls=readClasses(),k=classKey(),c=cls[k]||{size:0,records:[]};c.genders=c.genders||[];c.genders[i]=g;cls[k]=c;writeClasses(cls);}
 function renderLearnerGrid(){
   const n=learnerCount(),g=$('lrGrid');if(!g)return;
   while(V.learnerRatings.length<n)V.learnerRatings.push(null);
-  g.innerHTML=V.learnerRatings.slice(0,n).map((r,i)=>'<div class="lrrow" data-i="'+i+'"><span class="no">'+(i+1)+'</span>'+
+  const gs=classGenders(),gl={g:'G',b:'B'};
+  g.innerHTML=V.learnerRatings.slice(0,n).map((r,i)=>'<div class="lrrow" data-i="'+i+'"><span class="no">'+(i+1)+'</span><button class="gd '+(gs[i]||'')+'" data-gd="1" title="Girl or boy (optional)">'+(gl[gs[i]]||'·')+'</button>'+
     [1,2,3,4,5,6,7].map(v=>'<button class="r'+v+(r===v?' on':'')+'" data-v="'+v+'">'+v+'</button>').join('')+
     '<button class="ab'+(r===0?' on':'')+'" data-v="0">Abs</button></div>').join('')+
     '<button class="btn2" style="margin-top:6px;padding:6px 10px;font-size:12px" onclick="V.learnerRatings.push(null);renderLearnerGrid()">+ Add a learner</button>';
-  g.querySelectorAll('.lrrow button').forEach(b=>b.onclick=()=>{const i=+b.parentElement.dataset.i,v=+b.dataset.v;
+  g.querySelectorAll('.lrrow button.gd').forEach(b=>b.onclick=()=>{const i=+b.parentElement.dataset.i,cur=classGenders()[i]||'',nx=cur===''?'g':cur==='g'?'b':'';
+    setGender(i,nx||null);b.className='gd '+nx;b.textContent=nx?nx.toUpperCase():'·';});
+  g.querySelectorAll('.lrrow button:not(.gd)').forEach(b=>b.onclick=()=>{const i=+b.parentElement.dataset.i,v=+b.dataset.v;
     V.learnerRatings[i]=V.learnerRatings[i]===v?null:v;
-    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',+x.dataset.v===V.learnerRatings[i]));
+    b.parentElement.querySelectorAll('button:not(.gd)').forEach(x=>x.classList.toggle('on',+x.dataset.v===V.learnerRatings[i]));
     syncExitCounts();});
 }
 // Totals per rating come from the learner ratings, so the rest of the app works unchanged.
@@ -803,7 +810,8 @@ function saveResults(){
   c.records.push({at:new Date().toISOString(),term:V.term,skill:V.skill,outcome:String(currentOutcome()||'').slice(0,200),
     errors:V.errors.slice(),counts:V.exitLevels.slice(),ratings:rated?V.learnerRatings.map(r=>r==null?null:r):null});
   c.records=c.records.slice(-60);cls[k]=c;writeClasses(cls);V.resultsSaved=true;renderDashCard();
-  logEvent('results',{before:V.levels.slice(),after:V.exitLevels.slice(),impl:V.impl,ratings:rated?V.learnerRatings.map(r=>r==null?null:r):null});
+  const gsx=classGenders();
+  logEvent('results',{before:V.levels.slice(),after:V.exitLevels.slice(),impl:V.impl,ratings:rated?V.learnerRatings.map(r=>r==null?null:r):null,genders:rated?V.learnerRatings.map((_,i)=>gsx[i]||null):null});
   return true;
 }
 const tierOf=r=>r>=6?2:r>=4?1:r>=1?0:null;
@@ -823,7 +831,9 @@ function dashHtml(k,c){
   if(!c||!c.records.length)return '<p class="hint">No results yet. After a lesson, rate each learner in step 5 (Checklist &amp; results).</p>';
   const recs=c.records,first=recs[0].counts,last=recs.at(-1).counts,pct=l=>{const t=l.reduce((a,b)=>a+b,0);return t?Math.round((l[3]+l[4]+l[5]+l[6])/t*100):0;};
   const st=learnerStats(c),stuck=st.filter(x=>x.flag&&x.flag.c==='fstuck'),up=st.filter(x=>x.flag&&x.flag.c==='fup');
-  let h='<div class="stat"><div><b>'+recs.length+'</b>exit tasks recorded</div><div><b>'+pct(first)+'% → '+pct(last)+'%</b>on Rating 4+ (first → latest)</div><div><b>'+stuck.length+'</b>learners need intensive support</div><div><b>'+up.length+'</b>moved up last time</div></div>';
+  const lastR=[...recs].reverse().find(r=>Array.isArray(r.ratings)),gsd=c.genders||[];
+  let gtile='';if(lastR&&gsd.some(Boolean)){const sh=g=>{const v=lastR.ratings.filter((r,i)=>gsd[i]===g&&r>0);return v.length?Math.round(v.filter(r=>r>=4).length/v.length*100)+'%':'–';};gtile='<div><b>'+sh('g')+' · '+sh('b')+'</b>girls · boys on Rating 4+ (latest)</div>';}
+  let h='<div class="stat">'+gtile+'<div><b>'+recs.length+'</b>exit tasks recorded</div><div><b>'+pct(first)+'% → '+pct(last)+'%</b>on Rating 4+ (first → latest)</div><div><b>'+stuck.length+'</b>learners need intensive support</div><div><b>'+up.length+'</b>moved up last time</div></div>';
   const unr=st.filter(x=>!x.hist.length).length;const shown=st.filter(x=>x.hist.length);
   if(shown.length){
     h+='<h4>Learners (latest 6 tasks; grey = absent)</h4><table><tr><th>#</th><th>Ratings</th><th>Trend</th><th></th></tr>'+shown.map(x=>{
@@ -1625,20 +1635,40 @@ function renderFlags(){
 const PILOT_KEY='capsdi.pilot.v1';
 function pilot(){try{return JSON.parse(localStorage.getItem(PILOT_KEY)||'null');}catch(_){return null;}}
 function pilotCode(){const p=pilot();return p&&p.code?p.code:null;}
-function renderPilot(){
+const PROVINCES=['Eastern Cape','Free State','Gauteng','KwaZulu-Natal','Limpopo','Mpumalanga','North West','Northern Cape','Western Cape'];
+const GP_DISTRICTS=['Ekurhuleni North','Ekurhuleni South','Gauteng East','Gauteng North','Gauteng West','Johannesburg Central','Johannesburg East','Johannesburg North','Johannesburg South','Johannesburg West','Sedibeng East','Sedibeng West','Tshwane North','Tshwane South','Tshwane West'];
+const QUINTILES=['Quintile 1','Quintile 2','Quintile 3','Quintile 4','Quintile 5','Independent school','Not sure'];
+const T_GENDERS=['Female','Male','Another identity','Prefer not to say'];
+const sel=(id,opts,v,ph)=>'<select id="'+id+'" class="cin" style="padding:8px">'+'<option value="">'+esc(ph)+'</option>'+opts.map(o=>'<option'+(o===v?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select>';
+function districtField(prov,v){return prov==='Gauteng'?sel('pfDistrict',GP_DISTRICTS,v,'District'):'<input id="pfDistrict" class="cin" maxlength="60" placeholder="District" value="'+esc(v||'')+'">';}
+function profileForm(pf){pf=pf||{};
+  return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">'+
+    '<div>'+sel('pfProvince',PROVINCES,pf.province||'Gauteng','Province')+'</div><div id="pfDistrictBox">'+districtField(pf.province||'Gauteng',pf.district)+'</div>'+
+    '<div style="grid-column:1/-1"><input id="pfSchool" class="cin" maxlength="120" placeholder="School name" value="'+esc(pf.school||'')+'"></div>'+
+    '<div><input id="pfEmis" class="cin" maxlength="12" inputmode="numeric" placeholder="EMIS number (optional)" value="'+esc(pf.emis||'')+'"></div><div>'+sel('pfQuintile',QUINTILES,pf.quintile,'Quintile')+'</div>'+
+    '<div style="grid-column:1/-1">'+sel('pfGender',T_GENDERS,pf.teacherGender,'Your gender (optional)')+'</div></div>';
+}
+function bindProfile(){const pv=$('pfProvince');if(pv)pv.onchange=()=>{$('pfDistrictBox').innerHTML=districtField(pv.value,'');};}
+function readProfile(){return{province:$('pfProvince').value,district:String($('pfDistrict').value||'').trim(),school:String($('pfSchool').value||'').trim(),emis:String($('pfEmis').value||'').replace(/\D/g,''),quintile:$('pfQuintile').value,teacherGender:$('pfGender').value};}
+function renderPilot(edit){
   const b=$('pilotBody');if(!b)return;const p=pilot();
-  if(p&&p.code){b.innerHTML='<p class="hint" style="margin-top:6px">You are in the pilot as <span class="pilotbadge">'+esc(p.code)+'</span>. Copies of your plans, learner ratings (by register number, never names) and planning time go to RADAF\'s research team, as agreed in your consent form.</p><button class="btn2" style="margin:4px 0 0;padding:6px 12px;font-size:12px" onclick="leavePilot()">Leave the pilot on this phone</button>';return;}
-  b.innerHTML='<p class="hint" style="margin-top:6px">Enter the code RADAF gave you. You need to have agreed to share research data in your consent (About CAPS DI → Your consent).</p>'+
-    '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><input id="pilotIn" placeholder="e.g. GP-014" maxlength="12" style="width:120px;padding:8px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;text-transform:uppercase"></div>'+
-
-    '<button class="btn2" style="margin:8px 0 0;padding:6px 12px" onclick="joinPilot()">Join the pilot</button><p class="warnline" id="pilotMsg"></p>';
+  if(p&&p.code&&!edit){const pf=p.profile||{};
+    b.innerHTML='<p class="hint" style="margin-top:6px">You are in the pilot as <span class="pilotbadge">'+esc(p.code)+'</span>'+(pf.school?' · '+esc(pf.school)+', '+esc(pf.district||'')+(pf.province?', '+esc(pf.province):''):'')+'. Copies of your plans, learner ratings (by register number, never names) and planning time go to RADAF\'s research team, as agreed in your consent form.</p>'+
+      '<button class="btn2" style="margin:4px 6px 0 0;padding:6px 12px;font-size:12px" onclick="renderPilot(true)">Edit school details</button><button class="btn2" style="margin:4px 0 0;padding:6px 12px;font-size:12px" onclick="leavePilot()">Leave the pilot on this phone</button>';return;}
+  b.innerHTML='<p class="hint" style="margin-top:6px">'+(p&&p.code?'Update your school details.':'Enter the code RADAF gave you and your school details. You need to have agreed to share research data in your consent (About CAPS DI → Your consent).')+'</p>'+
+    (p&&p.code?'':'<input id="pilotIn" placeholder="Pilot code, e.g. GP-014" maxlength="12" class="cin" style="text-transform:uppercase">')+
+    profileForm(p&&p.profile)+
+    '<button class="btn2" style="margin:8px 0 0;padding:6px 12px" onclick="joinPilot()">'+(p&&p.code?'Save details':'Join the pilot')+'</button><p class="warnline" id="pilotMsg"></p>';
+  bindProfile();
 }
 function joinPilot(){
-  const code=String($('pilotIn').value||'').trim().toUpperCase();
+  const old=pilot(),code=old&&old.code?old.code:String($('pilotIn').value||'').trim().toUpperCase();
   if(!/^[A-Z0-9][A-Z0-9-]{2,11}$/.test(code)){$('pilotMsg').textContent='Please type the code exactly as RADAF gave it (letters, numbers and a dash).';return;}
   const cs=consent();if(!(cs&&cs.choices&&cs.choices.research&&!cs.withdrawn)){$('pilotMsg').innerHTML='Joining the pilot needs your consent to share research data. <a href="#" onclick="openConsent();return false">Update your consent</a>.';return;}
-  try{localStorage.setItem(PILOT_KEY,JSON.stringify({code,joined:new Date().toISOString()}));}catch(_){}
-  logEvent('pilot',{joined:true});renderPilot();
+  const pf=readProfile();
+  if(!pf.province||!pf.district||!pf.school||!pf.quintile){$('pilotMsg').textContent='Please give your province, district, school and quintile (choose "Not sure" if you don\'t know the quintile).';return;}
+  try{localStorage.setItem(PILOT_KEY,JSON.stringify({code,joined:(old&&old.joined)||new Date().toISOString(),profile:pf}));}catch(_){}
+  logEvent('pilot',Object.assign({joined:true},pf));renderPilot();
 }
 function leavePilot(){logEvent('pilot',{joined:false});try{localStorage.removeItem(PILOT_KEY);}catch(_){}renderPilot();}
 // Planning time: from starting a plan to seeing it.
@@ -1662,7 +1692,7 @@ function logEvent(type,data,force){
   // Plan copies: research or AI-improvement consent. Learner ratings: research consent and a pilot code.
   ev.consentAI=!!ch.ai;ev.consentResearch=!!ch.research;
   if(!(ch.research||ch.ai))delete ev.plan;
-  if(!(ch.research&&ev.pilot)){delete ev.ratings;ev.pilot=ch.research?ev.pilot:null;}
+  if(!(ch.research&&ev.pilot)){delete ev.ratings;delete ev.genders;ev.pilot=ch.research?ev.pilot:null;}
   const q=readEvq();q.push(ev);writeEvq(q);flushEvents();
 }
 let flushing=false;
