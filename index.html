@@ -73,6 +73,19 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .tbox{border-radius:8px;padding:10px;font-size:12px;line-height:1.4}
 .warnline{color:#b45309;font-size:12px;margin-top:4px}
+.lrgrid{margin-top:8px;border-top:1px solid #e5e7eb}
+.lrrow{display:flex;align-items:center;gap:4px;padding:4px 0;border-bottom:1px solid #f3f4f6}
+.lrrow .no{width:30px;font-size:12px;color:#374151;font-weight:600}
+.lrrow button{flex:1;min-width:0;padding:6px 0;border:1px solid #d1d5db;background:#fff;border-radius:6px;font-size:12px}
+.lrrow button.ab{flex:1.4;color:#6b7280}
+.lrrow button.on{color:#fff;border-color:transparent}
+.lrrow button.on.r1,.lrrow button.on.r2,.lrrow button.on.r3{background:#dc2626}.lrrow button.on.r4,.lrrow button.on.r5{background:#d97706}.lrrow button.on.r6,.lrrow button.on.r7{background:#16a34a}.lrrow button.on.ab{background:#6b7280}
+.dash h4{font-size:13px;margin:12px 0 6px}
+.dash table{width:100%;border-collapse:collapse;font-size:12px}.dash td,.dash th{padding:5px 4px;border-bottom:1px solid #e5e7eb;text-align:left;vertical-align:middle}
+.dash .chips span{display:inline-block;min-width:16px;text-align:center;border-radius:4px;color:#fff;font-size:11px;margin-right:2px;padding:1px 2px}
+.dash .c1,.dash .c2,.dash .c3{background:#dc2626}.dash .c4,.dash .c5{background:#d97706}.dash .c6,.dash .c7{background:#16a34a}.dash .c0{background:#d1d5db;color:#374151}
+.dash .flag{font-size:11px;border-radius:8px;padding:2px 7px;display:inline-block;line-height:1.3}.dash td.chips{white-space:nowrap}.dash .fstuck{background:#fee2e2;color:#991b1b}.dash .fup{background:#dcfce7;color:#166534}.dash .fdown{background:#fef3c7;color:#92400e}
+.dash .stat{display:flex;gap:6px;flex-wrap:wrap}.dash .stat div{flex:1;min-width:90px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:8px;font-size:11px;color:#6b7280}.dash .stat b{display:block;font-size:18px;color:#111}
 .progv{border:1px solid #c7d2fe;background:#eef2ff;border-radius:10px;padding:12px;margin:12px 0;font-size:13px;line-height:1.5}
 .progv h4{margin:0 0 8px;font-size:14px;color:#3730a3}
 .progv table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px}
@@ -217,6 +230,14 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 
 <!-- SCREEN 1: OUTCOME -->
 <div id="sc1">
+  <div class="card dash" id="dashCard" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+      <span class="lbl" style="margin:0"><i class="ti ti-chart-dots"></i> Your class dashboard</span>
+      <button class="btn2" style="margin:0;padding:6px 12px" id="dashToggle" onclick="toggleDash()">Open</button>
+    </div>
+    <p class="hint" style="margin-top:4px">Each learner's exit-task ratings over time, by learner number. Kept on this phone only.</p>
+    <div id="dashBody" style="display:none"></div>
+  </div>
   <div class="card" id="savedCard" style="display:none">
     <span class="lbl">Your saved plans</span>
     <p class="hint">Saved on this phone, so they open even without signal.</p>
@@ -252,6 +273,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
       <p><b>Without internet.</b> With no signal, CAPS DI still makes a basic plan on the phone from its own rules and knowledge base, and makes the full plan automatically once the phone is back online.</p>
       <p><b>On WhatsApp.</b> Any plan can be sent to WhatsApp as a short, low-data summary with <b>Send to WhatsApp</b>, for the teacher's own phone or a colleague. A full WhatsApp companion, where teachers make plans and send exit-task results by chat, is the next build.</p>
       <p><b>Inclusive by design.</b> Every learner works towards the same CAPS outcome, with different ways to take in the lesson and to show what they know (Universal Design for Learning), and groups change after every exit task. Where a learner shows signs of a hearing, vision or fine-motor difficulty, CAPS DI gives classroom support and points to screening through the school health service and the SIAS process. It never labels or diagnoses a learner.</p>
+      <p><b>Class dashboard.</b> After each exit task the teacher taps each learner's rating by register number. CAPS DI shows each learner's progress over time, flags learners who stay below Rating 4 (for remediation, then SIAS) and learners ready to move up, and lists error patterns that keep coming back. It is kept on the teacher's phone; names are never entered.</p>
       <p><b>Research data.</b> To learn whether CAPS DI helps, the app sends RADAF's research team anonymous counts (plans made, rating counts, exit results) and any feedback you submit. It never sends learner names or your class notes.</p>
       <p class="who">This prototype covers English Home Language, Grades R–3. African home-language and English First Additional Language versions are planned.</p>
     </details>
@@ -366,10 +388,16 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
   </div>
   <div class="card">
     <span class="sublbl" style="font-size:14px;font-weight:600">Exit task results</span>
-    <p class="hint">After the lesson, enter how many learners reached each level on the exit task. Use these to plan the next lesson with regrouped learners.</p>
-    <table class="lvtable" id="lvt2"></table>
+    <p class="hint">After the lesson, record each learner's rating on the exit task. CAPS DI regroups learners for the next lesson and adds the results to your class dashboard.</p>
+    <div class="pr" id="exitMode" style="margin-bottom:8px">
+      <button class="p s" onclick="setExitMode('learner')">Rate each learner</button>
+      <button class="p" onclick="setExitMode('count')">Type the totals</button>
+    </div>
+    <div id="lrBox"><p class="hint">Tap each learner's rating (use the numbers from your class register; no names are needed). Absent learners: tap <b>Abs</b>. The totals fill in by themselves.</p><div class="lrgrid" id="lrGrid"></div></div>
+    <table class="lvtable" id="lvt2" style="display:none"></table>
     <p id="lvTotal2" style="font-size:12px;color:#374151;margin-top:8px"></p>
     <div id="progBox"></div>
+    <p class="hint" id="dashSaved" style="color:#166534;display:none"></p>
     <button class="btn2" style="margin-top:10px" id="nextLesson" onclick="planNext()"><i class="ti ti-refresh"></i> Plan the next lesson with these results</button>
     <div class="div"></div>
     <span class="sublbl">Teacher name</span>
@@ -470,7 +498,7 @@ const DOMAINS=[
 
 let CAPS=null,PED=null;
 const LANGS=['English','isiZulu','isiXhosa','Afrikaans','Sepedi','Setswana','Sesotho','Xitsonga','siSwati','Tshivenda','isiNdebele','Other'];
-function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],resources:[],remed:{on:false,domains:[]},classSize:0,prevLevels:null,flags:[],rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
+function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],resources:[],remed:{on:false,domains:[]},learnerRatings:[],resultsSaved:false,classSize:0,prevLevels:null,flags:[],rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
 let V=freshState();
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -500,7 +528,7 @@ async function init(){
   if(!$('classSize').dataset.bound){$('classSize').dataset.bound='1';$('classSize').addEventListener('input',function(){V.classSize=Math.max(0,parseInt(this.value,10)||0);updateTotals('levels','lvTotal',true);});}
   levelTable('lvt2','exitLevels','lvTotal2',false);
   if(!$('co').dataset.bound)$('co').dataset.bound='1',$('co').addEventListener('input',function(){if(this.value.trim()){V.outcome=null;document.querySelectorAll('#og .ch').forEach(c=>c.classList.remove('s'));}cb();});
-  renderSaved();setTimeout(processQueue,1500);setTimeout(flushEvents,2500);
+  renderSaved();renderDashCard();setTimeout(processQueue,1500);setTimeout(flushEvents,2500);
   if(CAPS){renderOutcomes();return;}
   try{const rv=await fetch('data/videos.json');if(rv.ok)VIDEOS=await rv.json();}catch(_){VIDEOS=null;}
   try{const r2=await fetch('data/pedagogy.json');if(r2.ok)PED=await r2.json();}catch(_){PED=null;}
@@ -648,8 +676,94 @@ function setStep(n){document.body.classList.remove('copy');
 function go1(){setStep(1);}
 function go2(){setStep(2);}
 function go3(){const eh=$('errHint');if(eh)eh.remove();renderStruggles();renderErrors();refreshLevelInputs('lvt','levels');updateTotals('levels','lvTotal',true);setStep(3);}
-function go5(){buildChecklist();refreshLevelInputs('lvt2','exitLevels');updateTotals('exitLevels','lvTotal2',false);setStep(5);}
-function go6(){renderFlags();setStep(6);}
+// ---------- Learner-level exit results and the class dashboard (stored on this phone only) ----------
+const CLASS_KEY='capsdi.classes.v1';
+function readClasses(){try{return JSON.parse(localStorage.getItem(CLASS_KEY)||'{}');}catch(_){return{};}}
+function writeClasses(c){try{localStorage.setItem(CLASS_KEY,JSON.stringify(c));}catch(_){}}
+function classKey(){return V.grade||'Grade 1';}
+let exitMode='learner';
+function learnerCount(){return Math.min(80,Math.max(V.classSize||0,V.levels.reduce((a,b)=>a+b,0),V.learnerRatings.length||0));}
+function setExitMode(m){exitMode=m;
+  document.querySelectorAll('#exitMode .p').forEach((b,i)=>b.classList.toggle('s',(i===0)===(m==='learner')));
+  $('lrBox').style.display=m==='learner'?'block':'none';$('lvt2').style.display=m==='learner'?'none':'table';
+  if(m==='learner')renderLearnerGrid();
+}
+function renderLearnerGrid(){
+  const n=learnerCount(),g=$('lrGrid');if(!g)return;
+  while(V.learnerRatings.length<n)V.learnerRatings.push(null);
+  g.innerHTML=V.learnerRatings.slice(0,n).map((r,i)=>'<div class="lrrow" data-i="'+i+'"><span class="no">'+(i+1)+'</span>'+
+    [1,2,3,4,5,6,7].map(v=>'<button class="r'+v+(r===v?' on':'')+'" data-v="'+v+'">'+v+'</button>').join('')+
+    '<button class="ab'+(r===0?' on':'')+'" data-v="0">Abs</button></div>').join('')+
+    '<button class="btn2" style="margin-top:6px;padding:6px 10px;font-size:12px" onclick="V.learnerRatings.push(null);renderLearnerGrid()">+ Add a learner</button>';
+  g.querySelectorAll('.lrrow button').forEach(b=>b.onclick=()=>{const i=+b.parentElement.dataset.i,v=+b.dataset.v;
+    V.learnerRatings[i]=V.learnerRatings[i]===v?null:v;
+    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',+x.dataset.v===V.learnerRatings[i]));
+    syncExitCounts();});
+}
+// Totals per rating come from the learner ratings, so the rest of the app works unchanged.
+function syncExitCounts(){
+  const c=[0,0,0,0,0,0,0];V.learnerRatings.forEach(r=>{if(r>=1&&r<=7)c[r-1]++;});V.exitLevels=c;
+  refreshLevelInputs('lvt2','exitLevels');updateTotals('exitLevels','lvTotal2',false);
+}
+function saveResults(){
+  const rated=V.learnerRatings.some(r=>r!=null),total=V.exitLevels.reduce((a,b)=>a+b,0);
+  if(V.resultsSaved||!total)return false;
+  const cls=readClasses(),k=classKey(),c=cls[k]||{size:0,records:[]};
+  c.size=Math.max(c.size||0,learnerCount());
+  c.records.push({at:new Date().toISOString(),term:V.term,skill:V.skill,outcome:String(currentOutcome()||'').slice(0,200),
+    errors:V.errors.slice(),counts:V.exitLevels.slice(),ratings:rated?V.learnerRatings.map(r=>r==null?null:r):null});
+  c.records=c.records.slice(-60);cls[k]=c;writeClasses(cls);V.resultsSaved=true;renderDashCard();
+  return true;
+}
+const tierOf=r=>r>=6?2:r>=4?1:r>=1?0:null;
+function learnerStats(c){
+  const recs=c.records.filter(r=>Array.isArray(r.ratings)),n=Math.max(c.size||0,...recs.map(r=>r.ratings.length),0),out=[];
+  for(let i=0;i<n;i++){
+    const hist=recs.map(r=>r.ratings[i]).filter(v=>v!=null);const seen=hist.filter(v=>v>0);
+    let flag=null;const last3=seen.slice(-3);
+    if(last3.length===3&&last3.every(v=>v<=3))flag={c:'fstuck',t:'Below 4 in last 3 tasks: remediation, then SIAS'};
+    else if(seen.length>=2&&tierOf(seen.at(-1))>tierOf(seen.at(-2)))flag={c:'fup',t:'Moved up a group'};
+    else if(seen.length>=2&&tierOf(seen.at(-1))<tierOf(seen.at(-2)))flag={c:'fdown',t:'Moved down: check'};
+    out.push({no:i+1,hist,seen,flag,absent:hist.filter(v=>v===0).length});
+  }
+  return out;
+}
+function dashHtml(k,c){
+  if(!c||!c.records.length)return '<p class="hint">No results yet. After a lesson, rate each learner in step 5 (Checklist &amp; results).</p>';
+  const recs=c.records,first=recs[0].counts,last=recs.at(-1).counts,pct=l=>{const t=l.reduce((a,b)=>a+b,0);return t?Math.round((l[3]+l[4]+l[5]+l[6])/t*100):0;};
+  const st=learnerStats(c),stuck=st.filter(x=>x.flag&&x.flag.c==='fstuck'),up=st.filter(x=>x.flag&&x.flag.c==='fup');
+  let h='<div class="stat"><div><b>'+recs.length+'</b>exit tasks recorded</div><div><b>'+pct(first)+'% → '+pct(last)+'%</b>on Rating 4+ (first → latest)</div><div><b>'+stuck.length+'</b>learners need intensive support</div><div><b>'+up.length+'</b>moved up last time</div></div>';
+  const unr=st.filter(x=>!x.hist.length).length;const shown=st.filter(x=>x.hist.length);
+  if(shown.length){
+    h+='<h4>Learners (latest 6 tasks; grey = absent)</h4><table><tr><th>#</th><th>Ratings</th><th>Trend</th><th></th></tr>'+shown.map(x=>{
+      const s6=x.hist.slice(-6),tr=x.seen.length>=2?(x.seen.at(-1)>x.seen[0]?'↑':x.seen.at(-1)<x.seen[0]?'↓':'→'):'';
+      return '<tr><td>'+x.no+'</td><td class="chips">'+(s6.length?s6.map(v=>'<span class="c'+v+'">'+(v||'–')+'</span>').join(''):'<span class="c0">–</span>')+'</td><td>'+tr+'</td><td>'+(x.flag?'<span class="flag '+x.flag.c+'">'+esc(x.flag.t)+'</span>':'')+'</td></tr>';}).join('')+'</table>'+(unr?'<p style="margin-top:4px;font-size:11px;color:#6b7280">'+unr+' learner'+(unr>1?'s':'')+' not rated yet.</p>':'');
+  }else h+='<p class="hint" style="margin-top:8px">Only totals were typed so far. Rate each learner in step 5 to see learner-level progress.</p>';
+  const ec={};recs.slice(-5).forEach(r=>(r.errors||[]).forEach(e=>{ec[e]=(ec[e]||0)+1;}));
+  const top=Object.entries(ec).filter(([,n])=>n>=2).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  if(top.length&&PED)h+='<h4>Error patterns that keep coming back (last 5 lessons)</h4><ul style="margin:0 0 0 18px;font-size:12px">'+top.map(([id,n])=>{const m=PED.misconceptions.find(x=>x.id===id);return m?'<li>'+esc(m.misconception)+' · ticked in '+n+' lessons</li>':'';}).join('')+'</ul>';
+  h+='<h4>Recent exit tasks</h4><table><tr><th>Date</th><th>Outcome</th><th>Rating 4+</th></tr>'+recs.slice(-5).reverse().map(r=>'<tr><td>'+esc(new Date(r.at).toLocaleDateString())+'</td><td>'+esc(r.outcome.slice(0,60))+(r.outcome.length>60?'…':'')+'</td><td>'+pct(r.counts)+'%</td></tr>').join('')+'</table>';
+  h+='<p style="margin-top:8px;font-size:11px;color:#6b7280">A flag is a prompt to look closer, not a label. Confirm with your own observation before changing a learner\'s support.</p>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn2" style="margin:0" onclick="printDash()"><i class="ti ti-printer"></i> Print summary (PDF)</button><button class="btn2" style="margin:0;color:#b91c1c" onclick="clearDash()">Clear '+esc(k)+' data</button></div>';
+  return h;
+}
+function renderDashCard(){
+  const cls=readClasses(),ks=Object.keys(cls).filter(k=>cls[k].records&&cls[k].records.length);
+  const card=$('dashCard');if(!card)return;card.style.display=ks.length?'block':'none';
+  if($('dashBody').style.display!=='none')$('dashBody').innerHTML=ks.map(k=>'<p class="lbl" style="margin-top:10px">'+esc(k)+'</p>'+dashHtml(k,cls[k])).join('');
+}
+function toggleDash(){const b=$('dashBody'),open=b.style.display==='none';b.style.display=open?'block':'none';$('dashToggle').textContent=open?'Close':'Open';renderDashCard();}
+function openDash(){go1();if($('dashBody').style.display==='none')toggleDash();setTimeout(()=>$('dashCard').scrollIntoView({behavior:'smooth'}),300);}
+function clearDash(){const k=classKey();if(!confirm('Delete all saved results for '+k+' on this phone?'))return;const c=readClasses();delete c[k];writeClasses(c);renderDashCard();}
+function printDash(){
+  const cls=readClasses();let box=$('printCopy');if(!box){box=document.createElement('div');box.id='printCopy';document.body.appendChild(box);}
+  box.innerHTML='<h1>CAPS DI class summary</h1><div class="line"><span>Teacher:</span><span>Date: '+esc(new Date().toLocaleDateString())+'</span></div>'+
+    Object.keys(cls).map(k=>'<h2>'+esc(k)+'</h2><div class="dash">'+dashHtml(k,cls[k]).replace(/<div style="display:flex;gap:8px[\s\S]*$/,'')+'</div>').join('')+
+    '<p class="small">Learners are listed by register number. Flags are prompts for the teacher and the School-Based Support Team, not diagnoses. Made with CAPS DI · © 2026 RADAF</p>';
+  document.body.classList.add('copy');window.print();
+}
+function go5(){buildChecklist();refreshLevelInputs('lvt2','exitLevels');updateTotals('exitLevels','lvTotal2',false);setExitMode(exitMode);$('dashSaved').style.display='none';setStep(5);}
+function go6(){if(saveResults()){$('dashSaved').style.display='block';$('dashSaved').innerHTML='<i class="ti ti-circle-check"></i> Results saved to your class dashboard.';}renderFlags();setStep(6);}
 function backToPlan(){if(V.planData)setStep(4);else go4();}
 // Compare two sets of rating counts (group counts, not individual learners).
 function progressPanel(before,after,title){
@@ -671,7 +785,7 @@ function progressPanel(before,after,title){
     (tb!==ta?'<p class="who" style="margin:0 0 6px">'+tb+' learners before, '+ta+' after, so compare percentages rather than numbers.</p>':'')+
     '<p class="who" style="margin:0">These are counts for the class, not individual learners. An exit task shows progress on one task: count a skill as <b>secured</b> only when learners show it again on another day, for example in next week\'s warm-up.</p></div>';
 }
-function planNext(){
+function planNext(){ if(saveResults())notify('Results saved to your class dashboard.','dash');V.learnerRatings=[];V.resultsSaved=false;
   V.prevLevels=V.levels.slice();logEvent('results',{before:V.levels.slice(),after:V.exitLevels.slice(),impl:V.impl});
   V.levels=V.exitLevels.slice();V.exitLevels=[0,0,0,0,0,0,0];V.source='exit';V.planData=null;
   pills('src',SOURCES.map(s=>s.l),SOURCES.find(s=>s.k==='exit').l,l=>{V.source=SOURCES.find(s=>s.l===l).k;});
@@ -1040,7 +1154,7 @@ async function go4(){
       const issues2=planIssues(plan2);
       if(issues2.length<issues.length){plan=plan2;issues=issues2;}
     }
-    plan._issues=issues;plan._senses=senses();if(V.prevLevels)plan._progress={before:V.prevLevels.slice(),after:V.levels.slice()};plan._design=lessonDesign();plan._teachDomain=teachDomain();if(V.remed.on&&remedCount()){const ks=remedDomains().map(d=>d.k);plan._remed={n:remedCount(),k:ks[0],ks};}
+    V.learnerRatings=[];V.resultsSaved=false;plan._issues=issues;plan._senses=senses();if(V.prevLevels)plan._progress={before:V.prevLevels.slice(),after:V.levels.slice()};plan._design=lessonDesign();plan._teachDomain=teachDomain();if(V.remed.on&&remedCount()){const ks=remedDomains().map(d=>d.k);plan._remed={n:remedCount(),k:ks[0],ks};}
     V.planData=plan;V.checks={};
     renderPlan(plan);
     savePlan();
@@ -1115,7 +1229,7 @@ function showOfflinePlan(){
   setStep(4);
   const c=tierCounts(V.levels);
   $('mt').innerHTML='<strong>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</strong><br>Outcome: '+esc(currentOutcome())+'<br><span style="color:#6b7280">'+TIERS.map((t,i)=>t.name+': '+c[i]).join(' · ')+' learners</span>'+'<br><span class="langtag"><i class="ti ti-language"></i> Lesson language: English Home Language</span>';
-  V.planData=plan;V.checks={};renderPlan(plan);savePlan();
+  V.learnerRatings=[];V.resultsSaved=false;V.planData=plan;V.checks={};renderPlan(plan);savePlan();
   $('ld').style.display='none';$('pc').style.display='block';
 }
 let processingQueue=false;
@@ -1138,9 +1252,9 @@ async function processQueue(){
     }
   }finally{processingQueue=false;}
 }
-function notify(msg){
+function notify(msg,plain){
   let t=$('toast');if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t);}
-  t.innerHTML='<i class="ti ti-circle-check"></i> <span>'+esc(msg)+'</span> <button onclick="openSaved(0);document.getElementById(\'toast\').style.display=\'none\'">Open</button>';
+  t.innerHTML='<i class="ti ti-circle-check"></i> <span>'+esc(msg)+'</span> <button onclick="'+(plain==='dash'?'openDash()':'openSaved(0)')+';document.getElementById(\'toast\').style.display=\'none\'">Open</button>';
   t.style.display='flex';setTimeout(()=>{t.style.display='none';},20000);
 }
 window.addEventListener('online',()=>{processQueue();});
@@ -1283,10 +1397,10 @@ function classroomCopyHtml(p){
     (L(e.scoring).length?'<table><tr><th style="width:22%">Ratings</th><th>What it looks like</th></tr>'+L(e.scoring).map(x=>'<tr><td>'+esc(x.levels||'')+'</td><td>'+esc(x.evidence||'')+'</td></tr>').join('')+'</table>':'')+'</section>';
   // Results sheet: one row per learner, then counts per rating to type into CAPS DI.
   const half=Math.ceil(n/2),row=i=>i<n?'<td>'+(i+1)+'</td><td></td><td></td>':'<td></td><td></td><td></td>';
-  let t='<table class="tally"><tr><th style="width:6%">#</th><th>Learner</th><th style="width:12%">Rating 1–7</th><th style="width:6%">#</th><th>Learner</th><th style="width:12%">Rating 1–7</th></tr>';
+  let t='<table class="tally"><tr><th style="width:8%">No.</th><th style="width:14%">Rating 1–7</th><th>Notes (errors seen)</th><th style="width:8%">No.</th><th style="width:14%">Rating 1–7</th><th>Notes (errors seen)</th></tr>';
   for(let i=0;i<half;i++)t+='<tr>'+row(i)+row(i+half)+'</tr>';
   t+='</table>';
-  h+='<section><h2>Results sheet</h2><p class="small">Write each learner\'s rating on the exit task. Then count how many got each rating and type the counts into CAPS DI (step 5) to plan the next lesson.</p>'+t+
+  h+='<section><h2>Results sheet</h2><p class="small">Use the learner numbers from your class register (no names needed). Write each learner\'s rating on the exit task, then tap the ratings into CAPS DI (step 5): they go to your class dashboard and plan the next lesson.</p>'+t+
     '<table><tr><th>Rating</th>'+[1,2,3,4,5,6,7].map(x=>'<th>'+x+'</th>').join('')+'<th>Total</th></tr><tr><td>Learners</td>'+'<td></td>'.repeat(8)+'</tr></table></section>';
   h+='<p class="small" style="margin-top:8px">Made with CAPS DI · © 2026 Research and Development Africa (RADAF)</p>';
   return h;
