@@ -1,0 +1,1346 @@
+{
+ "source": "DBE Revised National Teaching Plans (Annual Teaching Plans), English Home Language, Foundation Phase. Week-by-week content and SBA tasks as published; used to align CAPS DI plans to the week of the term.",
+ "focusTime": "Reading and Writing Focus Time (about 1 hour): Shared Reading then Shared Writing (about 15 minutes); word and sentence level work such as phonics, linked to the shared text (about 10 minutes); then Group Guided Reading with learners in reading-ability groups (2 groups a day, 15 minutes each). Paired and independent reading and independent writing happen outside the focus time.",
+ "principles": [
+  "Content is scaffolded across weeks and repeated, so learners who miss days are not disadvantaged.",
+  "Assessment only on content taught, after learners have had time to practise.",
+  "Formative assessment is continuous and integrated into daily lessons; baseline assessment is informal, mostly oral and by observation."
+ ],
+ "grades": {
+  "Grade 1": {
+   "Term 1": {
+    "weeks": [
+     {
+      "week": 1,
+      "days": 3
+     },
+     {
+      "week": 2,
+      "days": 5
+     },
+     {
+      "week": 3,
+      "days": 5
+     },
+     {
+      "week": 4,
+      "days": 5
+     },
+     {
+      "week": 5,
+      "days": 5
+     },
+     {
+      "week": 6,
+      "days": 5
+     },
+     {
+      "week": 7,
+      "days": 5
+     },
+     {
+      "week": 8,
+      "days": 5
+     },
+     {
+      "week": 9,
+      "days": 4
+     },
+     {
+      "week": 10,
+      "days": 3
+     }
+    ],
+    "baseline": {
+     "weeks": [
+      1,
+      2,
+      3
+     ],
+     "note": "Weeks 1–3: readiness programme with some Grade R content; informal readiness assessment in weeks 2–3, mostly by observation and orally."
+    },
+    "topics": {
+     "Listening and Speaking": {
+      "skill": "Listening and Speaking",
+      "time": "Minimum Time: 45 mins (3 x 15 mins) Maximum Time: 1 hour (4 x 15 mins)",
+      "rows": [
+       {
+        "from": 1,
+        "to": 1,
+        "part": null,
+        "items": [
+         "Identifies and describes similarities and differences",
+         "Matches things that go together, and compares things that are different",
+         "Sings songs and rhymes and performs actions on own with confidence",
+         "Recites poems and rhymes and adds actions to them with confidence",
+         "Talks about pictures in posters, theme charts, books",
+         "Listens to simple instructions (classroom routines) and responds appropriately"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": null,
+        "items": [
+         "Listens to simple instructions (classroom routines) and responds",
+         "Listens without interrupting, showing respect for the speaker",
+         "Listens to stories and shows understanding by answering questions related to the story",
+         "Sequences pictures relating to a story",
+         "Classifies things according to own criteria",
+         "Listens to problems and offers solutions"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": null,
+        "items": [
+         "Talks about personal experiences",
+         "Answers questions such as questions related to personal details",
+         "Sings songs and does actions",
+         "Listens to simple instructions (classroom routines) and responds",
+         "Picks out selected detail from an oral description"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": null,
+        "items": [
+         "Listens without interrupting,",
+         "Talks about personal experiences",
+         "Sings songs and does actions",
+         "Listens to simple instructions (classroom routines) and responds",
+         "Listens to stories, rhymes, poems and songs with interest, and acts out part of the story, song or rhyme.",
+         "Describes objects in terms of colour size, shape, quantity using correct vocabulary"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": null,
+        "items": [
+         "Listens without interrupting,",
+         "Talks about personal experiences",
+         "Sings songs and does actions,",
+         "Describes objects in terms of colour size, shape, quantity using correct vocabulary",
+         "Talks about pictures in posters, theme charts, books",
+         "Sequences pictures of a story communicating through re-telling the sequence of ideas"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": null,
+        "items": [
+         "Listens without interrupting,",
+         "Talks about personal experiences",
+         "Sings songs and does actions",
+         "Describes objects in terms of colour size, shape, quantity using correct vocabulary",
+         "Participates in discussions, taking turns to speak and respecting others in the group"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": null,
+        "items": [
+         "Listens without interrupting,",
+         "Talks about personal experiences",
+         "Sings songs and does actions",
+         "Sequences pictures of a story communicating through re-telling the sequence of ideas"
+        ],
+        "revision": true
+       }
+      ]
+     },
+     "Phonics": {
+      "skill": "Reading and Phonics",
+      "time": "(Minimum time 5 x 15 minutes per week; Maximum time 5 x 15 minutes per week) Teach 1 -2 new letters each week",
+      "rows": [
+       {
+        "from": 1,
+        "to": 1,
+        "part": null,
+        "items": [
+         "Segments oral sentences into individual words e.g. claps on each word in a sentence",
+         "Divides multisyllabic words into syllables e.g. crocodile: croc-o-dile",
+         "Recognises sounds at the beginning of some words"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": null,
+        "items": [
+         "Identifies rhyming words in well-known rhymes and songs",
+         "Recognises and names some letters of the alphabet such as letters in own name",
+         "Begins to recognise that words are made up of sounds such as the beginning letter/s of own name."
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": null,
+        "items": [
+         "Distinguishes aurally between different initial sounds of words",
+         "Participates in whole class phonemic awareness oral activities",
+         "Identifies letter-sound relationships of some single letters"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": null,
+        "items": [
+         "Participates in whole class phonemic awareness oral activities",
+         "Identifies letter-sound relationships of some single letters",
+         "Recognises and names some letters of the alphabet",
+         "Begins to build up short words using sounds learnt"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": null,
+        "items": [
+         "Participates in whole class phonemic awareness oral activities",
+         "Identifies letter-sound relationships of some single letters",
+         "Recognises and names some letters of the alphabet:",
+         "Begins to build up short words using sounds learnt"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": null,
+        "items": [
+         "Participates in whole class phonemic awareness oral activities",
+         "Identifies letter-sound relationships of some single letters",
+         "Recognises and names some letters of the alphabet: 2 vowels and at least 6 consonants",
+         "Begins to build up short words using sounds learnt",
+         "Begins to use blending to make words e.g. at, c-at, m-at"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": null,
+        "items": [
+         "Recognises and names some letters of the alphabet: 2 vowels and at least 6 consonants",
+         "Begins to build up short words using sounds learnt",
+         "Begins to use blending to make words e.g. at, c-at, m-at"
+        ],
+        "revision": true
+       }
+      ]
+     },
+     "Reading": {
+      "skill": "Reading and Phonics",
+      "time": "It is important to read point 8 in guidelines on first page. Shared Reading: Minimum time: 3 x 15minutes per week; Maximum time: 5x 15 minutes per week Group Guided: 2 x 15 minutes per day for 5 days (2 groups daily) Independent/Paired: 2x a week",
+      "rows": [
+       {
+        "from": 1,
+        "to": 1,
+        "part": "Reading",
+        "items": [
+         "Interprets pictures to construct ideas",
+         "Acts out a story, song, rhyme",
+         "Reads picture books"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": "Reading",
+        "items": [
+         "Begins to read high frequency words in the classroom (labels)",
+         "'Reads' personal texts such as sentences written by the teacher"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": "Reading",
+        "items": [
+         "Distinguishes pictures from print",
+         "Identifies letter-sound relationships of some single letters",
+         "Recalls details and states main idea"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 10,
+        "part": "Reading",
+        "items": [
+         "Emergent reading skills are taught during Shared Reading and Group Guided reading",
+         "Holds the book the right way up and turns pages correctly",
+         "Uses pictures to predict what the story is about: reads picture books",
+         "Interprets pictures to make up own story, that is, \"reads\" the pictures",
+         "Collects and reads logos and other words from environmental print",
+         "Recognises own name and names of at least ten peers",
+         "Reads labels and captions in the classroom",
+         "Discusses book handling and care",
+         "Listens to and discusses stories and other texts read aloud",
+         "Develops basic concepts of print including:",
+         "Concept of book - cover, front, back, title",
+         "Concept of text - word, same words, letter, names of letters, one-to-one correspondence",
+         "Directionality: starts reading at front, ends at back; reads from left to right and top to bottom of a page, first, last, middle words or letters or position on a page",
+         "Punctuation: capital letter, lowercase letter, full stop, comma, question mark"
+        ]
+       },
+       {
+        "from": 1,
+        "to": 1,
+        "part": "Shared reading",
+        "items": [
+         "Reads big books or other enlarged text as a whole class with the teacher"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": "Shared reading",
+        "items": [
+         "Reads big books or other enlarged text as a whole class with the teacher",
+         "Focus is on concepts of print"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": "Shared reading",
+        "items": [
+         "Reads big books or other enlarged text as a whole class with the teacher",
+         "Uses cover of book and illustrations throughout the text to predict storyline"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": "Shared reading",
+        "items": [
+         "Reads big books or other enlarged text as a whole class with the teacher",
+         "Focus on text features",
+         "Focus on comprehension"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": "Shared reading",
+        "items": [
+         "Reads big books or other enlarged text as a whole class with the teacher",
+         "Focus on Language patterns",
+         "Focus on comprehension"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": "Shared reading",
+        "items": [
+         "Reads big books or other enlarged text as a whole class with the teacher",
+         "Focus on phonics and word identification strategies",
+         "Focus on comprehension"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": "Shared reading",
+        "items": [
+         "Reads big books or other enlarged text as a whole class with the teacher",
+         "Focus on comprehension"
+        ]
+       },
+       {
+        "from": 1,
+        "to": 1,
+        "part": "Group guided reading",
+        "items": [
+         "Holds book the right way up and turns pages correctly",
+         "Recognises own name",
+         "Discusses book handling and care"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": "Group guided reading",
+        "items": [
+         "Begins to build a sight vocabulary",
+         "Begins to recognise that words are made up of sounds such as the beginning letter/s of own name.",
+         "Develops basic concepts of print"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": "Group guided reading",
+        "items": [
+         "Directionality e.g. starts reading at front, reads from left to right and so on",
+         "Begins to build a sight vocabulary",
+         "Uses pictures to make up own story i.e. 'reads' the picture",
+         "Relates sounds to letters and words"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": "Group guided reading",
+        "items": [
+         "Reads aloud from own book in a guided reading group with teacher, that is, the whole group reads the same story",
+         "Begins to build a sight vocabulary"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": "Group guided reading",
+        "items": [
+         "Reads aloud from own book in a guided reading group with teacher, that is, the whole group reads the same story",
+         "Begins to build a sight vocabulary"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": "Group guided reading",
+        "items": [
+         "Reads aloud from own book in a guided reading group with teacher, that is, the whole group reads the same story",
+         "Begins to build a sight vocabulary"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": "Group guided reading",
+        "items": [
+         "Reads aloud from own book in a guided reading group with teacher, that is, the whole group reads the same story Begins to build a sight vocabulary"
+        ]
+       },
+       {
+        "from": 1,
+        "to": 1,
+        "part": "Independent reading",
+        "items": [
+         "Reads picture books"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": "Independent reading",
+        "items": [
+         "Reads books independently for pleasure, turning pages correctly and showing respect for books"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": "Independent reading",
+        "items": [
+         "Reads books independently for pleasure, turning pages correctly and showing respect for books"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": "Independent reading",
+        "items": [
+         "Reads books independently for pleasure, turning pages correctly and showing respect for books"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": "Independent reading",
+        "items": [
+         "Reads books independently for pleasure, turning pages correctly and showing respect for books"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": "Independent reading",
+        "items": [
+         "Reads books independently for pleasure, turning pages correctly and showing respect for books"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": "Independent reading",
+        "items": [
+         "Reads books independently for pleasure, turning pages correctly and showing respect for books"
+        ]
+       }
+      ]
+     },
+     "Writing": {
+      "skill": "Writing",
+      "time": "3 x 15 minutes per week. Building on, and linking to, Shared Reading, discussions and personal experiences",
+      "rows": [
+       {
+        "from": 1,
+        "to": 1,
+        "part": null,
+        "items": [
+         "Draws pictures to convey a message"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": null,
+        "items": [
+         "Draws pictures to convey a message about"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": null,
+        "items": [
+         "Draws pictures to convey a message about"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": null,
+        "items": [
+         "Copies and writes own name, short words and sentences from labels, posters, chalkboard"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": null,
+        "items": [
+         "Copies one sentence of news from the board correctly"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": null,
+        "items": [
+         "Copies one sentence of news from the board correctly"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": null,
+        "items": [
+         "Copies one sentence of news"
+        ],
+        "revision": true
+       },
+       {
+        "from": 1,
+        "to": 1,
+        "part": null,
+        "items": [
+         "about a personal experience",
+         "Groups pictures of rhyming words",
+         "Copies letters and numerals from the classroom environment when 'writing'"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": null,
+        "items": [
+         "a personal experience",
+         "Copies and writes own name",
+         "Copies short sentences written by the teacher"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": null,
+        "items": [
+         "a personal experience",
+         "Copies and writes own name",
+         "Copies short sentences written by the teacher"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": null,
+        "items": [
+         "Copies one sentence of news from the board correctly",
+         "Contributes ideas in Shared Writing for a class story recorded by the teacher to create new texts for reading"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": null,
+        "items": [
+         "Contributes ideas in Shared Writing for a class story recorded by the teacher to create new texts for reading",
+         "Draws a picture to convey a message",
+         "Writes a caption for the picture"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": null,
+        "items": [
+         "Contributes ideas in Shared Writing for a class story recorded by the teacher to create new texts for reading",
+         "Begins to express written recording with drawings, letters, numbers, words and simple sentences"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": null,
+        "items": [
+         "from the board correctly",
+         "Contributes ideas in Shared Writing for a class story recorded by the teacher to create new texts for reading"
+        ]
+       }
+      ]
+     },
+     "Handwriting": {
+      "skill": "Writing",
+      "time": "4 x 15 minutes per week",
+      "rows": [
+       {
+        "from": 1,
+        "to": 1,
+        "part": null,
+        "items": [
+         "Play finger rhymes with finger actions",
+         "Plays catch with beanbags and large balls",
+         "Traces simple outlines of pictures patterns and own name where the correct starting point and writing direction are indicated"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": null,
+        "items": [
+         "Forms letters with own bodies in pairs or on their own",
+         "Forms letters using finger paint, paint brushes, wax crayons",
+         "Holds crayons correctly and indicating dominance"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": null,
+        "items": [
+         "Draws with wax crayons",
+         "Develops directionality",
+         "Makes plasticine or playdough models of letters and objects",
+         "Traces over and copies own name"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": null,
+        "items": [
+         "Practises holding and manipulating crayons and pencil",
+         "Develops hand-eye co-ordination through painting, paper-tearing, cutting and tracing activities",
+         "Draws patterns: zig-zags",
+         "Forms lower case letters correctly Align the teaching of lower case letters to the phonics programme"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": null,
+        "items": [
+         "Develops hand-eye co-ordination through painting, paper-tearing, cutting and tracing activities",
+         "Draws patterns: vertical patterns",
+         "Traces over and copies own name",
+         "Forms lower case letters correctly"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": null,
+        "items": [
+         "Develops hand-eye co-ordination through painting, paper-tearing, cutting and tracing activities",
+         "Draws patterns: horizontal patterns",
+         "Forms lower case letters correctly",
+         "Copies and writes own name, short words and sentences from labels, posters, chalkboard"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": null,
+        "items": [
+         "Develops hand-eye co-ordination through painting, paper-tearing, cutting and tracing activities",
+         "Draws patterns",
+         "Forms lower case letters correctly"
+        ]
+       }
+      ]
+     }
+    },
+    "sba": {
+     "Listening and Speaking": [
+      "Retells the main parts of a familiar story that is told or read"
+     ],
+     "Phonics": [
+      "Oral and Written: Identifies the single letter sound relationships of some letters (vowels and consonants) (Reading focus time: Focussed Phonic session)"
+     ],
+     "Reading": [
+      "Oral: Group Guided Reading (GGR) Read aloud from own book during with teacher and on his/her own (word recognition, read for meaning) (Reading focus time)",
+      "Oral: Predicts the story by making use of the pictures; read picture books",
+      "Comprehension skills: Sequence 3 events in the right order (Reading focus time)"
+     ],
+     "Writing": [
+      "Draw pictures to convey a message e.g. a personal experience",
+      "Copy captions and sentences",
+      "Contributes ideas to a class story"
+     ],
+     "Handwriting": [
+      "Writes lower case letters correctly"
+     ]
+    }
+   }
+  },
+  "Grade 3": {
+   "Term 1": {
+    "weeks": [
+     {
+      "week": 1,
+      "days": 3
+     },
+     {
+      "week": 2,
+      "days": 5
+     },
+     {
+      "week": 3,
+      "days": 5
+     },
+     {
+      "week": 4,
+      "days": 5
+     },
+     {
+      "week": 5,
+      "days": 5
+     },
+     {
+      "week": 6,
+      "days": 5
+     },
+     {
+      "week": 7,
+      "days": 5
+     },
+     {
+      "week": 8,
+      "days": 5
+     },
+     {
+      "week": 9,
+      "days": 4
+     },
+     {
+      "week": 10,
+      "days": 3
+     }
+    ],
+    "baseline": {
+     "weeks": [
+      1,
+      2,
+      3
+     ],
+     "note": "Weeks 1–3: catch-up and consolidation of Grade 2 content; informal baseline assessment in weeks 2–3, mostly by observation and orally."
+    },
+    "topics": {
+     "Listening and Speaking": {
+      "skill": "Listening and Speaking",
+      "time": "Minimum Time: 45 mins (3 x 15 mins) Maximum Time: 1 hour (4 x 15 mins)",
+      "rows": [
+       {
+        "from": 1,
+        "to": 1,
+        "part": null,
+        "items": [
+         "Talks about personal experiences. For example, tells news expressing feelings and opinions",
+         "Listens without interrupting, showing respect for the speaker and taking turns to speak",
+         "Listens to a complex sequence of instructions and responds appropriately"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": null,
+        "items": [
+         "Talks about personal experiences. For example, tells news expressing feelings and opinions",
+         "Listens without interrupting, showing respect for the speaker and taking turns to speak",
+         "Answers open ended questions and justifies answer e.g. \"Why do you say that?\"",
+         "Uses appropriate language when speaking to friends and adults"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": null,
+        "items": [
+         "Talks about personal experiences. For example, tells news expressing feelings and opinions",
+         "Listens to a complex sequence of instructions and responds appropriately",
+         "Listens for the main idea and for detail in stories",
+         "Answers open ended questions and justifies answer e.g. \"Why do you say that?\"",
+         "Suggests solutions to a problem especially during Mathematics"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": null,
+        "items": [
+         "Talks about personal experiences. For example, tells news expressing feelings and opinions",
+         "Listens to a complex sequence of instructions (at least 4) and responds appropriately",
+         "Listens for the main idea and for detail in stories and answers higher-order questions, e.g., \"Do you think the title is the best one for this story? Why?\"",
+         "Asks questions for clarification and comments on what was heard, e.g., \"Did that really happen? Then what did you do?\"",
+         "Expresses feelings about a text and gives reasons, e.g., \"I really feel that the author could have given a happier ending to the story. The dolphin tried so hard to escape.\"",
+         "Suggests solutions to a problem especially during Mathematics"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": null,
+        "items": [
+         "Talks about personal experiences. For example, tells news expressing feelings and opinions",
+         "Asks questions for clarification and comments on what was heard, e.g., \"Did that really happen? Then what did you do?\"",
+         "Expresses feelings about a text and gives reasons, e.g., \"I really feel that the author could have given a happier ending to the story. The dolphin tried so hard to escape.\"",
+         "Suggests solutions to a problem especially during Mathematics",
+         "Participates in discussions, asking questions and showing sensitivity to the feelings of others",
+         "Uses appropriate language when talking to friends and adults."
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": null,
+        "items": [
+         "Talks about personal experiences. For example, tells news expressing feelings and opinions",
+         "Listens without interrupting, showing respect for the speaker and taking turns to speak",
+         "Expresses feelings about a text and gives reasons, e.g., \"I really feel that the author could have given a happier ending to the story. The dolphin tried so hard to escape.\"",
+         "Suggests solutions to a problem especially during Mathematics",
+         "Participates in discussions, asking questions and showing sensitivity to the feelings of others",
+         "Answers questions and gives reasons for the answer"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": null,
+        "items": [
+         "Talks about personal experiences. For example, tells news expressing feelings and opinions",
+         "Listens without interrupting, showing respect for the speaker and taking turns to speak",
+         "Answers questions and gives reasons for the answer"
+        ],
+        "revision": true
+       }
+      ]
+     },
+     "Phonics": {
+      "skill": "Reading and Phonics",
+      "time": "Minimum time: 1 hour per week (4 x 15 mins); Maximum time: 1 hour 15 mins per week ( 5 x 15 mins)",
+      "rows": [
+       {
+        "from": 1,
+        "to": 1,
+        "part": null,
+        "items": [
+         "Revise the single sounds and the consonant and vowel digraphs taught in Grade 2",
+         "Identify letter-sound and letter- name relationships of all single letters"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": null,
+        "items": [
+         "Revise the single sounds and the consonant and vowel digraphs taught in Grade 2",
+         "Identify letter-sound and letter- name relationships of all single letters",
+         "Build words using phonic sounds"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": null,
+        "items": [
+         "Recognises consonant digraphs (sh-, -sh, ch-, -ch, th-, -th and wh-) at the beginning and end of words ( sh-irt, ch-irp, th-ink, wh-en, wi-sh, ri- ch, bo-th)",
+         "Recognises vowel digraphs taught in Grade 2 such as \"oo\", \"ee\", \"ea\", \"ai\", \"oa\", \"ay\"",
+         "Build words using phonic sounds",
+         "Recognises and uses rhyming words such as blow, flow, and glow",
+         "Learns to spell ten words a week taken from phonics lessons and sight words"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": null,
+        "items": [
+         "Recognises that some sounds are represented by a number of different spelling choices (play, pain, plate; feet, read, key; boat, blow, note; tiger, like, sigh, fly)",
+         "Recognises \"silent e\" or split digraphs in words such as same, bite, note",
+         "Recognises and uses rhyming words such as blow, flow, and glow",
+         "Builds 3, 4 and 5-letter words using the consonant and vowel digraphs taught this term",
+         "Learns to spell ten words a week taken from phonics lessons and sight words"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": null,
+        "items": [
+         "Sorts letters and words into alphabetical order",
+         "Spells words correctly using phonic knowledge",
+         "Learns to spell ten words a week taken from phonics lessons and sight words",
+         "Writes three short sentences dictated by teacher"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": null,
+        "items": [
+         "Builds 3, 4 and 5-letter words using the consonant and vowel digraphs taught this term",
+         "Spells words correctly using phonic knowledge",
+         "Learns to spell ten words a week taken from phonics lessons and sight words",
+         "Writes three short sentences dictated by teacher"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": null,
+        "items": [
+         "Recognises and uses rhyming words such as blow, flow, and glow",
+         "Builds 3, 4 and 5-letter words using the consonant and vowel digraphs taught this term",
+         "Spells words correctly using phonic knowledge"
+        ],
+        "revision": true
+       }
+      ]
+     },
+     "Reading": {
+      "skill": "Reading and Phonics",
+      "time": "It is important to read Point 7 in guidelines on first page. Shared Reading: Minimum time: 1 hour per week (3 x 20 mins); Maximum time: 1 hour 15 mins per week (5x 15 mins) Group Guided: 2 hours 30 mins per week ( 2 x 15 minutes per day (2 groups daily))",
+      "rows": [
+       {
+        "from": 1,
+        "to": 10,
+        "part": null,
+        "items": [
+         "Independent/Paired: 3x a week"
+        ]
+       },
+       {
+        "from": 1,
+        "to": 1,
+        "part": "Reading",
+        "items": [
+         "Reads instructions in the classroom",
+         "Answers higher order questions based on a read text"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": "Reading",
+        "items": [
+         "Reads instructions in the classroom",
+         "Uses visual clues to talk about a graphical text",
+         "Answers higher order questions based on a read text"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": "Reading",
+        "items": [
+         "Reads instructions in the classroom",
+         "Uses visual clues to talk about a graphical text",
+         "Recognises apostrophes in contractions showing both possession and contractions such as Sipho's book, can't",
+         "Recognises inverted commas to show direct speech in written stories"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 10,
+        "part": "Reading",
+        "items": [
+         "Model the five finger strategy where each finger represents a strategy the reader can use to systematically work out how to read an unknown word and its meaning. The following information is taken from The Teacher's Handbook: Teaching Reading in the Early Grades (January 2008), Department of Education 1. Thumb: Leave the word out and read to the end of the sentence 2. First Finger: Look at the pictures and the heading 3. Second Finger: Ask yourself if there are any parts of the word that you recognize 4. Ring Finger: Sound the word out 5. Little Finger: Ask your teacher what the word means",
+         "Reads instructions in the classroom",
+         "Reads different poems around a topic and discusses these (both form and meanings)",
+         "Recognises inverted commas to show direct speech in written stories",
+         "Recognises apostrophes in contractions showing both possession and contractions such as Sipho's book, can't",
+         "Uses visual cues to talk about a graphical text, e.g., looks at a photograph, and discusses what it is about, where it was taken, etc."
+        ]
+       },
+       {
+        "from": 1,
+        "to": 1,
+        "part": "Shared reading",
+        "items": [
+         "Reads enlarged text such as a big book with the teacher",
+         "Answers higher order questions before, during and after reading a shared text, e.g., \"What do you think will happen next? Why do you say this?\""
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": "Shared reading",
+        "items": [
+         "Reads enlarged text such as a poem with the teacher",
+         "Answers higher order questions before, during and after reading a shared text, e.g., \"What do you think will happen next? Why do you say this?\"",
+         "Focus on the concept of print"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": "Shared reading",
+        "items": [
+         "Reads enlarged text such as a big book with the teacher",
+         "Describes the main character and the main idea",
+         "Focus on text features"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": "Shared reading",
+        "items": [
+         "Reads book as a whole class with the teacher (shared reading) and describes the main idea and the main characters",
+         "Answers higher order questions before, during and after reading a shared text, e.g., \"What do you think will happen next? Why do you say this?\"",
+         "Recognises inverted commas to show direct speech in written stories",
+         "Focus on - text features - language patterns - comprehension at a range of levels"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": "Shared reading",
+        "items": [
+         "Reads book as a whole class with the teacher (shared reading) and describes the main idea and the main characters",
+         "Answers higher order questions before, during and after reading a shared text, e.g., \"What do you think will happen next? Why do you say this?\"",
+         "Focus on - phonics - word identification strategies - comprehension at a range of levels"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": "Shared reading",
+        "items": [
+         "Reads book as a whole class with the teacher (shared reading) and describes the main idea and the main characters",
+         "Answers higher order questions before, during and after reading a shared text, e.g., \"What do you think will happen next? Why do you say this?\"",
+         "Focus on - phonics - language patterns - comprehension at a range of levels"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": "Shared reading",
+        "items": [
+         "Reads book as a whole class with the teacher (shared reading) and describes the main idea and the main characters"
+        ],
+        "revision": true
+       },
+       {
+        "from": 1,
+        "to": 1,
+        "part": "Group guided reading",
+        "items": [
+         "Builds a sight vocabulary"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": "Group guided reading",
+        "items": [
+         "Reads both silently and out loud from own book in a guided reading group with the teacher, that is, whole group reads the same story on the instructional reading level of the group",
+         "Uses phonics, and contextual decoding skills when reading both silently and aloud",
+         "Uses self- correcting strategies when reading: re- reading, pausing, practising a word before saying it aloud"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": "Group guided reading",
+        "items": [
+         "Reads both silently and out loud from own book in a guided reading group with the teacher, that is, whole group reads the same story on the instructional reading level of the group",
+         "Uses phonics, and structural analysis decoding skills when reading both silently and aloud",
+         "Monitors self when reading, both word recognition and comprehension",
+         "Shows an understanding of punctuation (full stops, question marks, exclamation marks, inverted commas) when reading aloud"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": "Group guided reading",
+        "items": [
+         "Reads both silently and out loud from own book in a guided reading group with the teacher, that is, whole group reads the same story on the instructional reading level of the group",
+         "Uses phonics, contextual and structural analysis decoding skills when reading both silently and aloud",
+         "Uses self-correcting strategies when reading: re-reading, pausing, practising a word before saying it aloud",
+         "Monitors self when reading, both word recognition and comprehension",
+         "Shows an understanding of punctuation (full stops, question marks, exclamation marks, inverted commas) when reading aloud"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": "Group guided reading",
+        "items": [
+         "Reads both silently and out loud from own book in a guided reading group with the teacher, that is, whole group reads the same story on the instructional reading level of the group",
+         "Uses phonics, contextual and structural analysis decoding skills when reading both silently and aloud",
+         "Uses self-correcting strategies when reading: re-reading, pausing, practising a word before saying it aloud",
+         "Monitors self when reading, both word recognition and comprehension",
+         "Shows an understanding of punctuation (full stops, question marks, exclamation marks, inverted commas) when reading aloud"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": "Group guided reading",
+        "items": [
+         "Reads both silently and out loud from own book in a guided reading group with the teacher, that is, whole group reads the same story on the instructional reading level of the group",
+         "Uses phonics, contextual and structural analysis decoding skills when reading both silently and aloud",
+         "Uses self-correcting strategies when reading: re-reading, pausing, practising a word before saying it aloud",
+         "Monitors self when reading, both word recognition and comprehension",
+         "Shows an understanding of punctuation (full stops, question marks, exclamation marks, inverted commas) when reading aloud"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": "Group guided reading",
+        "items": [
+         "Reads both silently and out loud from own book in a guided reading group with the teacher, that is, whole group reads the same story on the instructional reading level of the group",
+         "Shows an understanding of punctuation (full stops, question marks, exclamation marks, inverted commas) when reading aloud"
+        ],
+        "revision": true
+       },
+       {
+        "from": 1,
+        "to": 10,
+        "part": "Independent reading",
+        "items": [
+         "Select texts that are known or are at the independent reading level of the child (simpler than those used in shared reading with more than 95% word recognition accuracy when reading the text)",
+         "Reads independently: picture books and simple story books",
+         "Plays reading games and completes crosswords to reinforce reading and vocabulary skills such as Snap and Memory Game"
+        ]
+       }
+      ]
+     },
+     "Writing": {
+      "skill": "Writing",
+      "time": "Shared, Group and Independent 1 hour per week (3 x 20 mins).",
+      "rows": [
+       {
+        "from": 1,
+        "to": 1,
+        "part": null,
+        "items": [
+         "Draws pictures and writes sentences to show understanding of a story",
+         "Uses correct punctuation",
+         "Builds own word bank and personal dictionary using initial letter of words such as apple, book, cat, etc."
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": null,
+        "items": [
+         "Writes own news",
+         "Sequences text by using words like \"first\", \"next\" and \"finally\".",
+         "Spells common words correctly and attempts to spell unfamiliar words using phonic knowledge",
+         "Builds own word bank and personal dictionary using initial letter of words such as apple, book, cat, etc."
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": null,
+        "items": [
+         "Writes at least one paragraph of eight sentences such as own news or creative story",
+         "Writes words to form a sentence using capital letters, full stops, question marks, commas, exclamation marks and inverted commas",
+         "Uses phonic knowledge and spelling rules to write unfamiliar words",
+         "Builds own word bank and personal dictionary using initial letter of words such as apple, book, cat, etc."
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": null,
+        "items": [
+         "Contributes ideas, words and sentences for a class story (Shared Writing)",
+         "Writes at least one paragraph of eight sentences such as own news or creative story",
+         "Writes instructions e.g. to a friend",
+         "Writes words to form a sentence using capital letters, full stops, question marks, commas, exclamation marks and inverted commas",
+         "Uses phonic knowledge and spelling rules to write unfamiliar words",
+         "Builds own word bank and personal dictionary using initial letter of words such as apple, book, cat, etc."
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": null,
+        "items": [
+         "Contributes ideas, words and sentences for a class story (Shared Writing)",
+         "Draws pictures and writes sentences to show understanding of story",
+         "Uses a picture to choose a topic to write about",
+         "Talks to a partner to begin planning writing",
+         "Asks questions to help define the writing task",
+         "Uses subject-verb agreement correctly e.g. I want/she wants",
+         "Uses phonic knowledge and spelling rules to write unfamiliar words",
+         "Builds own word bank and personal dictionary using initial letter of words such as apple, book, cat, etc."
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": null,
+        "items": [
+         "Contributes ideas, words and sentences for a class story (Shared Writing)",
+         "Writes at least one paragraph of eight sentences such as own news, creative story, description of an incident/experiment",
+         "Writes words to form a sentence using capital letters, full stops, question marks, commas, exclamation marks and inverted commas",
+         "Uses phonic knowledge and spelling rules to write unfamiliar words",
+         "Uses present, past and future tense correctly",
+         "Builds own word bank and personal dictionary using initial letter of words such as apple, book, cat, etc."
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": null,
+        "items": [
+         "Writes and illustrates sentences (six to eight sentences) on a topic to contribute to a book for the class",
+         "Uses phonic knowledge and spelling rules to write unfamiliar words"
+        ],
+        "revision": true
+       }
+      ]
+     },
+     "Handwriting": {
+      "skill": "Writing",
+      "time": "1 hour per week (4 x 15 mins)",
+      "rows": [
+       {
+        "from": 1,
+        "to": 1,
+        "part": null,
+        "items": [
+         "Copies and writes at least two letters of a joined script or cursive writing",
+         "Copies and writes short words in a joined script or cursive writing",
+         "Copies and writes short sentences in a joined script or cursive writing"
+        ]
+       },
+       {
+        "from": 2,
+        "to": 2,
+        "part": null,
+        "items": [
+         "Forms lower and upper case letters in a joined script or cursive writing",
+         "Uses handwriting tools effectively: pencil, eraser, ruler",
+         "Writes short words in a joined script or cursive writing"
+        ]
+       },
+       {
+        "from": 3,
+        "to": 3,
+        "part": null,
+        "items": [
+         "Forms lower and upper case letters in a joined script or cursive writing",
+         "Uses handwriting tools effectively: pencil, eraser, ruler",
+         "Writes short words in a joined script or cursive writing",
+         "Spaces words correctly in lines"
+        ]
+       },
+       {
+        "from": 4,
+        "to": 5,
+        "part": null,
+        "items": [
+         "Forms all lower and upper-case letters in joined script or cursive writing and begins to join various letters and to form words in the selected joined script or cursive writing",
+         "Uses handwriting tools effectively: pencil, eraser, ruler",
+         "Writes short words in the joined script or cursive writing",
+         "Spaces words correctly in lines",
+         "Writes a sentence legibly and correctly in both the print script and the joined script or cursive writing"
+        ]
+       },
+       {
+        "from": 6,
+        "to": 7,
+        "part": null,
+        "items": [
+         "Forms all lower and upper-case letters in joined script or cursive writing and begins to join various letters and to form words in the selected joined script or cursive writing",
+         "Uses handwriting tools effectively: pencil, eraser, ruler",
+         "Writes short words in the joined script or cursive writing",
+         "Spaces words correctly in lines",
+         "Writes a sentence legibly and correctly in both the print script and the joined script or cursive writing"
+        ]
+       },
+       {
+        "from": 8,
+        "to": 9,
+        "part": null,
+        "items": [
+         "Forms all lower and upper-case letters in joined script or cursive writing and begins to join various letters and to form words in the selected joined script or cursive writing",
+         "Uses handwriting tools effectively: pencil, eraser, ruler",
+         "Writes short words in the joined script or cursive writing",
+         "Spaces words correctly in lines",
+         "Writes a sentence legibly and correctly in both the print script and the joined script or cursive writing"
+        ]
+       },
+       {
+        "from": 10,
+        "to": 10,
+        "part": null,
+        "items": [
+         "Writes a sentence legibly and correctly in both the print script and the joined script or cursive writing"
+        ],
+        "revision": true
+       }
+      ]
+     }
+    },
+    "sba": {
+     "Listening and Speaking": [
+      "Participates in discussions, asking questions and showing sensitivity to the feelings of others"
+     ],
+     "Phonics": [
+      "Oral and Written: Make words with consonant blends (bl, br, cl, cr) (Reading focus time: Focused Phonic session)",
+      "Practical and Written: Sorts words into alphabetical order"
+     ],
+     "Reading": [
+      "Oral: Group Guided Reading (GGR) Uses sight words, decoding skills (syllabication, contextual clues, oral reading fluency) to read texts independently (Reading focus time)",
+      "Written: Worksheet fiction or non-fiction text (Reading focus time)",
+      "Comprehension skills (Reading focus time); Literal questions; Prediction; Reorganisation: reorder events in sequence; Inferences: What, Why, How; Evaluation"
+     ],
+     "Writing": [
+      "Contributes ideas and words for a class story (Shared Writing) (Reading focus time)",
+      "Writes two paragraphs (8 sentences) on a topic"
+     ],
+     "Handwriting": [
+      "Copies and writes words and short sentences in a joined script or cursive writing"
+     ]
+    }
+   }
+  }
+ }
+}

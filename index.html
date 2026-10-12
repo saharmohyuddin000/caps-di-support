@@ -73,6 +73,9 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .tbox{border-radius:8px;padding:10px;font-size:12px;line-height:1.4}
 .warnline{color:#b45309;font-size:12px;margin-top:4px}
+.atp{border:1px solid #bbf7d0;background:#f0fdf4;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:13px;line-height:1.5}
+.atp h4{font-size:13px;margin:0 0 4px;color:#166534}.atp ul{margin:2px 0 6px 18px;padding:0}.atp .pt{font-size:11px;color:#166534;font-weight:600;margin-top:4px}
+.tag.atpw{background:#dcfce7;color:#166534}
 .consentinfo{font-size:13px;line-height:1.55;color:#374151;max-height:46vh;overflow:auto;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;background:#fafafa}
 .consentinfo p{margin:0 0 8px}
 .cchk{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.45;margin:8px 0;color:#1f2937}.cchk input{margin-top:3px;flex-shrink:0;width:18px;height:18px}
@@ -321,6 +324,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
       <p><b>Without internet.</b> With no signal, CAPS DI still makes a basic plan on the phone from its own rules and knowledge base, and makes the full plan automatically once the phone is back online.</p>
       <p><b>On WhatsApp.</b> Any plan can be sent to WhatsApp as a short, low-data summary with <b>Send to WhatsApp</b>, for the teacher's own phone or a colleague. A full WhatsApp companion, where teachers make plans and send exit-task results by chat, is the next build.</p>
       <p><b>Inclusive by design.</b> Every learner works towards the same CAPS outcome, with different ways to take in the lesson and to show what they know (Universal Design for Learning), and groups change after every exit task. Where a learner shows signs of a hearing, vision or fine-motor difficulty, CAPS DI gives classroom support and points to screening through the school health service and the SIAS process. It never labels or diagnoses a learner.</p>
+      <p><b>Aligned to the Annual Teaching Plan.</b> Where the DBE Annual Teaching Plan for the grade and term is loaded (now Grade 1 and Grade 3, Term 1), the teacher picks the week. CAPS DI shows that week's ATP content and the term's SBA tasks, tags matching outcomes, and keeps the lesson to what the ATP sets for that week, including the Reading and Writing Focus Time. Baseline weeks suggest a baseline check.</p>
       <p><b>Class dashboard.</b> After each exit task the teacher taps each learner's rating by register number. CAPS DI shows each learner's progress over time, flags learners who stay below Rating 4 (for remediation, then SIAS) and learners ready to move up, and lists error patterns that keep coming back. It is kept on the teacher's phone; names are never entered.</p>
       <div id="consentSummary"></div>
       <p><b>Research data.</b> To learn whether CAPS DI helps, the app sends RADAF's research team anonymous counts (plans made, rating counts, exit results) and any feedback you submit. It never sends learner names or your class notes.</p>
@@ -335,6 +339,8 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
     <span class="lbl" style="margin-top:12px">Skill area</span>
     <div class="pr" id="sk"></div>
     <p class="hint" style="margin-top:6px">Reading comprehension is under <b>Reading and Phonics</b> (Shared Reading and Group Guided Reading), as in CAPS.</p>
+    <div id="weekWrap" style="display:none"><span class="lbl" style="margin-top:12px">Week of the term (Annual Teaching Plan)</span><div class="pr" id="wk"></div></div>
+    <div id="atpBox"></div>
     <div class="div"></div>
     <div id="og"><p class="hint">Select grade, term and skill area above to see the CAPS content for that term.</p></div>
     <div class="or">or describe your own outcome</div>
@@ -503,6 +509,7 @@ textarea{resize:vertical;min-height:68px;margin-top:4px}
 <script>
 // ---------- Constants ----------
 // The AI key is held by the Cloudflare Worker, never in this public page.
+let ATP=null; // DBE Annual Teaching Plans: week-by-week content and SBA tasks (data/atp.json)
 const PLAN_API_URL='https://caps-di-proxydev.sahar-mohyuddin000.workers.dev';
 const GRADES=['Grade R','Grade 1','Grade 2','Grade 3'];
 const TERMS=['Term 1','Term 2','Term 3','Term 4'];
@@ -547,7 +554,7 @@ const DOMAINS=[
 
 let CAPS=null,PED=null;
 const LANGS=['English','isiZulu','isiXhosa','Afrikaans','Sepedi','Setswana','Sesotho','Xitsonga','siSwati','Tshivenda','isiNdebele','Other'];
-function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],resources:[],remed:{on:false,domains:[]},learnerRatings:[],resultsSaved:false,classSize:0,prevLevels:null,flags:[],rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
+function freshState(){return{grade:'Grade 1',term:null,skill:null,outcome:null,outcomeFormal:null,profiles:[],source:'formal',levels:[0,0,0,0,0,0,0],exitLevels:[0,0,0,0,0,0,0],struggles:[],errors:[],languages:[],resources:[],remed:{on:false,domains:[]},week:null,learnerRatings:[],resultsSaved:false,classSize:0,prevLevels:null,flags:[],rating:0,yn:null,yn2:null,impl:null,planData:null,checks:{}};}
 let V=freshState();
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -606,9 +613,9 @@ function checkPw(){
 document.addEventListener('DOMContentLoaded',()=>{const el=$('pwInput');if(el)el.focus();});
 
 async function init(){
-  pills('gr',GRADES,V.grade,v=>{V.grade=v;resetOutcome();renderOutcomes();});
-  pills('tr',TERMS,V.term,v=>{V.term=v;resetOutcome();renderOutcomes();});
-  pills('sk',SKILLS,V.skill,v=>{V.skill=v;resetOutcome();renderOutcomes();});
+  pills('gr',GRADES,V.grade,v=>{V.grade=v;V.week=null;resetOutcome();renderOutcomes();renderWeek();});
+  pills('tr',TERMS,V.term,v=>{V.term=v;V.week=null;resetOutcome();renderOutcomes();renderWeek();});
+  pills('sk',SKILLS,V.skill,v=>{V.skill=v;resetOutcome();renderOutcomes();renderAtpBox();});
   $('profiles').innerHTML=PROFILES.map((p,i)=>'<div class="pc" data-i="'+i+'"><i class="ti '+p.i+'"></i><div><div class="t">'+esc(p.t)+'</div><div class="u">'+esc(p.u)+'</div></div></div>').join('');
   $('profiles').querySelectorAll('.pc').forEach(el=>el.onclick=()=>{el.classList.toggle('s');const v=PROFILES[+el.dataset.i].v;V.profiles=V.profiles.includes(v)?V.profiles.filter(x=>x!==v):[...V.profiles,v];});
   multiPills('hl',LANGS,'languages');
@@ -623,9 +630,10 @@ async function init(){
   if(CAPS){renderOutcomes();return;}
   try{const rv=await fetch('data/videos.json');if(rv.ok)VIDEOS=await rv.json();}catch(_){VIDEOS=null;}
   try{const r2=await fetch('data/pedagogy.json');if(r2.ok)PED=await r2.json();}catch(_){PED=null;}
+  try{const r3=await fetch('data/atp.json');if(r3.ok)ATP=await r3.json();}catch(_){ATP=null;}
   try{const r=await fetch('data/caps-ehl.json');if(!r.ok)throw new Error(r.status);CAPS=await r.json();}
   catch(e){CAPS=null;$('og').innerHTML='<p class="warn">Could not load the CAPS content ('+esc(e.message)+'). You can still describe your own outcome below.</p>';return;}
-  renderOutcomes();
+  renderOutcomes();renderWeek();
 }
 
 function multiPills(id,values,key){
@@ -666,7 +674,7 @@ function renderOutcomes(){
   const mk=(list,boxId,isFormal)=>{const box=$(boxId);if(!box)return;
     list.forEach(it=>{const btn=document.createElement('button');btn.className='ch';
       const text=isFormal?it.text:it;
-      btn.innerHTML=(isFormal?'<span class="tag fa">FAA '+it.acts.sort().join(' & ')+'</span>':'')+esc(text);
+      btn.innerHTML=(isFormal?'<span class="tag fa">FAA '+it.acts.sort().join(' & ')+'</span>':'')+(atpMatch(text)?'<span class="tag atpw">ATP week '+V.week+'</span>':'')+esc(text);
       btn.onclick=()=>{document.querySelectorAll('#og .ch').forEach(c=>c.classList.remove('s'));btn.classList.add('s');V.outcome=text;V.outcomeFormal=isFormal?it:null;$('co').value='';cb();};
       if(V.outcome===text)btn.classList.add('s');
       box.appendChild(btn);});};
@@ -678,6 +686,42 @@ function renderOutcomes(){
   }
   mk(other,'olC',false);
 }
+// ---------- Annual Teaching Plan (ATP): what the DBE plans for this week of the term ----------
+function atpTerm(){return ATP&&ATP.grades&&ATP.grades[V.grade]&&ATP.grades[V.grade][V.term]||null;}
+// Content for this week and skill: [{topic, part, items, revision}]
+function atpWeekContent(week,skill){const t=atpTerm();if(!t||!week)return [];const out=[];
+  Object.entries(t.topics).forEach(([name,tp])=>{if(skill&&tp.skill!==skill)return;
+    tp.rows.filter(r=>week>=r.from&&week<=r.to).forEach(r=>{
+      // Items not in the previous block of this topic are this week's new content: list them first.
+      const prev=new Set(tp.rows.filter(q=>q.part===r.part&&q.to<r.from).flatMap(q=>q.items));
+      const its=r.items.map(x=>x.replace(/:$/,''));const fresh=week-r.from<2?its.filter(x=>!prev.has(x)&&!prev.has(x+':')):[],old=its.filter(x=>!fresh.includes(x));
+      out.push({topic:name,part:r.part,items:its,fresh,key:fresh.concat(old),revision:!!r.revision});});});
+  return out;}
+function atpSba(skill){const t=atpTerm();if(!t)return [];return Object.entries(t.sba||{}).filter(([k])=>{const tp=t.topics[k];return !skill||(tp?tp.skill===skill:k===skill);}).map(([k,v])=>({topic:k,items:v}));}
+function isBaselineWeek(){const t=atpTerm();return !!(t&&V.week&&t.baseline&&t.baseline.weeks.includes(V.week));}
+function renderWeek(){
+  const t=atpTerm(),wrap=$('weekWrap');if(!wrap)return;
+  if(!t){wrap.style.display='none';V.week=null;$('atpBox').innerHTML=V.grade&&V.term?'<p class="hint" style="margin-top:8px">The Annual Teaching Plan for '+esc(V.grade)+' '+esc(V.term)+' is not loaded yet, so plans follow the CAPS content for the term.</p>':'';return;}
+  wrap.style.display='block';
+  pills('wk',t.weeks.map(w=>'Week '+w.week+(w.days<5?' ('+w.days+' days)':'')),V.week?('Week '+V.week+((t.weeks.find(w=>w.week===V.week)||{}).days<5?' ('+t.weeks.find(w=>w.week===V.week).days+' days)':'')):null,l=>{V.week=parseInt(l.replace('Week ',''),10);renderAtpBox();renderOutcomes();});
+  renderAtpBox();
+}
+function renderAtpBox(){
+  const box=$('atpBox');if(!box)return;const t=atpTerm();if(!t||!V.skill){box.innerHTML='';return;}
+  if(!V.week){box.innerHTML='<p class="hint" style="margin-top:6px">Choose the week to see what the Annual Teaching Plan sets for it. CAPS DI then aligns the lesson to that week.</p>';return;}
+  const wc=atpWeekContent(V.week,V.skill),sba=atpSba(V.skill);
+  let h='<div class="atp"><h4><i class="ti ti-calendar-week"></i> Annual Teaching Plan · '+esc(V.grade)+' · '+esc(V.term)+' · week '+V.week+'</h4>';
+  if(isBaselineWeek())h+='<p style="margin:0 0 6px"><b>Baseline weeks.</b> '+esc(t.baseline.note)+'</p>';
+  if(wc.some(x=>x.revision))h+='<p style="margin:0 0 6px"><b>Revision week.</b></p>';
+  const li=(x,i)=>'<li>'+(x.fresh.includes(i)&&x.fresh.length<x.items.length?'<b>New: </b>':'')+esc(i)+'</li>';
+  h+=wc.map(x=>'<div class="pt">'+esc(x.part&&x.part!==x.topic?x.topic+' · '+x.part:x.topic)+'</div><ul>'+x.key.slice(0,4).map(i=>li(x,i)).join('')+'</ul>'+
+    (x.key.length>4?'<details><summary style="cursor:pointer;font-size:12px;color:#166534">'+(x.key.length-4)+' more</summary><ul>'+x.key.slice(4).map(i=>li(x,i)).join('')+'</ul></details>':'')).join('')||'<p>No content listed for this week.</p>';
+  if(sba.length)h+='<details><summary style="cursor:pointer;font-weight:600;color:#166534">Term assessment tasks (SBA) in this ATP</summary>'+sba.map(x=>'<div class="pt">'+esc(x.topic)+'</div><ul>'+x.items.map(i=>'<li>'+esc(i)+'</li>').join('')+'</ul>').join('')+'</details>';
+  box.innerHTML=h+'</div>';
+}
+// Outcomes that match this week's ATP content are tagged, so the teacher picks one the ATP sets now.
+function atpMatch(text){if(!V.week)return false;const w=words(text);if(w.size<2)return false;
+  return atpWeekContent(V.week,V.skill).some(x=>(x.fresh||[]).some(i=>{const iw=words(i);let n=0;w.forEach(z=>{if(iw.has(z))n++;});return n>=Math.max(3,Math.ceil(Math.min(w.size,iw.size)*0.6));}));}
 function currentOutcome(){return V.outcome||$('co').value.trim();}
 function cb(){$('b1').disabled=!(V.grade&&V.term&&V.skill&&(V.outcome||$('co').value.trim().length>5));}
 
@@ -737,9 +781,10 @@ function loadExample(){
   if(!CAPS){alert('The CAPS content is still loading. Please try again in a moment.');return;}
   V=freshState();
   V.grade='Grade 1';V.term='Term 1';V.skill='Reading and Phonics';
-  pills('gr',GRADES,V.grade,v=>{V.grade=v;resetOutcome();renderOutcomes();});
-  pills('tr',TERMS,V.term,v=>{V.term=v;resetOutcome();renderOutcomes();});
-  pills('sk',SKILLS,V.skill,v=>{V.skill=v;resetOutcome();renderOutcomes();});
+  pills('gr',GRADES,V.grade,v=>{V.grade=v;V.week=null;resetOutcome();renderOutcomes();renderWeek();});
+  pills('tr',TERMS,V.term,v=>{V.term=v;V.week=null;resetOutcome();renderOutcomes();renderWeek();});
+  pills('sk',SKILLS,V.skill,v=>{V.skill=v;resetOutcome();renderOutcomes();renderAtpBox();});
+  V.week=atpTerm()?8:null;renderWeek();
   const fi=formalItems(block());const pick=fi.find(f=>/build up short words/i.test(f.text))||fi[0];
   V.outcome=pick.text;V.outcomeFormal=pick;renderOutcomes();$('co').value='';cb();
   V.profiles=[PROFILES[0].v,PROFILES[4].v,PROFILES[8].v];
@@ -766,7 +811,8 @@ function setStep(n){document.body.classList.remove('copy');
 }
 function go1(){setStep(1);}
 function go2(){setStep(2);}
-function go3(){const eh=$('errHint');if(eh)eh.remove();renderStruggles();renderErrors();refreshLevelInputs('lvt','levels');updateTotals('levels','lvTotal',true);setStep(3);}
+function go3(){const eh=$('errHint');if(eh)eh.remove();
+  if(isBaselineWeek()&&V.source==='formal'){V.source='baseline';pills('src',SOURCES.map(s=>s.l),SOURCES.find(s=>s.k==='baseline').l,l=>{V.source=SOURCES.find(s=>s.l===l).k;});}renderStruggles();renderErrors();refreshLevelInputs('lvt','levels');updateTotals('levels','lvTotal',true);setStep(3);}
 // ---------- Learner-level exit results and the class dashboard (stored on this phone only) ----------
 const CLASS_KEY='capsdi.classes.v1';
 function readClasses(){try{return JSON.parse(localStorage.getItem(CLASS_KEY)||'{}');}catch(_){return{};}}
@@ -807,7 +853,7 @@ function saveResults(){
   if(V.resultsSaved||!total)return false;
   const cls=readClasses(),k=classKey(),c=cls[k]||{size:0,records:[]};
   c.size=Math.max(c.size||0,learnerCount());
-  c.records.push({at:new Date().toISOString(),term:V.term,skill:V.skill,outcome:String(currentOutcome()||'').slice(0,200),
+  c.records.push({at:new Date().toISOString(),term:V.term,week:V.week||null,skill:V.skill,outcome:String(currentOutcome()||'').slice(0,200),
     errors:V.errors.slice(),counts:V.exitLevels.slice(),ratings:rated?V.learnerRatings.map(r=>r==null?null:r):null});
   c.records=c.records.slice(-60);cls[k]=c;writeClasses(cls);V.resultsSaved=true;renderDashCard();
   const gsx=classGenders();
@@ -843,6 +889,8 @@ function dashHtml(k,c){
   const ec={};recs.slice(-5).forEach(r=>(r.errors||[]).forEach(e=>{ec[e]=(ec[e]||0)+1;}));
   const top=Object.entries(ec).filter(([,n])=>n>=2).sort((a,b)=>b[1]-a[1]).slice(0,5);
   if(top.length&&PED)h+='<h4>Error patterns that keep coming back (last 5 lessons)</h4><ul style="margin:0 0 0 18px;font-size:12px">'+top.map(([id,n])=>{const m=PED.misconceptions.find(x=>x.id===id);return m?'<li>'+esc(m.misconception)+' · ticked in '+n+' lessons</li>':'';}).join('')+'</ul>';
+  const tn=recs.at(-1).term,wk=[...new Set(recs.filter(r=>r.term===tn&&r.week).map(r=>r.week))].sort((a,b)=>a-b);
+  if(wk.length)h+='<h4>Annual Teaching Plan coverage ('+esc(tn)+')</h4><p style="font-size:12px;margin:0">Exit tasks recorded in weeks '+wk.join(', ')+' of the term.</p>';
   h+='<h4>Recent exit tasks</h4><table><tr><th>Date</th><th>Outcome</th><th>Rating 4+</th></tr>'+recs.slice(-5).reverse().map(r=>'<tr><td>'+esc(new Date(r.at).toLocaleDateString())+'</td><td>'+esc(r.outcome.slice(0,60))+(r.outcome.length>60?'…':'')+'</td><td>'+pct(r.counts)+'%</td></tr>').join('')+'</table>';
   h+='<p style="margin-top:8px;font-size:11px;color:#6b7280">A flag is a prompt to look closer, not a label. Confirm with your own observation before changing a learner\'s support.</p>'+
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn2" style="margin:0" onclick="printDash()"><i class="ti ti-printer"></i> Print summary (PDF)</button><button class="btn2" style="margin:0;color:#b91c1c" onclick="clearDash()">Clear '+esc(k)+' data</button></div>';
@@ -1111,7 +1159,7 @@ function researchPrompt(lv){
   if(rules.length)out.push('Research-based diagnostic rules (South African reading research) — use them to interpret the evidence:\n'+rules.map(r=>'- If '+r.if.charAt(0).toLowerCase()+r.if.slice(1)+' → '+r.means+' → '+r.do).join('\n'));
   const reading=V.skill==='Reading and Phonics';
   const sc=scaffoldOf(teachDomain());
-  if(sc&&lv<2)out.push('Scaffold ladder for this skill (base each tier\'s promptFading on it, starting at the right step for that group): '+sc.ladder.map(x=>x.level+': '+x.do).join(' | ')+'\nLow-cost resources to use where they fit: '+sc.resources.map(r=>r.name+' ('+r.use+')').join('; ')+'.');
+  if(sc&&lv<2)out.push('Scaffold ladder for this skill (base each tier\'s promptFading on it, starting at the right step for that group): '+sc.ladder.map(x=>x.level+': '+x.do).join(' | ')+'\nLow-cost resources to use where they fit: '+sc.resources.map(r=>r.name).join('; ')+'.');
   if(lv<2&&reading&&PED.phonicsLesson&&[...doms].some(d=>['alphabetic','blending','letterKnowledge','phonemic'].includes(d)))out.push('Phonics lesson structure to follow: '+PED.phonicsLesson.steps.join(' → ')+'. Avoid: '+PED.phonicsLesson.avoid.join('; ')+'.');
   const b=PED.benchmarks||{};
   if(reading&&V.grade==='Grade 1'&&b.letterSounds)out.push('Benchmark: '+b.letterSounds.target+' ('+b.letterSounds.what+'). '+b.letterSounds.when+'.');
@@ -1122,7 +1170,8 @@ function researchPrompt(lv){
 }
 // The plan service accepts prompts up to 20,000 characters, so long inputs are compacted step by step.
 function buildPrompt(){
-  for(let lv=0;lv<3;lv++){const out=buildPromptAt(lv);if(out.length<=19000||lv===2)return out.slice(0,19500);}
+  // The Worker accepts up to 20,000 characters; keep room for a retry note.
+  for(let lv=0;lv<3;lv++){const out=buildPromptAt(lv);if(out.length<=19400||lv===2)return out.slice(0,19400);}
 }
 function buildPromptAt(lv){
   const passages=needPassages();
@@ -1153,7 +1202,7 @@ function buildPromptAt(lv){
 capsItems?'CAPS formal assessment items for this term and skill:\n'+capsItems:'',
 pg&&pg.prev&&pg.prev.items.length?'CAPS progression — what learners should already have covered ('+pg.prev.label+'):\n'+pg.prev.items.map(x=>'- '+x).join('\n')+'\nBase the prerequisites on these CAPS items; Foundational-tier learners may still need them re-taught.':(V.grade==='Grade R'&&V.term==='Term 1'?'This is the start of Grade R: there is no earlier CAPS content; build on home language and everyday experience.':''),
 lv<2&&pg&&pg.next&&pg.next.items.length?'CAPS progression — where this leads next ('+pg.next.label+'):\n'+pg.next.items.map(x=>'- '+x).join('\n')+'\nUse these to shape the Advanced tier\'s challenge without leaving this term\'s outcome.':'',
-term?'Term focus — '+term.theme+'. Guiding question: '+term.question+' Pedagogical sequence: '+term.sequence+'. Look for: '+term.look_for+'.':'',
+term&&!atpWeekContent(V.week,V.skill).length?'Term focus — '+term.theme+'. Guiding question: '+term.question+' Pedagogical sequence: '+term.sequence+'. Look for: '+term.look_for+'.':'',
 dec?'Decoding model: '+dec.note+'\n'+dec.components.map(x=>'- '+x.name+': '+x.what).join('\n')+'\nIn the diagnosis, say which component is breaking down (blending is for reading, segmenting is for spelling — a learner can manage one but not the other). Teach phonemic awareness orally (no letters) before linking sounds to print.':'',
 paths.length?'Evidence-informed teaching pathway(s) to follow:\n'+paths.map(p=>'- '+p.name+': '+p.steps.join(' → ')).join('\n'):'',
 researchPrompt(lv),
@@ -1164,6 +1213,10 @@ tierLines,
 V.struggles.length?'CAPS items learners found hard: '+V.struggles.slice(0,lv>1?5:20).join(' | '):'',
 errs.length?'Observed error patterns (with the knowledge-base response):\n'+errs.map(m=>'- '+m.misconception+' — evidence: '+m.evidence+' — likely barrier '+m.barrier+' — response: '+m.response).join('\n'):'',
 an?'Teacher\'s description of what she saw: '+an:'',
+(()=>{const wc=atpWeekContent(V.week,V.skill);if(!wc.length)return '';
+  const cut=t=>t.length>110?t.slice(0,107)+'…':t;
+  return 'ANNUAL TEACHING PLAN (DBE) '+V.grade+' '+V.term+' week '+V.week+(isBaselineWeek()?' (baseline weeks: catch-up or readiness, informal baseline by observation)':'')+': '+wc.filter(x=>x.part!=='Independent reading').map(x=>(x.part||x.topic)+': '+(x.key||x.items).slice(0,lv?2:3).map(cut).join('; ')).join(' | ')+
+  '. Teach what the ATP sets this week (its letters, sounds, words and text work); do not teach ahead.'+(V.skill==='Reading and Phonics'&&lv<2?' Use the ATP Reading and Writing Focus Time: shared reading and writing (15 min) → phonics linked to the text (10 min) → group guided reading, 2 ability groups a day.':'');})(),
 V.source==='exit'&&V.prevLevels&&lv<2?'Previous lesson: tier counts before '+tierCounts(V.prevLevels).join('/')+', after the exit task '+tierCounts(V.levels).join('/')+' (Foundational/Intermediate/Advanced). In dataInsight, say in one sentence what changed, and regroup accordingly.':'',
 V.source==='prevyear'?'Note: these are last year\'s end-of-year results, recorded before the long holiday and often as one rating per subject. Treat the groups as provisional, and make nextSteps a 2-minute one-to-one baseline check on this outcome within the first two weeks to confirm or change the groups.':'',
 'Home languages in class: '+(V.languages.length?V.languages.join(', '):'not specified'),
@@ -1252,11 +1305,12 @@ async function go4(){
     let issues=planIssues(plan);
     if(issues.length){
       $('ldmsg').textContent='Checking quality and filling a gap…';
-      const plan2=await requestPlan(prompt+'\n\nYour previous answer was incomplete. It was missing or weak on: '+issues.join(', ')+'. Return the complete JSON with every field filled.');
+      const retry='\n\nYour previous answer was incomplete. It was missing or weak on: '+issues.join(', ').slice(0,450)+'. Return the complete JSON with every field filled.';
+      const plan2=await requestPlan(prompt.slice(0,19990-retry.length)+retry);
       const issues2=planIssues(plan2);
       if(issues2.length<issues.length){plan=plan2;issues=issues2;}
     }
-    V.learnerRatings=[];V.resultsSaved=false;plan._issues=issues;plan._senses=senses();if(V.prevLevels)plan._progress={before:V.prevLevels.slice(),after:V.levels.slice()};plan._design=lessonDesign();plan._teachDomain=teachDomain();if(V.remed.on&&remedCount()){const ks=remedDomains().map(d=>d.k);plan._remed={n:remedCount(),k:ks[0],ks};}
+    V.learnerRatings=[];V.resultsSaved=false;if(V.week&&atpTerm())plan._atp={week:V.week};plan._issues=issues;plan._senses=senses();if(V.prevLevels)plan._progress={before:V.prevLevels.slice(),after:V.levels.slice()};plan._design=lessonDesign();plan._teachDomain=teachDomain();if(V.remed.on&&remedCount()){const ks=remedDomains().map(d=>d.k);plan._remed={n:remedCount(),k:ks[0],ks};}
     V.planData=plan;V.checks={};
     renderPlan(plan);
     savePlan();
@@ -1283,7 +1337,7 @@ function offlinePlan(){
   const pk=pickPathways(),path=PED&&PED.pathways[pk[0]],steps=path?path.steps:[];
   const pg=progression();
   const fl=senses(),sc=PED&&PED.sensoryCheck;
-  const p={_offline:true,_senses:fl,_design:d,_teachDomain:teachDomain(),_progress:V.prevLevels?{before:V.prevLevels.slice(),after:V.levels.slice()}:null,
+  const p={_offline:true,_atp:V.week&&atpTerm()?{week:V.week}:null,_senses:fl,_design:d,_teachDomain:teachDomain(),_progress:V.prevLevels?{before:V.prevLevels.slice(),after:V.levels.slice()}:null,
     diagnosis:errs.length?errs.slice(0,3).map(m=>({barrier:bar(m.barrier),evidence:m.evidence,likelyCause:m.misconception,response:m.response})):
       [{barrier:d.mode==='reteach'?'A. Prerequisite gap':'Check the evidence',evidence:d.why.replace(/<[^>]+>/g,''),likelyCause:'Tick the error patterns you observed for a more precise diagnosis.',response:d.focus}],
     coreStrategy:path?path.name+': '+steps.join(' → '):'',
@@ -1325,7 +1379,7 @@ function showOfflinePlan(){
     q.push({at:new Date().toISOString(),prompt:buildPrompt(),
       state:JSON.parse(JSON.stringify(Object.assign({},V,{planData:null}))),
       meta:{grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome(),levels:V.levels.slice()},
-      extras:{_senses:plan._senses||[],_design:plan._design,_teachDomain:plan._teachDomain,_remed:plan._remed||null,_progress:plan._progress||null}});
+      extras:{_atp:plan._atp||null,_senses:plan._senses||[],_design:plan._design,_teachDomain:plan._teachDomain,_remed:plan._remed||null,_progress:plan._progress||null}});
     writeQueue(q);
   }catch(_){}
   setStep(4);
@@ -1367,6 +1421,7 @@ function renderPlan(p){
   let h='';
   if(p._issues&&p._issues.length)h+='<div class="qnote"><i class="ti ti-alert-triangle"></i> Quality check: this plan is missing '+esc(p._issues.join(', '))+'. You can generate again from the previous screen.</div>';
   if(p._offline)h+='<div class="offnote"><i class="ti ti-wifi-off"></i><span><b>Basic plan, made without internet.</b> Built on your phone from CAPS DI\'s teaching rules and knowledge base; the full plan adds tailored activities, reading passages and a word wall. '+(readQueue().length?'Your full plan will be made automatically as soon as you are back online, and saved under Your saved plans.':'Generate again when you are online for the full plan.')+'</span></div>';
+  if(p._atp&&p._atp.week){const wc=atpWeekContent(p._atp.week,V.skill);if(wc.length)h+='<details class="atp" style="margin:0 0 12px"><summary style="cursor:pointer;font-weight:600;color:#166534"><i class="ti ti-calendar-week"></i> Aligned to the Annual Teaching Plan: '+esc(V.term)+', week '+p._atp.week+'</summary>'+wc.map(x=>'<div class="pt">'+esc(x.topic)+(x.part?' · '+esc(x.part):'')+'</div><ul>'+x.items.map(i=>'<li>'+esc(i)+'</li>').join('')+'</ul>').join('')+'</details>';}
   if(p._progress)h+=progressPanel(p._progress.before,p._progress.after,'Progress since the last lesson');
   if(p._design)h+=designPanel(p._design);
   {const fl=p._senses||senses();if(fl.length||senseWorth())h+=senseSection(fl,fl.length>0);}
@@ -1472,7 +1527,7 @@ function printFull(){
 function classroomCopyHtml(p){
   const d=p._design,c=tierCounts(V.levels),L=x=>Array.isArray(x)?x.filter(Boolean):[];
   const total=V.levels.reduce((a,b)=>a+b,0),n=Math.max(V.classSize||0,total);
-  let h='<h1>CAPS DI lesson plan</h1><div class="meta"><b>'+esc(V.grade)+' · '+esc(V.term)+' · '+esc(V.skill)+'</b> · English Home Language<br>Outcome: '+esc(currentOutcome())+'</div>';
+  let h='<h1>CAPS DI lesson plan</h1><div class="meta"><b>'+esc(V.grade)+' · '+esc(V.term)+(p._atp&&p._atp.week?' · week '+p._atp.week+' (ATP)':'')+' · '+esc(V.skill)+'</b> · English Home Language<br>Outcome: '+esc(currentOutcome())+'</div>';
   h+='<div class="line"><span>Teacher:</span><span>Date:</span><span>Class: '+n+' learners</span></div>';
   if(p._offline)h+='<p class="small">Basic plan made without internet from CAPS DI\'s teaching rules.</p>';
   h+='<div class="box"><b>Learning intention:</b> '+esc(p.learningIntention||'')+(L(p.successCriteria).length?'<br><b>Success criteria:</b> '+L(p.successCriteria).map(esc).join(' · '):'')+'</div>';
@@ -1574,7 +1629,7 @@ async function requestPlan(prompt){
 // ---------- Saved plans (this phone only; class-level data, no learner names) ----------
 const SAVE_KEY='capsdi.savedPlans.v1';
 function readSaved(){try{return JSON.parse(localStorage.getItem(SAVE_KEY)||'[]');}catch(_){return[];}}
-function savePlan(){logEvent('plan',{levels:V.levels.slice(),offline:!!(V.planData&&V.planData._offline),remediation:!!(V.planData&&V.planData._remed),classSize:V.classSize||null,planSeconds:planSeconds(),errors:V.errors.slice(),plan:planForPanel(V.planData)});saveEntry({at:new Date().toISOString(),grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome(),levels:V.levels.slice(),plan:V.planData});}
+function savePlan(){logEvent('plan',{levels:V.levels.slice(),offline:!!(V.planData&&V.planData._offline),remediation:!!(V.planData&&V.planData._remed),classSize:V.classSize||null,planSeconds:planSeconds(),errors:V.errors.slice(),atpWeek:V.week||null,plan:planForPanel(V.planData)});saveEntry({at:new Date().toISOString(),grade:V.grade,term:V.term,skill:V.skill,outcome:currentOutcome(),levels:V.levels.slice(),plan:V.planData});}
 function saveEntry(entry){
   try{const list=readSaved();list.unshift(entry);localStorage.setItem(SAVE_KEY,JSON.stringify(list.slice(0,20)));}catch(_){}
   renderSaved();
